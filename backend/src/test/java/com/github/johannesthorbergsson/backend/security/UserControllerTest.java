@@ -1,0 +1,63 @@
+package com.github.johannesthorbergsson.backend.security;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class UserControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    UserRepository userRepository;
+    Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    MongoUser mongoUser = new MongoUser("1", "name", "11", "BASIC");
+
+    @Test
+    @DirtiesContext
+    void login_whenUserExists_thenReturnUserResponse() throws Exception {
+        //GIVEN
+        MongoUser expected = new MongoUser(mongoUser.id(), mongoUser.username(), encoder.encode(mongoUser.password()), mongoUser.role());
+        userRepository.save(expected);
+        //WHEN
+        mockMvc.perform(post("api/users/login")
+                    .with(httpBasic(mongoUser.username(), mongoUser.password()))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{}")
+                    .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                            "username": "name",
+                            "role": "BASIC"
+                        }
+                        """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+    @Test
+    @DirtiesContext
+    void login_whenUserCredentialsInvalid_ThenStatusUnauthorized() throws Exception {
+        mockMvc.perform(post("api/users/login")
+                    .with(httpBasic("invalidUsername", "invalidPassword"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{}")
+                    .with(csrf()))
+                .andExpect(status().isUnauthorized());
+    }
+    @Test
+    void getCurrentUser() {
+    }
+}

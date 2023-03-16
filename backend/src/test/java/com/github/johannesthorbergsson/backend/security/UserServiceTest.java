@@ -79,5 +79,4 @@ class UserServiceTest {
         assertEquals(expected.getClass(), actual.getClass());
         assertEquals(expected.getMessage(), actual.getMessage());
     }
-
 }
