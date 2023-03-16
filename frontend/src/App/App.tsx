@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router-dom";
 import Login from "../Login/Login";
 import axios from "axios";
 import Cookies from 'js-cookie'
+import Dashboard from "../Dashboard/Dashboard";
 
 
 axios.interceptors.request.use(
@@ -22,6 +23,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
+          <Route path={"/"} element={<Dashboard/>}/>
         </Routes>
       </div>
   );
