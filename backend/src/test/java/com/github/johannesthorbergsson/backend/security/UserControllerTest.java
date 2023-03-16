@@ -6,11 +6,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -48,7 +50,7 @@ class UserControllerTest {
     }
     @Test
     @DirtiesContext
-    void login_whenUserCredentialsInvalid_ThenStatusUnauthorized() throws Exception {
+    void login_whenUserCredentialsInvalid_whenStatusUnauthorized() throws Exception {
         mockMvc.perform(post("/api/users/login")
                     .with(httpBasic("invalidUsername", "invalidPassword"))
                     .contentType(MediaType.APPLICATION_JSON)
@@ -57,6 +59,28 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
     }
     @Test
-    void getCurrentUser() {
+    @DirtiesContext
+    @WithMockUser(username = "name", roles = {"BASIC"})
+    void getCurrentUser_whenAuthenticated_thenReturnUser() throws Exception {
+        //GIVEN
+        userRepository.save(mongoUser);
+        //WHEN
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+							{
+								"username": "name",
+								"role": "BASIC"
+							}
+							"""))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void getCurrentUser_whenNotAuthenticated_thenStatusIsUnauthorised() throws Exception {
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isUnauthorized());
     }
 }
