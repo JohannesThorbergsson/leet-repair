@@ -26,6 +26,5 @@ export default function useAuth(redirectToSignIn?: boolean) {
                 }
             })
     }, [pathname, navigate, redirectToSignIn])
-
     return user
 }

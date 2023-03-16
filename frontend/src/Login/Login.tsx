@@ -1,10 +1,12 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
+import {useNavigate} from "react-router-dom";
 
 
 export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -18,7 +20,9 @@ export default function Login() {
         axios
             .post("/api/users/login", {},
             {headers: {Authorization: `Basic ${authorization}`}})
-            .then()
+            .then(() => {
+                navigate(window.sessionStorage.getItem('signInRedirect') || '/')
+            })
             .catch(error => console.log(error))
     }
     return (
