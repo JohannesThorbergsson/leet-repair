@@ -9,7 +9,6 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +32,7 @@ class UserControllerTest {
         MongoUser expected = new MongoUser(mongoUser.id(), mongoUser.username(), encoder.encode(mongoUser.password()), mongoUser.role());
         userRepository.save(expected);
         //WHEN
-        mockMvc.perform(post("api/users/login")
+        mockMvc.perform(post("/api/users/login")
                     .with(httpBasic(mongoUser.username(), mongoUser.password()))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{}")
@@ -50,7 +49,7 @@ class UserControllerTest {
     @Test
     @DirtiesContext
     void login_whenUserCredentialsInvalid_ThenStatusUnauthorized() throws Exception {
-        mockMvc.perform(post("api/users/login")
+        mockMvc.perform(post("/api/users/login")
                     .with(httpBasic("invalidUsername", "invalidPassword"))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{}")
