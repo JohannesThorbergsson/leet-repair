@@ -2,10 +2,7 @@ package com.github.johannesthorbergsson.backend.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -13,9 +10,14 @@ import java.security.Principal;
 @RequestMapping("api/users")
 @RequiredArgsConstructor
 public class UserController {
+    private final UserService userService;
     @PostMapping("/login")
     @ResponseStatus(code = HttpStatus.CREATED)
     public UserResponse login(Principal principal) {
-        return null;
+        return getCurrentUser(principal);
+    }
+    @GetMapping("/me")
+    public UserResponse getCurrentUser(Principal principal) {
+        return userService.getCurrentUser(principal);
     }
 }
