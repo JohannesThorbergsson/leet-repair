@@ -1,7 +1,6 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
-import {Link, useNavigate} from "react-router-dom";
-import LogOutButton from "../LogOutButton/LogOutButton";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Login() {
@@ -17,19 +16,14 @@ export default function Login() {
     }
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        const authorization = window.btoa(`${username}:${password}`)
         axios
-            .post("/api/users/login", {},
-            {headers: {Authorization: `Basic ${authorization}`}})
-            .then(() => {
-                navigate(window.sessionStorage.getItem('signInRedirect') || '/')
-            })
+            .post("/api/users/", {username, password})
+            .then(() => navigate("/login"))
             .catch(error => console.log(error))
     }
     return (
-        <>
-        <form className={"login__form"} onSubmit={handleSubmit}>
-            <h1>Log in</h1>
+        <form className={"signup__form"} onSubmit={handleSubmit}>
+            <h1>Sign Up</h1>
             <label>
                 <span>Username:</span>
                 <input type={"text"} value={username} onChange={handleUsernameChange}/>
@@ -38,10 +32,7 @@ export default function Login() {
                 <span>Password:</span>
                 <input type={"password"} value={password} onChange={handlePasswordChange}/>
             </label>
-            <button type={"submit"}>Log in</button>
+            <button type={"submit"}>Sign Up</button>
         </form>
-        <Link to={"/signup"}>Sign Up here</Link>
-        <LogOutButton/>
-        </>
     )
 }
