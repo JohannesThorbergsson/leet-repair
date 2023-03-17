@@ -7,7 +7,7 @@ export default function LogOutButton(){
         axios.post('/api/users/logout')
             .then(() => window.location.href = '/login')
     }
-    return (
-        user? <button onClick={handleLogOut}>Log out</button>: <></>
-    )
+    return user? (
+        <button onClick={handleLogOut}>Log out</button>
+    ): <></>
 }
