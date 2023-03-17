@@ -83,4 +83,62 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isUnauthorized());
     }
+    @Test
+    @DirtiesContext
+    void create_whenCreated_thenStatus201() throws Exception {
+        mockMvc.perform(post("/api/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+									{
+										"username": "Test user",
+										"password": "Test password"
+									}
+									""").with(csrf()))
+                .andExpect(status().isCreated());
+    }
+    @Test
+    @DirtiesContext
+    void create_whenUsernameExists_thenStatus409() throws Exception {
+        //GIVEN
+        userRepository.save(mongoUser);
+        //THEN
+        mockMvc.perform(post("/api/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+									{
+										"username": "name",
+										"password": "Test password"
+									}
+									""")
+                        .with(csrf()))
+                .andExpect(status().isConflict());
+    }
+    @Test
+    @DirtiesContext
+    void create_whenUsernameMissing_thenStatus400() throws Exception {
+        mockMvc.perform(post("/api/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+									{
+										"username": "",
+										"password": "password"
+									}
+									""")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    @DirtiesContext
+    void create_whenPasswordMissing_thenStatus400() throws Exception {
+        mockMvc.perform(post("/api/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+									{
+										"username": "Test user",
+										"password": ""
+									}
+									""")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
 }
