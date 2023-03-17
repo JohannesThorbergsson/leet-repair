@@ -1,5 +1,6 @@
 package com.github.johannesthorbergsson.backend.security;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class UserController {
         return userService.getCurrentUser(principal);
     }
     @PostMapping("/logout")
-    public void logout() {
-        // logout is handled by Spring Security
-    } //NOSONAR exclude method
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
 }
