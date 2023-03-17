@@ -83,4 +83,11 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isUnauthorized());
     }
+    @Test
+    @WithMockUser
+    void logout_whenLogout_thenStatusIsOk() throws Exception {
+        mockMvc.perform(post("/api/users/logout")
+                .with(csrf()))
+                .andExpect(status().isOk());
+    }
 }
