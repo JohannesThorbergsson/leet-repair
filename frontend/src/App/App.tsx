@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
 import Login from "../Login/Login";
+import SignUp from "../SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
 
@@ -22,6 +23,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
+          <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={<Login/>}/>
         </Routes>
       </div>
