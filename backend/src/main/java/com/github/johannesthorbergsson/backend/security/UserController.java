@@ -21,6 +21,8 @@ public class UserController {
     public UserResponse getCurrentUser(Principal principal) {
         return userService.getCurrentUser(principal);
     }
+
+    //NOSONAR this method is empty
     @PostMapping("/logout")
     public void logout() {
         // logout is handled by Spring Security
