@@ -24,5 +24,5 @@ public class UserController {
     @PostMapping("/logout")
     public void logout() {
         // logout is handled by Spring Security
-    }
+    } //NOSONAR exclude method
 }
