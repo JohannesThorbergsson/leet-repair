@@ -141,4 +141,11 @@ class UserControllerTest {
                         .with(csrf()))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    @WithMockUser
+    void logout_whenLogout_thenStatusIsOk() throws Exception {
+        mockMvc.perform(post("/api/users/logout")
+                .with(csrf()))
+                .andExpect(status().isOk());
+    }
 }

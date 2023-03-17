@@ -1,5 +1,6 @@
 package com.github.johannesthorbergsson.backend.security;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +24,9 @@ public class UserController {
     @GetMapping("/me")
     public UserResponse getCurrentUser(Principal principal) {
         return userService.getCurrentUser(principal);
+    }
+    @PostMapping("/logout")
+    public void logout(HttpSession session) {
+        session.invalidate();
     }
 }

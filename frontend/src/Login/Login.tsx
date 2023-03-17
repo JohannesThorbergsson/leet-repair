@@ -1,6 +1,7 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
 import {Link, useNavigate} from "react-router-dom";
+import Layout from "../Layout/Layout";
 
 
 export default function Login() {
@@ -26,20 +27,20 @@ export default function Login() {
             .catch(error => console.log(error))
     }
     return (
-        <>
-        <form className={"login__form"} onSubmit={handleSubmit}>
-            <h1>Log in</h1>
-            <label>
-                <span>Username:</span>
-                <input type={"text"} value={username} onChange={handleUsernameChange}/>
-            </label>
-            <label>
-                <span>Password:</span>
-                <input type={"password"} value={password} onChange={handlePasswordChange}/>
-            </label>
-            <button type={"submit"}>Log in</button>
-        </form>
-        <Link to={"/signup"}>Sign Up here</Link>
-        </>
+        <Layout>
+            <form className={"login__form"} onSubmit={handleSubmit}>
+                <h1>Log in</h1>
+                <label>
+                    <span>Username:</span>
+                    <input type={"text"} value={username} onChange={handleUsernameChange}/>
+                </label>
+                <label>
+                    <span>Password:</span>
+                    <input type={"password"} value={password} onChange={handlePasswordChange}/>
+                </label>
+                <button type={"submit"}>Log in</button>
+            </form>
+            <Link to={"/signup"}>Sign Up here</Link>
+        </Layout>
     )
 }
