@@ -121,9 +121,29 @@ class UserServiceTest {
         assertEquals(expected, actual.getStatusCode());
     }
     @Test
+    void createUser_whenUsernameNull_thenThrowResponseStatusException() {
+        //GIVEN
+        UserRequest noUsername = new UserRequest(null, "1");
+        HttpStatus expected = HttpStatus.BAD_REQUEST;
+        //WHEN
+        ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noUsername));
+        //THEN
+        assertEquals(expected, actual.getStatusCode());
+    }
+    @Test
     void createUser_whenPasswordEmpty_thenThrowResponseStatusException() {
         //GIVEN
         UserRequest noPassword = new UserRequest("1", "");
+        HttpStatus expected = HttpStatus.BAD_REQUEST;
+        //WHEN
+        ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noPassword));
+        //THEN
+        assertEquals(expected, actual.getStatusCode());
+    }
+    @Test
+    void createUser_whenPasswordNull_thenThrowResponseStatusException() {
+        //GIVEN
+        UserRequest noPassword = new UserRequest("1", null);
         HttpStatus expected = HttpStatus.BAD_REQUEST;
         //WHEN
         ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noPassword));
