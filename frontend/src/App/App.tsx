@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import SignUp from "../SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
+import Dashboard from "../Dashboard/Dashboard";
 
 
 axios.interceptors.request.use(
@@ -24,7 +25,7 @@ function App() {
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
-          <Route path={"/"} element={<Login/>}/>
+          <Route path={"/"} element={<Dashboard/>}/>
         </Routes>
       </div>
   );
