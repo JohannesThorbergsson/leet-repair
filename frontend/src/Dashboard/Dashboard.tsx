@@ -6,10 +6,11 @@ import axios from "axios";
 export default function Dashboard() {
     const user = useAuth(true)
     const [search, setSearch] = useState(false)
+    const [results, setResults] = useState([])
     function searchHandler() {
         setSearch(true)
         axios.get("/api/workshops/")
-            .then(r => r.data)
+            .then(r => setResults(r.data))
     }
     return (user &&
         <Layout>
@@ -17,7 +18,8 @@ export default function Dashboard() {
             <button onClick={searchHandler}>Search</button>
             {!search?
             <h1>Dashboard</h1>:
-            <div>Search results</div> }
+            <div>Search results
+                {results.map((e) =><h1>Workshop</h1>)} </div> }
         </Layout>
     )
 }
