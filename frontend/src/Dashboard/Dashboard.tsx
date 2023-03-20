@@ -2,6 +2,7 @@ import Layout from "../Layout/Layout";
 import useAuth from "../Hooks/useAuth";
 import {useState} from "react";
 import useWorkshops from "../Hooks/useWorkshops";
+import WorkshopCard from "../WorkshopCard/WorkshopCard";
 
 export default function Dashboard() {
     const user = useAuth(true)
@@ -19,7 +20,8 @@ export default function Dashboard() {
             {!search?
             <h1>Dashboard</h1>:
             <div>Search results
-                {results.map((e) =><h1>Workshop</h1>)} </div> }
+                {results.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
+            </div> }
         </Layout>
     )
 }
