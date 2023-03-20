@@ -9,7 +9,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/bikes")
+@RequestMapping("api/bikes/")
 @RequiredArgsConstructor
 public class BikeController {
     private final BikeService bikeService;

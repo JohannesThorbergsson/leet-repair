@@ -34,7 +34,7 @@ class BikeControllerTest {
         //GIVEN
         bikeRepository.save(testBike);
         //WHEN
-        mockMvc.perform(get("/api/bikes")
+        mockMvc.perform(get("/api/bikes/")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
