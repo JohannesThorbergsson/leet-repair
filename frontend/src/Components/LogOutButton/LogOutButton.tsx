@@ -1,4 +1,4 @@
-import useAuth from "../Hooks/useAuth";
+import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
 
 export default function LogOutButton(){
