@@ -1,17 +1,17 @@
 import Layout from "../Layout/Layout";
 import useAuth from "../Hooks/useAuth";
 import {useState} from "react";
-import axios from "axios";
+import useWorkshops from "../Hooks/useWorkshops";
 
 export default function Dashboard() {
     const user = useAuth(true)
     const [search, setSearch] = useState(false)
-    const [results, setResults] = useState([])
+    const {results} = useWorkshops()
+
     function searchHandler() {
         setSearch(true)
-        axios.get("/api/workshops/")
-            .then(r => setResults(r.data))
     }
+
     return (user &&
         <Layout>
             <input type={"text"}/>
