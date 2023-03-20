@@ -1,7 +1,8 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
 import {Link, useNavigate} from "react-router-dom";
 import Layout from "../Layout/Layout";
+import {Box, Button, Container, Input, TextField} from "@mui/material";
 
 
 export default function Login() {
@@ -27,20 +28,23 @@ export default function Login() {
             .catch(error => console.log(error))
     }
     return (
-        <Layout>
-            <form className={"login__form"} onSubmit={handleSubmit}>
+        <Container>
+            <Box component={"form"} onSubmit={handleSubmit}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    '&:hover': {
+                        backgroundColor: '',
+                        opacity: [0.9, 0.8, 0.7],
+                    },
+                }}
+            >
                 <h1>Log in</h1>
-                <label>
-                    <span>Username:</span>
-                    <input type={"text"} value={username} onChange={handleUsernameChange}/>
-                </label>
-                <label>
-                    <span>Password:</span>
-                    <input type={"password"} value={password} onChange={handlePasswordChange}/>
-                </label>
-                <button type={"submit"}>Log in</button>
-            </form>
+                <TextField placeholder="Username" value={username} fullWidth margin ="normal" onChange={handleUsernameChange} />
+                <TextField placeholder="Password" type= {"password"} value={password} margin ="normal" fullWidth onChange={handlePasswordChange} />
+                <Button variant="contained" type={"submit"} >Log in</Button>
+            </Box>
             <Link to={"/signup"}>Sign Up here</Link>
-        </Layout>
+        </Container>
     )
 }
