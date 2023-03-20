@@ -7,8 +7,6 @@ export default function Dashboard() {
     const user = useAuth(true)
     const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm} = useWorkshops()
 
-
-
     return (user &&
         <Layout>
             <input type={"text"} value={searchTerm} onChange={handleSearchTerm}/>
