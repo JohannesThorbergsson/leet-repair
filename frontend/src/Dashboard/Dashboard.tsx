@@ -1,26 +1,23 @@
 import Layout from "../Layout/Layout";
 import useAuth from "../Hooks/useAuth";
-import {useState} from "react";
 import useWorkshops from "../Hooks/useWorkshops";
 import WorkshopCard from "../WorkshopCard/WorkshopCard";
 
 export default function Dashboard() {
     const user = useAuth(true)
-    const [search, setSearch] = useState(false)
-    const {results} = useWorkshops()
+    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm} = useWorkshops()
 
-    function searchHandler() {
-        setSearch(true)
-    }
+
 
     return (user &&
         <Layout>
-            <input type={"text"}/>
+            <input type={"text"} value={searchTerm} onChange={handleSearchTerm}/>
             <button onClick={searchHandler}>Search</button>
             {!search?
             <h1>Dashboard</h1>:
             <div>Search results
-                {results.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
+                {searchResults.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
+                <button onClick={closeSearch}>Back</button>
             </div> }
         </Layout>
     )
