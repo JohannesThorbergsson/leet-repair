@@ -10,6 +10,7 @@ public record Bike (
         @Id
         String id,
         String modelName,
+        String ownerName,
         int mileage,
         List<Component> components
 

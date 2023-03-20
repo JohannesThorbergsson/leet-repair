@@ -25,11 +25,11 @@ class BikeControllerTest {
     @Autowired
     BikeRepository bikeRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Bike testBike = new Bike("1", "MegaBike9000", 1337, List.of(tyre));
+    Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre));
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(username = "steven")
     void getAllBikes_whenBikes_thenReturnAllBikes() throws Exception {
         //GIVEN
         bikeRepository.save(testBike);
@@ -42,6 +42,7 @@ class BikeControllerTest {
                         {
                             "id": "1",
                             "modelName": "MegaBike9000",
+                            "ownerName": "steven",
                             "mileage": 1337,
                             "components": [
                                 {
