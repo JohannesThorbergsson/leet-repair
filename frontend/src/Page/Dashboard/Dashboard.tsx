@@ -1,8 +1,10 @@
-import Layout from "../../Component/Layout/Layout";
 import useAuth from "../../Hooks/useAuth";
 import useWorkshops from "../../Hooks/useWorkshops";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {useNavigate} from "react-router-dom";
+import ResponsiveAppBar from "../../ResponsiveAppBar";
+import {Box, Button, TextField} from "@mui/material";
+import React from "react";
 
 export default function Dashboard() {
     const user = useAuth(true)
@@ -13,19 +15,33 @@ export default function Dashboard() {
         navigate("/bikes")
     }
     return (user &&
-        <Layout>
-            <input type={"text"} value={searchTerm} onChange={handleSearchTerm}/>
-            <button onClick={searchHandler}>Search</button>
+        <>
+            <ResponsiveAppBar/>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                margin: 2,
+                '&:hover': {
+                    backgroundColor: '',
+                    opacity: [0.9, 0.8, 0.7],
+                },
+            }}>
+            <TextField placeholder="Search for services" value={searchTerm}
+                        onChange={handleSearchTerm} />
+            <Button variant="contained" onClick={searchHandler}>Search</Button>
+            </Box>
             {!search?
-                <>
+                <div>
                     <h1>Dashboard</h1>
-                    <button onClick={handleManageBikesButton}>Manage Bikes</button>
-                </>
-            :
-            <div>Search results
-                {searchResults.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
-                <button onClick={closeSearch}>Back</button>
-            </div> }
-        </Layout>
+                    <Button variant="contained" onClick={handleManageBikesButton}>Manage Bikes</Button>
+                </div>
+                :
+                <div>Search results
+                    {searchResults.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
+                    <Button variant="contained" onClick={closeSearch}>Back</Button>
+                </div>
+            }
+        </>
     )
 }
