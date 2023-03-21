@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     InputAdornment,
     Paper,
     Table,
@@ -12,10 +13,31 @@ import {
     Typography
 } from "@mui/material";
 import ResponsiveAppBar from "../../ResponsiveAppBar";
-import React from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
+import {Component} from "../../model/Component";
 
 export default function AddBikeForm() {
+    const[components, setComponents] = useState<Component[]>([{category: "s", type: "as", ageKm: 3}])
+    const[newComponentName, setNewComponentName] =useState<string>("")
+    const[newComponentModel, setNewComponentModel] =useState<string>("")
+    const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
 
+    function handleInputComponentName(event: ChangeEvent<HTMLInputElement>){
+        setNewComponentName(event.target.value)
+    }
+    function handleInputComponentModel(event: ChangeEvent<HTMLInputElement>) {
+        setNewComponentModel(event.target.value)
+    }
+    function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
+        if(Number.isFinite(event.target.value)) {
+            setNewComponentAge(Number(event.target.value))
+        }
+    }
+    function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
+        event.preventDefault()
+        setComponents([...components,
+            {category: newComponentName, type: newComponentModel, ageKm: newComponentAge}])
+    }
     return(
         <>
             <ResponsiveAppBar/>
@@ -62,7 +84,7 @@ export default function AddBikeForm() {
                     <Box sx={{
                         justifyContent: 'start',
                         display: 'flex',
-                        flexDirection: 'row',}}>
+                        flexDirection: 'column',}}>
                         <Typography variant={"subtitle1"} fontWeight={"medium"}>Installed Components</Typography>
                         <TableContainer component={Paper}>
                             <Table sx={{ }} aria-label="simple table">
@@ -74,7 +96,7 @@ export default function AddBikeForm() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {props.bike.components.map((component) => (
+                                    {components.map((component) => (
                                         <TableRow
                                             key={component.type}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -89,6 +111,36 @@ export default function AddBikeForm() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                        }}>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Component"
+                                fullWidth
+                                sx={{mt: 1, mr: 1}}
+                                onChange={handleInputComponentName}
+                            />
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Model"
+                                fullWidth
+                                sx={{mt: 1, mr: 1}}
+                                onChange={handleInputComponentModel}
+                            />
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Age (km)"
+                                sx={{mt: 1}}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={handleInputComponentAge}
+                            />
+                        </Box>
+                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
                     </Box>
                 </Box>
             </Box>
