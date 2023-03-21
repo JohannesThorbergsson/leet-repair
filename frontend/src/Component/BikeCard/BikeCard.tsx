@@ -1,6 +1,8 @@
 import {Bike} from "../../model/Bike";
 import React from "react";
 import {
+    Box,
+    Button,
     Card,
     CardContent,
     Paper,
@@ -55,6 +57,15 @@ export default function BikeCard(props: Props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    pt: 1
+                }}>
+                    <Button variant="contained" type={"submit"}>
+                        Show service history
+                    </Button>
+                </Box>
             </CardContent>
         </React.Fragment>
     );
