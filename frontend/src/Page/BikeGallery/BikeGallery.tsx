@@ -1,8 +1,10 @@
 import useBikes from "../../Hooks/useBikes";
 import BikeCard from "../../Component/BikeCard/BikeCard";
 import ResponsiveAppBar from "../../ResponsiveAppBar";
+import useAuth from "../../Hooks/useAuth";
 
 export default function BikeGallery() {
+    useAuth(true)
     const {bikes} = useBikes()
     return (
         <>
