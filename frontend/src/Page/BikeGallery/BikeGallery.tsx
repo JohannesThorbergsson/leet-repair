@@ -1,15 +1,16 @@
-import Layout from "../Layout/Layout";
 import useBikes from "../../Hooks/useBikes";
-import BikeCard from "../BikeCard/BikeCard";
+import BikeCard from "../../Component/BikeCard/BikeCard";
+import ResponsiveAppBar from "../../ResponsiveAppBar";
 
 export default function BikeGallery() {
     const {bikes} = useBikes()
     return (
-        <Layout>
+        <>
+            <ResponsiveAppBar/>
             <h1>Your Bikes:</h1>
             <div>
                 {bikes.map(b => <BikeCard key={b.id} bike={b}/>)}
             </div>
-        </Layout>
+        </>
     )
 }
