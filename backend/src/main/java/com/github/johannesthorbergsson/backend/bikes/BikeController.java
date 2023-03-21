@@ -1,9 +1,7 @@
 package com.github.johannesthorbergsson.backend.bikes;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -17,5 +15,10 @@ public class BikeController {
     @GetMapping
     public List<Bike> getAllBikes(Principal principal){
         return bikeService.getAllBikes(principal);
+    }
+
+    @PostMapping
+    public Bike addBike(Principal principal, @RequestBody BikeRequest bikeRequest){
+        return bikeService.addBike(principal, bikeRequest);
     }
 }
