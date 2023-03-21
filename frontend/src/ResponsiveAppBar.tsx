@@ -8,16 +8,19 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-
-const settings = ['Logout'];
+import useAuth from "./Hooks/useAuth";
+import axios from "axios";
 
 export default function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const user = useAuth()
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
-    const handleCloseUserMenu = () => {
+    const handleLogout = () => {
         setAnchorElUser(null);
+        axios.post('/api/users/logout')
+            .then(() => window.location.href = '/login')
     }
     return (
             <AppBar position="static">
@@ -64,11 +67,13 @@ export default function ResponsiveAppBar() {
 
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
+                            {user? <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                 </IconButton>
-                            </Tooltip>
+                            </Tooltip>:
+                                <></>
+                            }
                             <Menu
                                 sx={{ mt: '45px' }}
                                 id="menu-appbar"
@@ -83,13 +88,11 @@ export default function ResponsiveAppBar() {
                                     horizontal: 'right',
                                 }}
                                 open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
+                                onClose={handleLogout}
                             >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
+                                    <MenuItem key={"logout"} onClick={handleLogout}>
+                                        <Typography textAlign="center">Logout</Typography>
                                     </MenuItem>
-                                ))}
                             </Menu>
                         </Box>
                     </Toolbar>
