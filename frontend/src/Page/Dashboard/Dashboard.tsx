@@ -29,7 +29,7 @@ export default function Dashboard() {
             }}>
             <TextField placeholder="Search for services" value={searchTerm}
                         onChange={handleSearchTerm} />
-            <Button variant="contained" onClick={searchHandler}>Search</Button>
+            <Button variant="contained" onClick={searchHandler} disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
             {!search?
                 <div>
@@ -39,7 +39,13 @@ export default function Dashboard() {
                 :
                 <Box>
                     <Typography variant="h6" fontWeight={"medium"}>Search results:</Typography>
-                    {searchResults.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
+                    {searchResults.length === 0 ?
+                        <Typography variant="h6" fontWeight={"medium"}>
+                            No workshops matching your search term found
+                        </Typography> :
+                        searchResults.map(
+                            (workshop) => <WorkshopCard key={workshop.id} workshop={workshop}/>)
+                    }
                     <Button variant="contained" onClick={closeSearch}>Back</Button>
                 </Box>
             }

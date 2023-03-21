@@ -57,7 +57,7 @@ export default function Login() {
                 <p>No account?
                     <Link component={RouterLink} to={"/signup"} sx ={{
                         margin: 2
-                    }}>Sign Up here</Link>
+                    }}>Sign up here</Link>
                 </p>
             </Container>
         </>
