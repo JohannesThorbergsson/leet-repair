@@ -1,7 +1,7 @@
-import Layout from "../Layout/Layout";
+import Layout from "../../Component/Layout/Layout";
 import useAuth from "../../Hooks/useAuth";
 import useWorkshops from "../../Hooks/useWorkshops";
-import WorkshopCard from "../WorkshopCard/WorkshopCard";
+import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {useNavigate} from "react-router-dom";
 
 export default function Dashboard() {

@@ -1,13 +1,16 @@
 import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import Login from "../Login/Login";
-import SignUp from "../SignUp/SignUp"
+import Login from "../../Page/Login/Login";
+import SignUp from "../../Page/SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
-import Dashboard from "../Dashboard/Dashboard";
-import BikeGallery from "../BikeGallery/BikeGallery";
-
+import Dashboard from "../../Page/Dashboard/Dashboard";
+import BikeGallery from "../../Page/BikeGallery/BikeGallery";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 axios.interceptors.request.use(
     function (config) {

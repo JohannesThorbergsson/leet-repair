@@ -1,6 +1,6 @@
-import Layout from "../Layout/Layout";
+import Layout from "../../Component/Layout/Layout";
 import useBikes from "../../Hooks/useBikes";
-import BikeCard from "../BikeCard/BikeCard";
+import BikeCard from "../../Component/BikeCard/BikeCard";
 
 export default function BikeGallery() {
     const {bikes} = useBikes()
