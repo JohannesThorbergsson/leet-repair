@@ -3,7 +3,7 @@ import useWorkshops from "../../Hooks/useWorkshops";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {useNavigate} from "react-router-dom";
 import ResponsiveAppBar from "../../ResponsiveAppBar";
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 
 export default function Dashboard() {
@@ -37,10 +37,11 @@ export default function Dashboard() {
                     <Button variant="contained" onClick={handleManageBikesButton}>Manage Bikes</Button>
                 </div>
                 :
-                <div>Search results
+                <Box>
+                    <Typography variant="h6" fontWeight={"medium"}>Search results:</Typography>
                     {searchResults.map((workshop) =><WorkshopCard key={workshop.id} workshop={workshop}/>)}
                     <Button variant="contained" onClick={closeSearch}>Back</Button>
-                </div>
+                </Box>
             }
         </>
     )
