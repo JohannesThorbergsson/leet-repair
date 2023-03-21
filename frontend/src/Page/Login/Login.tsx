@@ -30,34 +30,36 @@ export default function Login() {
 
     return (
         <>
-        <ResponsiveAppBar/>
-        <Container>
-            <Box component={"form"} onSubmit={handleSubmit}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    margin: 2,
-                    '&:hover': {
-                        backgroundColor: '',
-                        opacity: [0.9, 0.8, 0.7],
-                    },
-                }}
-            >
-                <Typography variant="h2" component="h5" fontWeight={"regular"}>
-                    Log in
-                </Typography>
-                <TextField placeholder="Username" value={username} fullWidth margin ="normal" onChange={handleUsernameChange} />
-                <TextField placeholder="Password" type= {"password"} value={password} margin ="normal" fullWidth onChange={handlePasswordChange} />
-                <Button variant="contained" type={"submit"} sx={{
-                    m: 1
-                }}>Log in</Button>
-            </Box>
-            <p>No account?
-                <Link component={RouterLink} to={"/signup"} sx ={{
-                    margin: 2
-                }}>Sign Up here</Link>
-            </p>
-        </Container>
-    </>
+            <ResponsiveAppBar/>
+            <Container>
+                <Box component={"form"} onSubmit={handleSubmit}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        margin: 2,
+                        '&:hover': {
+                            backgroundColor: '',
+                            opacity: [0.9, 0.8, 0.7],
+                        },
+                    }}
+                >
+                    <Typography variant="h2" component="h5" fontWeight={"regular"}>
+                        Log in
+                    </Typography>
+                    <TextField placeholder="Username" value={username} fullWidth
+                               margin ="normal" onChange={handleUsernameChange} />
+                    <TextField placeholder="Password" type= {"password"} value={password}
+                               margin ="normal" fullWidth onChange={handlePasswordChange} />
+                    <Button variant="contained" type={"submit"} sx={{
+                        m: 1
+                    }}>Log in</Button>
+                </Box>
+                <p>No account?
+                    <Link component={RouterLink} to={"/signup"} sx ={{
+                        margin: 2
+                    }}>Sign Up here</Link>
+                </p>
+            </Container>
+        </>
     )
 }
