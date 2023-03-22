@@ -14,54 +14,19 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ResponsiveAppBar from "../../ResponsiveAppBar";
-import React, {ChangeEvent, FormEvent, useState} from "react";
-import {Component} from "../../model/Component";
-import axios from "axios";
+import React from "react";
+import useAddBike from "../../Hooks/useAddBike";
 
 export default function AddBikeForm() {
-    const[mileage, setMileage] = useState<number | undefined>()
-    const[mileageFieldValue, setMileageFieldValue] = useState("")
-    const[modelName, setModelName] = useState("")
-    const[components, setComponents] = useState<Component[]>([])
-    const[newComponentCategory, setNewComponentCategory] =useState<string>("")
-    const[newComponentModel, setNewComponentModel] =useState<string>("")
-    const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
-
-    function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
-        setModelName(event.target.value)
-    }
-    function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
-        setMileageFieldValue(event.target.value)
-        if(/^\d+$/.test(event.target.value)) {
-            setMileage(Number(event.target.value))
-        }
-    }
-    function handleInputComponentName(event: ChangeEvent<HTMLInputElement>){
-        setNewComponentCategory(event.target.value)
-    }
-    function handleInputComponentModel(event: ChangeEvent<HTMLInputElement>) {
-        setNewComponentModel(event.target.value)
-    }
-    function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
-        if(/^\d+$/.test(event.target.value)) {
-            setNewComponentAge(Number(event.target.value))
-        }
-    }
-    function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
-        setComponents([...components,
-            {category: newComponentCategory, type: newComponentModel, ageKm: newComponentAge}])
-        setNewComponentAge(0)
-        setNewComponentModel("")
-        setNewComponentCategory("")
-    }
-    function handleDeleteComponent(component: Component) {
-        setComponents(components.filter((c => c.type !== component.type)))
-    }
-    function handleSubmitBike(){
-        axios.post("/api/bikes/",
-            {modelName: modelName, mileage: mileage, components: components})
-    }
+    const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory, mileage, modelName,
+        handleDeleteComponent,
+        handleInputComponentAge,
+        handleInputMileage,
+        handleInputModelName,
+        handleInputComponentModel,
+        handleInputComponentName,
+        handleSubmitNewComponent,
+        handleSubmitBike} = useAddBike()
     return(
         <>
             <ResponsiveAppBar/>
