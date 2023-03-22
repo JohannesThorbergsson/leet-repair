@@ -9,11 +9,11 @@ type Props = {
 export default function BikeDetailPage(props: Props) {
     useAuth(true)
     const { bikeId } = useParams<{ bikeId: string }>()
-
+    const bike: Bike | undefined = props.bikes.find((bike) => bike.id === bikeId);
     return (
         <>
             <ResponsiveAppBar/>
-            {props.bikes.find(b => b.id===bikeId)?.modelName}
+            {bike ? bike.modelName : "N"}
         </>
     )
 }
