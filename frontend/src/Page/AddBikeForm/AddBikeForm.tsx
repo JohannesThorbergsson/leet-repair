@@ -18,7 +18,8 @@ import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
 
 export default function AddBikeForm() {
-    const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory, mileage, modelName,
+    const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
+        mileage, modelName, newComponentAgeValue,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
@@ -26,7 +27,8 @@ export default function AddBikeForm() {
         handleInputComponentModel,
         handleInputComponentName,
         handleSubmitNewComponent,
-        handleSubmitBike} = useAddBike()
+        handleSubmitBike,
+        handleCancel} = useAddBike()
     return(
         <>
             <ResponsiveAppBar/>
@@ -60,8 +62,9 @@ export default function AddBikeForm() {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        error={!/^\d+$/.test(mileageFieldValue)}
-                        helperText={!/^\d+$/.test(mileageFieldValue) && "Must be a numeric value"}
+                        error={!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!==""}
+                        helperText={(!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!=="")
+                            && "Must be a numeric value"}
                         onChange={handleInputMileage}
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         InputProps={{
@@ -146,6 +149,7 @@ export default function AddBikeForm() {
                                 id="outlined-required"
                                 label="Age (km)"
                                 value={newComponentAge}
+                                error={!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!==""}
                                 sx={{mt: 1}}
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 onChange={handleInputComponentAge}
@@ -163,9 +167,9 @@ export default function AddBikeForm() {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
-                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue)}
+                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}
                     >Save</Button>
-                    <Button variant={"contained"}>Cancel</Button>
+                    <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
                 </Box>
             </Box>
         </>
