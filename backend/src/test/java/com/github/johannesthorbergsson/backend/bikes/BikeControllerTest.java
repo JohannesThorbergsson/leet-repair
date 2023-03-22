@@ -49,7 +49,7 @@ class BikeControllerTest {
                                 {
                                     "category": "tyre",
                                     "type": "Pirelli",
-                                    "ageKm": 1337
+                                    "age": 1337
                                 }
                             ]
                         }
@@ -71,7 +71,7 @@ class BikeControllerTest {
                                     {
                                         "category": "tyre",
                                         "type": "Pirelli",
-                                        "ageKm": 1337
+                                        "age": 1337
                                     }
                                     ]
                             }
@@ -87,7 +87,7 @@ class BikeControllerTest {
                                 {
                                     "category": "tyre",
                                     "type": "Pirelli",
-                                    "ageKm": 1337
+                                    "age": 1337
                                 }
                             ]
                         }

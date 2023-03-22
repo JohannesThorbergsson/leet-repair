@@ -98,7 +98,7 @@ export default function AddBikeForm() {
                                             {component.category}
                                         </TableCell>
                                         <TableCell align="left">{component.type}</TableCell>
-                                        <TableCell align="right">{component.ageKm}</TableCell>
+                                        <TableCell align="right">{component.age}</TableCell>
                                         <TableCell align="right" sx={{
                                             p: 0,
                                             width: 20

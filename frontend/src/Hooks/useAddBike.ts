@@ -38,7 +38,7 @@ export default function useAddBike(){
     function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
         setComponents([...components,
-            {category: newComponentCategory, type: newComponentModel, ageKm: newComponentAge}])
+            {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
         setNewComponentAge(0)
         setNewComponentModel("")
         setNewComponentCategory("")

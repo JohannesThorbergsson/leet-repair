@@ -51,7 +51,7 @@ export default function BikeCard(props: Props) {
                                         {component.category}
                                     </TableCell>
                                     <TableCell align="left">{component.type}</TableCell>
-                                    <TableCell align="right">{component.ageKm}</TableCell>
+                                    <TableCell align="right">{component.age}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
