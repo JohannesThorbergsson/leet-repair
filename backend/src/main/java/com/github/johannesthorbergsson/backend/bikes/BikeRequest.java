@@ -5,7 +5,8 @@ import java.util.List;
 public record BikeRequest(
         String modelName,
         int mileage,
-        List<Component> components
+        List<Component> components,
+        List<ServiceEvent> services
 
 ){
 }

@@ -12,7 +12,8 @@ public record Bike (
         String modelName,
         String ownerName,
         int mileage,
-        List<Component> components
+        List<Component> components,
+        List<ServiceEvent> services
 
 ){
 }
