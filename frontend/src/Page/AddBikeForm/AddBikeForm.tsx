@@ -38,9 +38,15 @@ export default function AddBikeForm() {
         event.preventDefault()
         setComponents([...components,
             {category: newComponentName, type: newComponentModel, ageKm: newComponentAge}])
+        setNewComponentAge(0)
+        setNewComponentModel("")
+        setNewComponentName("")
     }
     function handleDeleteComponent(component: Component) {
         setComponents(components.filter((c => c.type !== component.type)))
+    }
+    function handleSubmitBike(){
+        console.log("S")
     }
     return(
         <>
@@ -81,95 +87,93 @@ export default function AddBikeForm() {
                     />
                 </Box>
                 <Box sx={{
+                    justifyContent: 'start',
                     display: 'flex',
-                    flexDirection: 'column',
-                    mt: 1
-                }}>
-                    <Box sx={{
-                        justifyContent: 'start',
-                        display: 'flex',
-                        flexDirection: 'column',}}>
-                        <Typography variant={"subtitle1"} fontWeight={"medium"}>Installed Components</Typography>
-                        <TableContainer component={Paper}>
-                            <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Component</TableCell>
-                                        <TableCell align="left">Model</TableCell>
-                                        <TableCell align="right">Age (km)</TableCell>
-                                        <TableCell align="right"></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {components.map((component) => (
-                                        <TableRow
-                                            key={Math.random().toString(16).slice(2)}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {component.category}
-                                            </TableCell>
-                                            <TableCell align="left">{component.type}</TableCell>
-                                            <TableCell align="right">{component.ageKm}</TableCell>
-                                            <TableCell align="right" sx={{
+                    flexDirection: 'column',}}>
+                    <Typography variant={"subtitle1"} fontWeight={"medium"}>Installed Components</Typography>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Component</TableCell>
+                                    <TableCell align="left">Model</TableCell>
+                                    <TableCell align="right">Age (km)</TableCell>
+                                    <TableCell align="right"></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {components.map((component) => (
+                                    <TableRow
+                                        key={Math.random().toString(16).slice(2)}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {component.category}
+                                        </TableCell>
+                                        <TableCell align="left">{component.type}</TableCell>
+                                        <TableCell align="right">{component.ageKm}</TableCell>
+                                        <TableCell align="right" sx={{
+                                            p: 0,
+                                            width: 10
+                                        }}>
+                                            <Button variant="outlined" startIcon={<DeleteIcon />}
+                                                    onClick={() =>handleDeleteComponent(component)} sx={{
                                                 p: 0,
-                                                width: 10
-                                            }}>
-                                                <Button variant="outlined" startIcon={<DeleteIcon />}
-                                                        onClick={() =>handleDeleteComponent(component)} sx={{
-                                                    p: 0,
-                                                    width: 20
-                                                }}></Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}>
-                            <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    mt: 1}}>
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    label="Component"
-                                    fullWidth
-                                    sx={{mt: 1, mr: 1}}
-                                    onChange={handleInputComponentName}
-                                />
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    label="Model"
-                                    fullWidth
-                                    sx={{mt: 1, mr: 1}}
-                                    onChange={handleInputComponentModel}
-                                />
-                                <TextField
-                                    required
-                                    id="outlined-required"
-                                    label="Age (km)"
-                                    sx={{mt: 1}}
-                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                                    onChange={handleInputComponentAge}
-                                />
-                            </Box>
-                            <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
+                                                width: 20
+                                            }}></Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}>
+                        <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                mt: 1}}>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Component"
+                                fullWidth
+                                value={newComponentName}
+                                sx={{mt: 1, mr: 1}}
+                                onChange={handleInputComponentName}
+                            />
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Model"
+                                fullWidth
+                                value={newComponentModel}
+                                sx={{mt: 1, mr: 1}}
+                                onChange={handleInputComponentModel}
+                            />
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Age (km)"
+                                value={newComponentAge}
+                                sx={{mt: 1}}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={handleInputComponentAge}
+                            />
                         </Box>
+                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
                     </Box>
                 </Box>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-evenly'
+                    justifyContent: 'space-evenly',
+                    mt: 1
                 }}>
-                    <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Save</Button>
-                    <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Cancel</Button>
+                    <Button variant={"contained"} onClick={handleSubmitBike} >Save</Button>
+                    <Button variant={"contained"}>Cancel</Button>
                 </Box>
             </Box>
         </>
