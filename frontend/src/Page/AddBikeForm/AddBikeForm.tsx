@@ -16,15 +16,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ResponsiveAppBar from "../../ResponsiveAppBar";
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {Component} from "../../model/Component";
+import axios from "axios";
 
 export default function AddBikeForm() {
+    const[mileage, setMileage] = useState<number | undefined>()
+    const[mileageFieldValue, setMileageFieldValue] = useState("")
+    const[modelName, setModelName] = useState("")
     const[components, setComponents] = useState<Component[]>([])
-    const[newComponentName, setNewComponentName] =useState<string>("")
+    const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
 
+    function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
+        setModelName(event.target.value)
+    }
+    function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
+        setMileageFieldValue(event.target.value)
+        if(/^\d+$/.test(event.target.value)) {
+            setMileage(Number(event.target.value))
+        }
+    }
     function handleInputComponentName(event: ChangeEvent<HTMLInputElement>){
-        setNewComponentName(event.target.value)
+        setNewComponentCategory(event.target.value)
     }
     function handleInputComponentModel(event: ChangeEvent<HTMLInputElement>) {
         setNewComponentModel(event.target.value)
@@ -37,16 +50,16 @@ export default function AddBikeForm() {
     function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
         setComponents([...components,
-            {category: newComponentName, type: newComponentModel, ageKm: newComponentAge}])
+            {category: newComponentCategory, type: newComponentModel, ageKm: newComponentAge}])
         setNewComponentAge(0)
         setNewComponentModel("")
-        setNewComponentName("")
+        setNewComponentCategory("")
     }
     function handleDeleteComponent(component: Component) {
         setComponents(components.filter((c => c.type !== component.type)))
     }
     function handleSubmitBike(){
-        console.log("S")
+        axios.post()
     }
     return(
         <>
@@ -74,12 +87,17 @@ export default function AddBikeForm() {
                         id="outlined-required"
                         label="Model Name"
                         fullWidth
+                        onChange={handleInputModelName}
                         sx={{mt: 1}}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Mileage"
+                        error={!/^\d+$/.test(mileageFieldValue)}
+                        helperText={!/^\d+$/.test(mileageFieldValue) && "Must be a numeric value"}
+                        onChange={handleInputMileage}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">km</InputAdornment>,
                         }}
@@ -90,7 +108,7 @@ export default function AddBikeForm() {
                     justifyContent: 'start',
                     display: 'flex',
                     flexDirection: 'column',}}>
-                    <Typography variant={"subtitle1"} fontWeight={"medium"}>Installed Components</Typography>
+                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>
@@ -114,13 +132,14 @@ export default function AddBikeForm() {
                                         <TableCell align="right">{component.ageKm}</TableCell>
                                         <TableCell align="right" sx={{
                                             p: 0,
-                                            width: 10
+                                            width: 20
                                         }}>
-                                            <Button variant="outlined" startIcon={<DeleteIcon />}
-                                                    onClick={() =>handleDeleteComponent(component)} sx={{
-                                                p: 0,
-                                                width: 20
-                                            }}></Button>
+                                <DeleteIcon onClick={() =>handleDeleteComponent(component)} sx={{
+                                    alignSelf: 'end',
+                                    cursor: 'pointer',
+                                    color: '#2196f3',
+                                    mr: 1
+                                }}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -140,7 +159,10 @@ export default function AddBikeForm() {
                                 id="outlined-required"
                                 label="Component"
                                 fullWidth
-                                value={newComponentName}
+                                error = {components.filter(c => c.category === newComponentCategory).length!==0}
+                                helperText={components.filter(c => c.category === newComponentCategory).length!==0
+                                    && "Must be unique"}
+                                value={newComponentCategory}
                                 sx={{mt: 1, mr: 1}}
                                 onChange={handleInputComponentName}
                             />
@@ -163,7 +185,9 @@ export default function AddBikeForm() {
                                 onChange={handleInputComponentAge}
                             />
                         </Box>
-                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
+                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}
+                            disabled={components.filter(c => c.category === newComponentCategory).length!==0}
+                        >Add Component</Button>
                     </Box>
                 </Box>
                 <Box sx={{
@@ -172,7 +196,9 @@ export default function AddBikeForm() {
                     justifyContent: 'space-evenly',
                     mt: 1
                 }}>
-                    <Button variant={"contained"} onClick={handleSubmitBike} >Save</Button>
+                    <Button variant={"contained"} onClick={handleSubmitBike}
+                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue)}
+                    >Save</Button>
                     <Button variant={"contained"}>Cancel</Button>
                 </Box>
             </Box>
