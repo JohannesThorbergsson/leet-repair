@@ -59,7 +59,8 @@ export default function AddBikeForm() {
         setComponents(components.filter((c => c.type !== component.type)))
     }
     function handleSubmitBike(){
-        axios.post()
+        axios.post("/api/bikes/",
+            {modelName: modelName, mileage: mileage, components: components})
     }
     return(
         <>
