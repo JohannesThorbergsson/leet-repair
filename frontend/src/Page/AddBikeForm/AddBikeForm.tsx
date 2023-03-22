@@ -17,7 +17,7 @@ import React, {ChangeEvent, FormEvent, useState} from "react";
 import {Component} from "../../model/Component";
 
 export default function AddBikeForm() {
-    const[components, setComponents] = useState<Component[]>([{category: "s", type: "as", ageKm: 3}])
+    const[components, setComponents] = useState<Component[]>([])
     const[newComponentName, setNewComponentName] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
@@ -29,7 +29,7 @@ export default function AddBikeForm() {
         setNewComponentModel(event.target.value)
     }
     function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
-        if(Number.isFinite(event.target.value)) {
+        if(/^\d+$/.test(event.target.value)) {
             setNewComponentAge(Number(event.target.value))
         }
     }
@@ -113,34 +113,38 @@ export default function AddBikeForm() {
                         </TableContainer>
                         <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
                             display: 'flex',
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                         }}>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Component"
-                                fullWidth
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentName}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Model"
-                                fullWidth
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentModel}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Age (km)"
-                                sx={{mt: 1}}
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                                onChange={handleInputComponentAge}
-                            />
+                            <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row'}}>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Component"
+                                    fullWidth
+                                    sx={{mt: 1, mr: 1}}
+                                    onChange={handleInputComponentName}
+                                />
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Model"
+                                    fullWidth
+                                    sx={{mt: 1, mr: 1}}
+                                    onChange={handleInputComponentModel}
+                                />
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Age (km)"
+                                    sx={{mt: 1}}
+                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                    onChange={handleInputComponentAge}
+                                />
+                            </Box>
+                            <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
                         </Box>
-                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
                     </Box>
                 </Box>
             </Box>
