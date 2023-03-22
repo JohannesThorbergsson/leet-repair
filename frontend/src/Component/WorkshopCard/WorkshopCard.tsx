@@ -24,7 +24,8 @@ export default function WorkshopCard(props: Props) {
     return (
         <div>
             <Card variant={"outlined"} sx={{
-                m: 2
+                m: 2,
+                boxShadow: 1
             }}>{card}</Card>
         </div>
     )

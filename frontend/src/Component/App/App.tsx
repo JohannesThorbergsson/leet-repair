@@ -11,6 +11,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import AddBikeForm from "../../Page/AddBikeForm/AddBikeForm";
 
 axios.interceptors.request.use(
     function (config) {
@@ -31,6 +32,7 @@ function App() {
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={<Dashboard/>}/>
           <Route path={"/bikes"} element={<BikeGallery/>}/>
+          <Route path={"/bikes/edit-form"} element={<AddBikeForm/>}/>
         </Routes>
       </div>
   );

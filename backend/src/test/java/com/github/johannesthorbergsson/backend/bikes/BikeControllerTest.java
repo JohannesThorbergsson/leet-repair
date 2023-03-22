@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -12,8 +13,8 @@ import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -48,12 +49,49 @@ class BikeControllerTest {
                                 {
                                     "category": "tyre",
                                     "type": "Pirelli",
-                                    "ageKm": 1337
+                                    "age": 1337
                                 }
                             ]
                         }
                         ]
                         """));
 
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void addBike_whenBikeRequest_thenReturnBike() throws Exception {
+        mockMvc.perform(post("/api/bikes/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "modelName": "MegaBike9000",
+                                "mileage": 1337,
+                                "components": [
+                                    {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                    }
+                                    ]
+                            }
+                            """)
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                            "modelName": "MegaBike9000",
+                            "ownerName": "steven",
+                            "mileage": 1337,
+                            "components": [
+                                {
+                                    "category": "tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                }
+                            ]
+                        }
+                    """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
     }
 }

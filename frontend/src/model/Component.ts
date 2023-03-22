@@ -1,5 +1,5 @@
 export type Component = {
     category: string
     type: string
-    ageKm: number
+    age: number | undefined
 }
