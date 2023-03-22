@@ -12,6 +12,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import ResponsiveAppBar from "../../ResponsiveAppBar";
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {Component} from "../../model/Component";
@@ -37,6 +38,9 @@ export default function AddBikeForm() {
         event.preventDefault()
         setComponents([...components,
             {category: newComponentName, type: newComponentModel, ageKm: newComponentAge}])
+    }
+    function handleDeleteComponent(component: Component) {
+        setComponents(components.filter((c => c.type !== component.type)))
     }
     return(
         <>
@@ -87,12 +91,13 @@ export default function AddBikeForm() {
                         flexDirection: 'column',}}>
                         <Typography variant={"subtitle1"} fontWeight={"medium"}>Installed Components</Typography>
                         <TableContainer component={Paper}>
-                            <Table sx={{ }} aria-label="simple table">
+                            <Table aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Component</TableCell>
                                         <TableCell align="left">Model</TableCell>
                                         <TableCell align="right">Age (km)</TableCell>
+                                        <TableCell align="right"></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -106,6 +111,16 @@ export default function AddBikeForm() {
                                             </TableCell>
                                             <TableCell align="left">{component.type}</TableCell>
                                             <TableCell align="right">{component.ageKm}</TableCell>
+                                            <TableCell align="right" sx={{
+                                                p: 0,
+                                                width: 10
+                                            }}>
+                                                <Button variant="outlined" startIcon={<DeleteIcon />}
+                                                        onClick={() =>handleDeleteComponent(component)} sx={{
+                                                    p: 0,
+                                                    width: 20
+                                                }}></Button>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -117,7 +132,8 @@ export default function AddBikeForm() {
                         }}>
                             <Box sx={{
                                     display: 'flex',
-                                    flexDirection: 'row'}}>
+                                    flexDirection: 'row',
+                                    mt: 1}}>
                                 <TextField
                                     required
                                     id="outlined-required"
@@ -146,6 +162,14 @@ export default function AddBikeForm() {
                             <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Add Component</Button>
                         </Box>
                     </Box>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly'
+                }}>
+                    <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Save</Button>
+                    <Button variant={"contained"} type={"submit"} sx={{mt: 1}}>Cancel</Button>
                 </Box>
             </Box>
         </>
