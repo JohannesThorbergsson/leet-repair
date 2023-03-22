@@ -22,7 +22,8 @@ public class BikeService {
                 bikeRequest.modelName(),
                 principal.getName(),
                 bikeRequest.mileage(),
-                bikeRequest.components());
+                bikeRequest.components(),
+                bikeRequest.services());
         return bikeRepository.save(newBike);
     }
 }
