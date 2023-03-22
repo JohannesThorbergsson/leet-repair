@@ -14,13 +14,14 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 type Props = {
     bike: Bike
 }
 
 export default function BikeCard(props: Props) {
-    console.log(props.bike.services)
+    const navigate = useNavigate()
     const card = (
         <React.Fragment>
             <CardContent>
@@ -58,16 +59,16 @@ export default function BikeCard(props: Props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                    {"Recorded services:" + props.bike.components}
+                <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{mt: 1}}>
+                    {"Recorded services: " + props.bike.components.length}
                 </Typography>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
                     pt: 1
                 }}>
-                    <Button variant="contained" type={"submit"}>
-                        Show service history
+                    <Button variant="contained" onClick={()=> navigate("/")}>
+                        Show details
                     </Button>
                 </Box>
             </CardContent>
