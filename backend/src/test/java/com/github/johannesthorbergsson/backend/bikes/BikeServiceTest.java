@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ class BikeServiceTest {
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
     ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
-            LocalDate.of(2020, 1, 8) );
+            "2020" );
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
     @BeforeEach

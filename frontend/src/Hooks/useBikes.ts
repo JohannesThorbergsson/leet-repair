@@ -10,6 +10,8 @@ export default function useBikes(){
     function fetchBikes(){
         axios.get("api/bikes/")
             .then(r => setBikes(r.data))
+            .catch((error) => console.error(error))
+
     }
     return {bikes}
 }

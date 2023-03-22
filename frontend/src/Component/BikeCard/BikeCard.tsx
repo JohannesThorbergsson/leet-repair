@@ -20,6 +20,7 @@ type Props = {
 }
 
 export default function BikeCard(props: Props) {
+    console.log(props.bike.services)
     const card = (
         <React.Fragment>
             <CardContent>
@@ -44,7 +45,7 @@ export default function BikeCard(props: Props) {
                         <TableBody>
                             {props.bike.components.map((component) => (
                                 <TableRow
-                                    key={component.type}
+                                    key={component.category}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell component="th" scope="row">
@@ -57,6 +58,9 @@ export default function BikeCard(props: Props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
+                    {"Recorded services:" + props.bike.components}
+                </Typography>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
