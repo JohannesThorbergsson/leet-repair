@@ -1,12 +1,16 @@
 import {useParams} from "react-router-dom";
+import {Bike} from "../../model/Bike";
 
-export default function BikeDetailPage() {
+type Props = {
+    bikes: Bike[]
+}
+export default function BikeDetailPage(props: Props) {
     const { bikeId } = useParams<{ bikeId: string }>()
 
     return (
         <>
             <p>Stuff</p>
-            {bikeId}
+            {props.bikes.find(b => b.id===bikeId)?.modelName}
         </>
     )
 }

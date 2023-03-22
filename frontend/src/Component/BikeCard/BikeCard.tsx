@@ -67,7 +67,7 @@ export default function BikeCard(props: Props) {
                     flexDirection: 'row',
                     pt: 1
                 }}>
-                    <Button variant="contained" onClick={()=> navigate("/")}>
+                    <Button variant="contained" onClick={()=> navigate("/bikes/details/"+props.bike.id)}>
                         Show details
                     </Button>
                 </Box>
