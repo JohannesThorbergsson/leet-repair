@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
+import useAuth from "./useAuth";
 
 export default function useBikes(){
     const [bikes, setBikes] = useState<Bike[]>([])
-
-    useEffect(fetchBikes, [])
+    const user = useAuth(false)
+    useEffect(() =>fetchBikes(), [user])
 
     function fetchBikes(){
         axios.get("api/bikes/")
