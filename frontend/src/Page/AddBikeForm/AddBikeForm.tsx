@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
 

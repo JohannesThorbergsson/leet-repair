@@ -1,5 +1,5 @@
 import BikeCard from "../../Component/BikeCard/BikeCard";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
 import {Box, Button, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";

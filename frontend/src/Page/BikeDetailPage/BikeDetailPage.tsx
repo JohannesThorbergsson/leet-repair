@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {Bike} from "../../model/Bike";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
 import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import React from "react";

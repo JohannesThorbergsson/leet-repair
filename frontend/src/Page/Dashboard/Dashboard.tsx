@@ -2,7 +2,7 @@ import useAuth from "../../Hooks/useAuth";
 import useWorkshops from "../../Hooks/useWorkshops";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {useNavigate} from "react-router-dom";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 
