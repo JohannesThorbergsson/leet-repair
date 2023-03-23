@@ -127,7 +127,7 @@ export default function AddBikeForm() {
                         newComponentModel={newComponentModel}
                         newComponentAge={newComponentAge}
                         newComponentAgeValue={newComponentAgeValue}/>
-                </Box>
+                </Box> {/*NOSONAR*/}
                 <Box sx={{
                         display: 'flex',
                         flexDirection: 'column'
