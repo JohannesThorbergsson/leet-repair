@@ -28,6 +28,10 @@ export default function AddBikeForm() {
     const[description, setDescription] =useState<string>("")
     const[workshopName, setWorkshopName] = useState<string>("")
     const[date, setDate] = useState<string>("")
+    const[replacedComponentCategory, setReplacedComponentCategory] =useState<string>("")
+    const[replacedComponentModel, setReplacedComponentModel] =useState<string>("")
+    const[replacedComponentAge, setReplacedComponentAge] =useState<number | undefined>()
+    const[replacedComponentAgeValue, setReplacedComponentAgeValue] =useState("")
     const[services, setServices] = useState<ServiceEvent[]>([])
     const[newComponents, setNewComponents] = useState<Component[]>([])
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
@@ -241,16 +245,16 @@ export default function AddBikeForm() {
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
-                                <EditComponents components={components}
+                                <EditComponents components={newComponents}
                                                 handleDeleteComponent={handleDeleteComponent}
                                                 handleSubmitNewComponent={handleSubmitReplacedComponent}
                                                 handleInputComponentCategory={handleInputComponentCategory}
                                                 handleInputComponentModel={handleInputComponentModel}
                                                 handleInputComponentAge={handleInputComponentAge}
-                                                newComponentCategory={newComponentCategory}
-                                                newComponentModel={newComponentModel}
-                                                newComponentAge={newComponentAge}
-                                                newComponentAgeValue={newComponentAgeValue}/>
+                                                newComponentCategory={replacedComponentCategory}
+                                                newComponentModel={replacedComponentModel}
+                                                newComponentAge={replacedComponentAge}
+                                                newComponentAgeValue={replacedComponentAgeValue}/>
                                 <Box sx={{
                                     display: 'flex',
                                     flexDirection: 'row',
@@ -265,7 +269,7 @@ export default function AddBikeForm() {
                             </Box>
                         </Box>
                     </Box>
-                    <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>
+                    <Button variant={"contained"} sx={{mt: 1}} >
                         Add Service
                     </Button>
                 </Box>
