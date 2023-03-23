@@ -5,19 +5,17 @@ import {v4 as uuidv4} from "uuid"
 import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
-import {useNavigate} from "react-router-dom";
+import AddService from "../AddService/AddService";
 
 export default function AddBikeForm() {
-    const navigate = useNavigate()
     const { mileageFieldValue, components,
         mileage, modelName, services,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
         handleSubmitBike,
-        handleSubmitNewComponent,
+        handleSetInstalledComponents,
         handleCancel} = useAddBike()
-
     return(
         <>
             <ResponsiveAppBar/>
@@ -68,14 +66,14 @@ export default function AddBikeForm() {
                     display: 'flex',
                     flexDirection: 'column',}}>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
-                    <EditComponents components={components} handleSetComponents={handleSubmitNewComponent}/>
+                    <EditComponents components={components} handleSetComponents={handleSetInstalledComponents}/>
                 </Box>
                 <Box sx={{
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
                     {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
-                    {/*<AddService  handleSetServices={handleSetServices} services={services}/>*/}
+                    <AddService handleSetServices={handleSetServices} services={services}/>
                 </Box>
                 <Box sx={{
                     display: 'flex',

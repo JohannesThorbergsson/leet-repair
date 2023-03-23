@@ -20,7 +20,6 @@ export default function EditComponents(props: EditComponentsProp) {
         newComponentCategory,
         newComponentAge,
         newComponentAgeValue } = useEditComponents(props)
-    console.log(newComponentModel)
     return (
         <>
             <Box sx={{

@@ -72,10 +72,7 @@ export default function AddService(props: AddServiceProps) {
                             justifyContent: 'space-evenly',
                             mt: 1
                         }}>
-                            <Button variant={"contained"}
-                                 onClick={handleSubmitService}
-                            >Save</Button>
-                            <Button variant={"contained"} >Cancel</Button>
+                            <Button variant={"contained"} onClick={handleSubmitService}>Save</Button>
                         </Box>
                     </Box>
                 </Box>

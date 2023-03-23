@@ -16,6 +16,8 @@ export default function useAddBike(){
     const[newComponentAgeValue, setNewComponentAgeValue] =useState("")
     const navigate = useNavigate()
 
+
+
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
         setModelName(event.target.value)
     }
@@ -37,9 +39,8 @@ export default function useAddBike(){
             setNewComponentAge(Number(event.target.value))
         }
     }
-    function handleSubmitNewComponent(){
-        setComponents([...components,
-            {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
+    function handleSetInstalledComponents(components: Component[]){
+        setComponents(components)
         setNewComponentAge(0)
         setNewComponentModel("")
         setNewComponentCategory("")
@@ -52,7 +53,7 @@ export default function useAddBike(){
     }
     function handleSubmitBike(){
         axios.post("/api/bikes/",
-            {modelName: modelName, mileage: mileage, components: components}).then()
+            {modelName: modelName, mileage: mileage, components: components, services: services}).then()
             .catch((error) => console.error(error))
     }
     function handleCancel(){
@@ -66,7 +67,7 @@ export default function useAddBike(){
         handleInputModelName,
         handleInputComponentModel,
         handleInputComponentCategory: handleInputComponentName,
-        handleSubmitNewComponent,
+        handleSetInstalledComponents,
         handleSetServices,
         handleSubmitBike,
         handleCancel
