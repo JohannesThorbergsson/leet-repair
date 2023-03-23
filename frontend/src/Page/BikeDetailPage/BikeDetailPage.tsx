@@ -74,7 +74,7 @@ export default function BikeDetailPage(props: Props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </Box>
+                </Box> {/*NOSONAR*/}
                 <Box>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
                     {bike?.services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
@@ -85,4 +85,4 @@ export default function BikeDetailPage(props: Props) {
             </Box>
         </>
     )
-} //NOSONAR
+}
