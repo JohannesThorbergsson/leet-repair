@@ -48,7 +48,9 @@ export default function BikeDetailPage(props: Props) {
                     justifyContent: 'start',
                     display: 'flex',
                     flexDirection: 'column',}}> {/*NOSONAR*/}
-                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography> {/*NOSONAR*/}
+                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
+                        Installed Components
+                    </Typography> {/*NOSONAR*/}
                     <TableContainer component={Paper}> {/*NOSONAR*/}
                         <Table aria-label="simple table"> {/*NOSONAR*/}
                             <TableHead> {/*NOSONAR*/}
