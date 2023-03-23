@@ -13,16 +13,14 @@ import {
     Typography
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {v4 as uuidv4} from "uuid"
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
-import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 
 export default function AddBikeForm() {
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        mileage, modelName, newComponentAgeValue, services,
+        mileage, modelName, newComponentAgeValue,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
@@ -134,7 +132,6 @@ export default function AddBikeForm() {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                    {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
                 </Box>
                 <Box sx={{
                     display: 'flex',
