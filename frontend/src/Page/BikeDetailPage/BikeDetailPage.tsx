@@ -85,4 +85,4 @@ export default function BikeDetailPage(props: Props) {
             </Box>
         </>
     )
-}
+} //NOSONAR

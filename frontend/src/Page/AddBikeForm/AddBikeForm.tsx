@@ -87,9 +87,9 @@ export default function AddBikeForm() {
                                     <TableCell align="left">Model</TableCell>
                                     <TableCell align="right">Age (km)</TableCell>
                                     <TableCell align="right"></TableCell>
-                                </TableRow> {/*NOSONAR*/}
+                                </TableRow>
                             </TableHead>
-                            <TableBody> {/*NOSONAR*/}
+                            <TableBody>
                                 {components.map((component) => (
                                     <TableRow
                                         key={component.category}
