@@ -89,7 +89,7 @@ export default function AddBikeForm() {
                                     <TableCell align="right"></TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody> {/*NOSONAR*/}
                                 {components.map((component) => (
                                     <TableRow
                                         key={component.category}
