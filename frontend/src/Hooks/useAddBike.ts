@@ -48,6 +48,9 @@ export default function useAddBike(){
     function handleDeleteComponent(component: Component) {
         setComponents(components.filter((c => c.type !== component.type)))
     }
+    function handleSetServices(services: ServiceEvent[]){
+        setServices(services)
+    }
     function handleSubmitBike(){
         axios.post("/api/bikes/",
             {modelName: modelName, mileage: mileage, components: components}).then()
@@ -65,6 +68,7 @@ export default function useAddBike(){
         handleInputComponentModel,
         handleInputComponentCategory: handleInputComponentName,
         handleSubmitNewComponent,
+        handleSetServices,
         handleSubmitBike,
         handleCancel
     }

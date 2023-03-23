@@ -72,8 +72,8 @@ export default function EditComponents(props: EditComponentsProp) {
                             id="outlined-required"
                             label="Component"
                             fullWidth
-                            error = {props.components.filter(c => c.category === props.newComponentCategory).length!==0}
-                            helperText={props.components.filter(c => c.category === props.newComponentCategory).length!==0
+                            error = {props.components.filter(c => c.category === newComponentCategory).length!==0}
+                            helperText={props.components.filter(c => c.category === newComponentCategory).length!==0
                                 && "Must be unique"}
                             value={newComponentCategory}
                             sx={{mt: 1, mr: 1}}
@@ -100,8 +100,9 @@ export default function EditComponents(props: EditComponentsProp) {
                         />
                     </Box>
                     <Button variant={"contained"} type={"submit"} sx={{mt: 1}}
-                            disabled={props.components.filter(c => c.category === props.newComponentCategory).length!==0}
-                    >Add Component</Button>
+                            disabled={props.components.filter(c => c.category === newComponentCategory).length!==0}>
+                        Add Component
+                    </Button>
                 </Box>
             </Box>
         </>

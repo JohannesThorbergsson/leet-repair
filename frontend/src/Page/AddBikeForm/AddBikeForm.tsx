@@ -1,6 +1,6 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
-import React, {ChangeEvent, useState} from "react";
+import React from "react";
 import {v4 as uuidv4} from "uuid"
 import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
@@ -10,33 +10,15 @@ import AddService from "../AddService/AddService";
 
 export default function AddBikeForm() {
     const navigate = useNavigate()
-    const[description, setDescription] =useState<string>("")
-    const[workshopName, setWorkshopName] = useState<string>("")
-    const[date, setDate] = useState<string>("")
-    const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        mileage, modelName, newComponentAgeValue, services,
-        handleDeleteComponent,
-        handleInputComponentAge,
+    const { mileageFieldValue, components,
+        mileage, modelName, services,
         handleInputMileage,
         handleInputModelName,
-        handleInputComponentModel,
-        handleInputComponentCategory,
-        handleSubmitNewComponent,
+        handleSetServices,
         handleSubmitBike,
+        handleSubmitNewComponent,
         handleCancel} = useAddBike()
 
-    function handleSubmitReplacedComponent(){
-
-    }
-    function handleInputDescription(event: ChangeEvent<HTMLInputElement>){
-        setDescription(event.target.value)
-    }
-    function handleInputWorkshopName(event: ChangeEvent<HTMLInputElement>){
-        setWorkshopName(event.target.value)
-    }
-    function handleInputDate(event: ChangeEvent<HTMLInputElement>){
-        setDate(event.target.value)
-    }
     return(
         <>
             <ResponsiveAppBar/>
@@ -87,27 +69,14 @@ export default function AddBikeForm() {
                     display: 'flex',
                     flexDirection: 'column',}}>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
-
-                    <EditComponents
-                        components={components}
-                        handleDeleteComponent={handleDeleteComponent}
-                        handleSubmitNewComponent={handleSubmitNewComponent}
-                        handleInputComponentCategory={handleInputComponentCategory}
-                        handleInputComponentModel={handleInputComponentModel}
-                        handleInputComponentAge={handleInputComponentAge}
-                        newComponentCategory={newComponentCategory}
-                        newComponentModel={newComponentModel}
-                        newComponentAge={newComponentAge}
-                        newComponentAgeValue={newComponentAgeValue}/>
+                    <EditComponents components={components} handleSetComponents={handleSubmitNewComponent}/>
                 </Box>
                 <Box sx={{
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
                     {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
-                    <AddService handleInputDate={handleInputDate}
-                                handleInputDescription={handleInputDescription}
-                                handleInputWorkshopName={handleInputWorkshopName}/>
+                    <AddService  handleSetServices={handleSetServices} services={services}/>
                     <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>
                         Add Service
                     </Button>

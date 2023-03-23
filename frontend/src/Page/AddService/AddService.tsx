@@ -1,18 +1,21 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
-import React, {ChangeEvent} from "react";
+import React from "react";
 import EditComponents from "../../Component/EditComponents/EditComponents";
-import {useNavigate} from "react-router-dom";
-import {Component} from "../../model/Component";
+import useEditServices from "../../Hooks/useEditServices";
+import {ServiceEvent} from "../../model/ServiceEvent";
 
 type AddServiceProps = {
-    handleInputDescription(event: ChangeEvent<HTMLInputElement>): void
-    handleInputWorkshopName(event: ChangeEvent<HTMLInputElement>): void
-    handleInputDate(event: ChangeEvent<HTMLInputElement>): void
-    handleSetComponents(components: Component[]): void
-    components: Component[]
+    handleSetServices(services: ServiceEvent[]): void
+    services: ServiceEvent[]
 }
 export default function AddService(props: AddServiceProps) {
-    const navigate = useNavigate()
+
+    const {handleInputWorkshopName, handleInputDescription, handleInputDate, handleSetNewComponents, newBikeComponents,
+        description, workshopName, date } = useEditServices()
+    function handleSubmitService(){
+        props.handleSetServices([...props.services,
+            {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date}])
+    }
 
     return(
         <>
@@ -43,7 +46,7 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Description"
                             fullWidth
-                            onChange={props.handleInputDescription}
+                            onChange={handleInputDescription}
                             sx={{mt: 1}}
                         />
                         <TextField
@@ -51,18 +54,18 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Workshop name"
                             fullWidth
-                            onChange={props.handleInputWorkshopName}
+                            onChange={handleInputWorkshopName}
                             sx={{mt: 1}}
                         />
                         <TextField
                             required
                             id="outlined-required"
                             label="Date"
-                            onChange={props.handleInputDate}
+                            onChange={handleInputDate}
                             sx={{mt: 1}}
                         />
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>
-                        <EditComponents handleSetComponents={props.handleSetComponents} components={props.components}/>
+                        <EditComponents handleSetComponents={handleSetNewComponents} components={newBikeComponents}/>
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -70,9 +73,9 @@ export default function AddService(props: AddServiceProps) {
                             mt: 1
                         }}>
                             <Button variant={"contained"}
-                                    disabled
+                                 onClick={handleSubmitService}
                             >Save</Button>
-                            <Button variant={"contained"} onClick={()=> navigate("/bikes/edit-form")}>Cancel</Button>
+                            <Button variant={"contained"} >Cancel</Button>
                         </Box>
                     </Box>
                 </Box>
