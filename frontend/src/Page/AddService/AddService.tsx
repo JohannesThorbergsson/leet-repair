@@ -1,5 +1,6 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
+import {v4 as uuidv4} from "uuid"
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import useEditServices from "../../Hooks/useEditServices";
 import {ServiceEvent} from "../../model/ServiceEvent";
@@ -10,11 +11,13 @@ type AddServiceProps = {
 }
 export default function AddService(props: AddServiceProps) {
 
-    const {handleInputWorkshopName, handleInputDescription, handleInputDate, handleSetNewComponents, newBikeComponents,
+    const {handleInputWorkshopName, handleInputDescription, handleInputDate, handleSetNewComponents, clearInputFields,
+        newBikeComponents,
         description, workshopName, date } = useEditServices()
     function handleSubmitService(){
         props.handleSetServices([...props.services,
-            {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date}])
+            {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
+        clearInputFields()
     }
 
     return(
@@ -46,6 +49,7 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Description"
                             fullWidth
+                            value={description}
                             onChange={handleInputDescription}
                             sx={{mt: 1}}
                         />
@@ -54,6 +58,7 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Workshop name"
                             fullWidth
+                            value={workshopName}
                             onChange={handleInputWorkshopName}
                             sx={{mt: 1}}
                         />
@@ -61,6 +66,7 @@ export default function AddService(props: AddServiceProps) {
                             required
                             id="outlined-required"
                             label="Date"
+                            value={date}
                             onChange={handleInputDate}
                             sx={{mt: 1}}
                         />
@@ -72,7 +78,11 @@ export default function AddService(props: AddServiceProps) {
                             justifyContent: 'space-evenly',
                             mt: 1
                         }}>
-                            <Button variant={"contained"} onClick={handleSubmitService}>Save</Button>
+                            <Button variant={"contained"}
+                                    onClick={handleSubmitService}
+                                    disabled={description==="" || workshopName==="" || date ===""}>
+                                Add Service
+                            </Button>
                         </Box>
                     </Box>
                 </Box>

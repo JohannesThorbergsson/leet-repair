@@ -19,6 +19,13 @@ export default function useEditServices() {
     function handleSetNewComponents(components: Component[]){
         setNewBikeComponents(components)
     }
-    return {handleInputDate, handleInputDescription, handleInputWorkshopName,
+    function clearInputFields(){
+        setDate("")
+        setDescription("")
+        setWorkshopName("")
+        setNewBikeComponents([])
+    }
+
+    return {handleInputDate, handleInputDescription, handleInputWorkshopName, clearInputFields,
         handleSetNewComponents, description, workshopName, date, newBikeComponents}
 }

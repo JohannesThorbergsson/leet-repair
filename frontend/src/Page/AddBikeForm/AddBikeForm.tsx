@@ -15,6 +15,7 @@ export default function AddBikeForm() {
         handleSetServices,
         handleSubmitBike,
         handleSetInstalledComponents,
+        deleteService,
         handleCancel} = useAddBike()
     return(
         <>
@@ -72,7 +73,7 @@ export default function AddBikeForm() {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                    {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
+                    {services.map(service => <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
                     <AddService handleSetServices={handleSetServices} services={services}/>
                 </Box>
                 <Box sx={{
