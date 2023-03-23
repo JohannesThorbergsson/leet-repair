@@ -14,13 +14,17 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React from "react";
+import {v4 as uuidv4} from "uuid"
 import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
+import ServiceCard from "../../Component/ServiceCard/ServiceCard";
+import {useNavigate} from "react-router-dom";
 
 export default function AddBikeForm() {
+    const navigate = useNavigate()
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        mileage, modelName, newComponentAgeValue,
+        mileage, modelName, newComponentAgeValue, services,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
@@ -127,6 +131,10 @@ export default function AddBikeForm() {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
+                    {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
+                    <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>
+                        Add Service
+                    </Button>
                 </Box>
                 <Box sx={{
                     display: 'flex',
