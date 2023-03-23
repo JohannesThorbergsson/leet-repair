@@ -14,7 +14,7 @@ import '@fontsource/roboto/700.css';
 import AddBikeForm from "../../Page/AddBikeForm/AddBikeForm";
 import BikeDetailPage from "../../Page/BikeDetailPage/BikeDetailPage";
 import useBikes from "../../Hooks/useBikes";
-import AddService from "../AddService/AddService";
+import AddService from "../../Page/AddService/AddService";
 
 axios.interceptors.request.use(
     function (config) {

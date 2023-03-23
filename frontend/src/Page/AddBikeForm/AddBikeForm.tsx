@@ -19,6 +19,7 @@ import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {useNavigate} from "react-router-dom";
+import EditComponents from "../../Component/EditComponents/EditComponents";
 
 export default function AddBikeForm() {
     const navigate = useNavigate()
@@ -119,50 +120,17 @@ export default function AddBikeForm() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}>
-                        <Box sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                mt: 1}}>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Component"
-                                fullWidth
-                                error = {components.filter(c => c.category === newComponentCategory).length!==0}
-                                helperText={components.filter(c => c.category === newComponentCategory).length!==0
-                                    && "Must be unique"}
-                                value={newComponentCategory}
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentName}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Model"
-                                fullWidth
-                                value={newComponentModel}
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentModel}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Age (km)"
-                                value={newComponentAge}
-                                error={!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!==""}
-                                sx={{mt: 1}}
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                                onChange={handleInputComponentAge}
-                            />
-                        </Box>
-                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}
-                            disabled={components.filter(c => c.category === newComponentCategory).length!==0}
-                        >Add Component</Button>
-                    </Box>
+                    <EditComponents
+                        components={components}
+                        handleDeleteComponent={handleDeleteComponent}
+                        handleSubmitNewComponent={handleSubmitNewComponent}
+                        handleInputComponentName={handleInputComponentName}
+                        handleInputComponentModel={handleInputComponentModel}
+                        handleInputComponentAge={handleInputComponentAge}
+                        newComponentCategory={newComponentCategory}
+                        newComponentModel={newComponentModel}
+                        newComponentAge={newComponentAge}
+                        newComponentAgeValue={newComponentAgeValue}/>
                 </Box>
                 <Box sx={{
                         display: 'flex',
