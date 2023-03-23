@@ -63,7 +63,7 @@ export default function useAddBike(){
         handleInputMileage,
         handleInputModelName,
         handleInputComponentModel,
-        handleInputComponentName,
+        handleInputComponentCategory: handleInputComponentName,
         handleSubmitNewComponent,
         handleSubmitBike,
         handleCancel

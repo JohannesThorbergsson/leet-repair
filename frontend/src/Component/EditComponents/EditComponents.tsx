@@ -6,7 +6,7 @@ type EditComponentsProp = {
     components: Component[]
     handleDeleteComponent(component: Component): void
     handleSubmitNewComponent(event: FormEvent<HTMLFormElement>): void
-    handleInputComponentName(event: ChangeEvent<HTMLInputElement>): void
+    handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>): void
     handleInputComponentModel(event: ChangeEvent<HTMLInputElement>): void
     handleInputComponentAge(event: ChangeEvent<HTMLInputElement>): void
     newComponentCategory: string
@@ -41,7 +41,7 @@ export default function EditComponents(props: EditComponentsProp) {
                                 && "Must be unique"}
                             value={props.newComponentCategory}
                             sx={{mt: 1, mr: 1}}
-                            onChange={props.handleInputComponentName}
+                            onChange={props.handleInputComponentCategory}
                         />
                         <TextField
                             required
