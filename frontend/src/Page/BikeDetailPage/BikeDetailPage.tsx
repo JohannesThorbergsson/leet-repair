@@ -61,10 +61,12 @@ export default function BikeDetailPage(props: Props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </Box> {/*NOSONAR*/}
+                </Box>
                 <Box>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
-                    {bike?.services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
+                    {(bike?.services.length === undefined || bike?.services.length<1)?
+                        <Typography variant={"h6"}>No services recorded</Typography>:
+                    bike.services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
                 </Box>
                 <Box>
                     <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
