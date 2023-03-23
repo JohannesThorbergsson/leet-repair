@@ -20,14 +20,14 @@ export default function EditComponents(props: EditComponentsProp) {
         newComponentCategory,
         newComponentAge,
         newComponentAgeValue } = useEditComponents(props)
-
+    console.log(newComponentModel)
     return (
         <>
             <Box sx={{
                 justifyContent: 'start',
                 display: 'flex',
                 flexDirection: 'column',}}>
-                <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
+                <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
@@ -99,7 +99,7 @@ export default function EditComponents(props: EditComponentsProp) {
                             onChange={handleInputComponentAge}
                         />
                     </Box>
-                    <Button variant={"contained"} type={"submit"} sx={{mt: 1}}
+                    <Button variant={"contained"} onClick={handleSubmitNewComponent} sx={{mt: 1}}
                             disabled={props.components.filter(c => c.category === newComponentCategory).length!==0}>
                         Add Component
                     </Button>

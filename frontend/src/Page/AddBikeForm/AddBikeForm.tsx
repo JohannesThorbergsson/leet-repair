@@ -6,7 +6,6 @@ import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {useNavigate} from "react-router-dom";
-import AddService from "../AddService/AddService";
 
 export default function AddBikeForm() {
     const navigate = useNavigate()
@@ -76,10 +75,7 @@ export default function AddBikeForm() {
                         flexDirection: 'column'
                     }}>
                     {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
-                    <AddService  handleSetServices={handleSetServices} services={services}/>
-                    <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>
-                        Add Service
-                    </Button>
+                    {/*<AddService  handleSetServices={handleSetServices} services={services}/>*/}
                 </Box>
                 <Box sx={{
                     display: 'flex',

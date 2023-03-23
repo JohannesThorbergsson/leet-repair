@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -37,8 +37,7 @@ export default function useAddBike(){
             setNewComponentAge(Number(event.target.value))
         }
     }
-    function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
+    function handleSubmitNewComponent(){
         setComponents([...components,
             {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
         setNewComponentAge(0)

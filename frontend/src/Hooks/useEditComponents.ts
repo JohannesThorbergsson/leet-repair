@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {Component} from "../model/Component";
 
 type useEditComponentsProps =  {
@@ -9,7 +9,7 @@ type useEditComponentsProps =  {
 export default function useEditComponents(props: useEditComponentsProps){
     const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
-    const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
+    const[newComponentAge, setNewComponentAge] =useState<number>(0)
     const[newComponentAgeValue, setNewComponentAgeValue] =useState("")
     function handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>){
         setNewComponentCategory(event.target.value)
@@ -23,8 +23,7 @@ export default function useEditComponents(props: useEditComponentsProps){
             setNewComponentAge(Number(event.target.value))
         }
     }
-    function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
+    function handleSubmitNewComponent(){
         props.handleSetComponents([...props.components,
             {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
         setNewComponentAge(0)
