@@ -2,21 +2,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Bike} from "../../model/Bike";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
-import {
-    Box,
-    Button,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography
-} from "@mui/material";
+import {Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography} from "@mui/material";
 import React from "react";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {v4 as uuidv4} from "uuid"
+import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 
 type Props = {
     bikes: Bike[]
@@ -43,23 +33,18 @@ export default function BikeDetailPage(props: Props) {
                 }}>
                     <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>MegaBike9000</Typography>
                     <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>1337 km</Typography>
-                </Box>{/*NOSONAR*/}
+                </Box>
                 <Box sx={{
                     justifyContent: 'start',
                     display: 'flex',
                     flexDirection: 'column',}}>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
                         Installed Components
-                    </Typography> {/*NOSONAR*/}
+                    </Typography>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Component</TableCell>
-                                    <TableCell align="left">Model</TableCell>
-                                    <TableCell align="right">Age (km)</TableCell>
-                                </TableRow>
-                            </TableHead>
+                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"}]}/>
                             <TableBody>
                                 {bike?.components.map((component) => (
                                     <TableRow

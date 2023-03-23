@@ -7,7 +7,6 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
     TextField,
     Typography
@@ -17,6 +16,7 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
+import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 
 export default function AddBikeForm() {
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
@@ -81,14 +81,9 @@ export default function AddBikeForm() {
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Component</TableCell>
-                                    <TableCell align="left">Model</TableCell>
-                                    <TableCell align="right">Age (km)</TableCell>
-                                    <TableCell align="right"></TableCell>
-                                </TableRow>
-                            </TableHead>
+                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
+                                {cellName:"", align: "right"}]}/>
                             <TableBody>
                                 {components.map((component) => (
                                     <TableRow
