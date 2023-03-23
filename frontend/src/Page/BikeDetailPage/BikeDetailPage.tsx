@@ -47,17 +47,17 @@ export default function BikeDetailPage(props: Props) {
                 <Box sx={{
                     justifyContent: 'start',
                     display: 'flex',
-                    flexDirection: 'column',}}> {/*NOSONAR*/}
+                    flexDirection: 'column',}}>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
                         Installed Components
                     </Typography> {/*NOSONAR*/}
-                    <TableContainer component={Paper}> {/*NOSONAR*/}
-                        <Table aria-label="simple table"> {/*NOSONAR*/}
-                            <TableHead> {/*NOSONAR*/}
-                                <TableRow> {/*NOSONAR*/}
-                                    <TableCell>Component</TableCell> {/*NOSONAR*/}
-                                    <TableCell align="left">Model</TableCell> {/*NOSONAR*/}
-                                    <TableCell align="right">Age (km)</TableCell> {/*NOSONAR*/}
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Component</TableCell>
+                                    <TableCell align="left">Model</TableCell>
+                                    <TableCell align="right">Age (km)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
