@@ -17,7 +17,9 @@ class BikeServiceTest {
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre));
+    ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
+            "2020" );
+    Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
     @BeforeEach
     void setUp(){
@@ -42,7 +44,7 @@ class BikeServiceTest {
         when(idService.generateId()).thenReturn("1");
         when(bikeRepository.save(testBike)).thenReturn(testBike);
         when(principal.getName()).thenReturn("steven");
-        BikeRequest bikeRequest = new BikeRequest(testBike.modelName(), testBike.mileage(), testBike.components());
+        BikeRequest bikeRequest = new BikeRequest(testBike.modelName(), testBike.mileage(), testBike.components(), testBike.services());
         //WHEN
         Bike actual = bikeService.addBike(principal, bikeRequest);
         Bike expected = testBike;

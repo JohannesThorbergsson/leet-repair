@@ -1,8 +1,7 @@
-import {Bike} from "../../model/Bike";
+import {ServiceEvent} from "../../model/ServiceEvent";
 import React from "react";
 import {
     Box,
-    Button,
     Card,
     CardContent,
     Paper,
@@ -14,28 +13,36 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import {useNavigate} from "react-router-dom";
 
-type Props = {
-    bike: Bike
+type ServiceCardProps = {
+    service: ServiceEvent
 }
 
-export default function BikeCard(props: Props) {
-    const navigate = useNavigate()
+export default function ServiceCard(props: ServiceCardProps){
     const card = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h6" fontWeight={"medium"}>
-                    {props.bike.modelName}
-                </Typography>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                    Mileage: {props.bike.mileage} km
-                </Typography>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    pt: 1
+                }}>
+                    <Typography variant="h6" fontWeight={"medium"}>
+                        {props.service.description}
+                    </Typography>
+                    <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        {props.service.date}
+                    </Typography>
+                </Box>
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
-                    Installed Components:
+                    New parts installed:
                 </Typography>
                 <TableContainer component={Paper}>
-                    <Table sx={{ }} aria-label="simple table">
+                    <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Component</TableCell>
@@ -44,7 +51,7 @@ export default function BikeCard(props: Props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.bike.components.map((component) => (
+                            {props.service.newComponents.map((component) => (
                                 <TableRow
                                     key={component.category}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -59,18 +66,9 @@ export default function BikeCard(props: Props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{mt: 1}}>
-                    {"Recorded services: " + props.bike.components.length}
+                <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{mt: 1}}>
+                    {"Serviced by: " + props.service.workshopName}
                 </Typography>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    pt: 1
-                }}>
-                    <Button variant="contained" onClick={()=> navigate("/bikes/details/"+props.bike.id)}>
-                        Show details
-                    </Button>
-                </Box>
             </CardContent>
         </React.Fragment>
     );

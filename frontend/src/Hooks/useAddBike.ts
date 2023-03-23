@@ -49,6 +49,7 @@ export default function useAddBike(){
     function handleSubmitBike(){
         axios.post("/api/bikes/",
             {modelName: modelName, mileage: mileage, components: components}).then()
+            .catch((error) => console.error(error))
     }
     function handleCancel(){
         navigate("/bikes")

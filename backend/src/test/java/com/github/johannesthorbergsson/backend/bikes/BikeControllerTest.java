@@ -26,7 +26,9 @@ class BikeControllerTest {
     @Autowired
     BikeRepository bikeRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre));
+    ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
+            "2020" );
+    Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
     @Test
     @DirtiesContext
@@ -47,9 +49,23 @@ class BikeControllerTest {
                             "mileage": 1337,
                             "components": [
                                 {
-                                    "category": "tyre",
+                                    "category": "tyre", 
                                     "type": "Pirelli",
                                     "age": 1337
+                                }
+                            ],
+                            "services": [
+                                {
+                                    "description": "Tyre change",
+                                    "newComponents": [
+                                        {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                        }
+                                    ],
+                                    "workshopName": "Workshop 42",
+                                    "date": "2020"
                                 }
                             ]
                         }
@@ -73,7 +89,21 @@ class BikeControllerTest {
                                         "type": "Pirelli",
                                         "age": 1337
                                     }
-                                    ]
+                                ],
+                                "services": [
+                                    {
+                                        "description": "Tyre change",
+                                        "newComponents": [
+                                            {
+                                            "category": "tyre",
+                                            "type": "Pirelli",
+                                            "age": 1337
+                                            }
+                                        ],
+                                        "workshopName": "Workshop 42",
+                                        "date": "2020"
+                                    }
+                                ]
                             }
                             """)
                 .with(csrf()))
@@ -89,8 +119,22 @@ class BikeControllerTest {
                                     "type": "Pirelli",
                                     "age": 1337
                                 }
+                            ],
+                            "services": [
+                                {
+                                    "description": "Tyre change",
+                                    "newComponents": [
+                                        {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                        }
+                                    ],
+                                    "workshopName": "Workshop 42",
+                                    "date": "2020"
+                                }
                             ]
-                        }
+                    }
                     """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
     }

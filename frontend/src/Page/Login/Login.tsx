@@ -3,7 +3,7 @@ import axios from 'axios'
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import Link from '@mui/material/Link';
 import {Box, Button, Container, TextField, Typography} from "@mui/material";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 
 export default function Login() {
     const [username, setUsername] = useState("")

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Box, Button, Container, TextField, Typography} from "@mui/material";
 import Link from "@mui/material/Link";
 

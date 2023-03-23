@@ -7,15 +7,16 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
     TextField,
     Typography
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
+import EditComponents from "../../Component/EditComponents/EditComponents";
+import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 
 export default function AddBikeForm() {
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
@@ -80,14 +81,9 @@ export default function AddBikeForm() {
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Component</TableCell>
-                                    <TableCell align="left">Model</TableCell>
-                                    <TableCell align="right">Age (km)</TableCell>
-                                    <TableCell align="right"></TableCell>
-                                </TableRow>
-                            </TableHead>
+                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
+                                {cellName:"", align: "right"}]}/>
                             <TableBody>
                                 {components.map((component) => (
                                     <TableRow
@@ -115,50 +111,22 @@ export default function AddBikeForm() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Box component={"form"} onSubmit={handleSubmitNewComponent} sx={{
+                    <EditComponents
+                        components={components}
+                        handleDeleteComponent={handleDeleteComponent}
+                        handleSubmitNewComponent={handleSubmitNewComponent}
+                        handleInputComponentName={handleInputComponentName}
+                        handleInputComponentModel={handleInputComponentModel}
+                        handleInputComponentAge={handleInputComponentAge}
+                        newComponentCategory={newComponentCategory}
+                        newComponentModel={newComponentModel}
+                        newComponentAge={newComponentAge}
+                        newComponentAgeValue={newComponentAgeValue}/>
+                </Box>
+                <Box sx={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'column'
                     }}>
-                        <Box sx={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                mt: 1}}>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Component"
-                                fullWidth
-                                error = {components.filter(c => c.category === newComponentCategory).length!==0}
-                                helperText={components.filter(c => c.category === newComponentCategory).length!==0
-                                    && "Must be unique"}
-                                value={newComponentCategory}
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentName}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Model"
-                                fullWidth
-                                value={newComponentModel}
-                                sx={{mt: 1, mr: 1}}
-                                onChange={handleInputComponentModel}
-                            />
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="Age (km)"
-                                value={newComponentAge}
-                                error={!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!==""}
-                                sx={{mt: 1}}
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                                onChange={handleInputComponentAge}
-                            />
-                        </Box>
-                        <Button variant={"contained"} type={"submit"} sx={{mt: 1}}
-                            disabled={components.filter(c => c.category === newComponentCategory).length!==0}
-                        >Add Component</Button>
-                    </Box>
                 </Box>
                 <Box sx={{
                     display: 'flex',

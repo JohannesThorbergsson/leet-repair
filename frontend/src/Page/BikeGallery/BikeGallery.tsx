@@ -1,14 +1,16 @@
-import useBikes from "../../Hooks/useBikes";
 import BikeCard from "../../Component/BikeCard/BikeCard";
-import ResponsiveAppBar from "../../ResponsiveAppBar";
+import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
 import {Box, Button, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {Bike} from "../../model/Bike";
 
-export default function BikeGallery() {
+type Props = {
+    bikes: Bike[]
+}
+export default function BikeGallery(props: Props) {
     useAuth(true)
     const navigate = useNavigate()
-    const {bikes} = useBikes()
     return (
         <>
             <ResponsiveAppBar/>
@@ -24,7 +26,7 @@ export default function BikeGallery() {
                 </Button>
             </Box>
             <div>
-                {bikes.map(b => <BikeCard key={b.id} bike={b}/>)}
+                {props.bikes.map(b => <BikeCard key={b.id} bike={b}/>)}
             </div>
             <Button variant={"contained"} onClick={()=>navigate("/")}>Dashboard</Button>
         </>

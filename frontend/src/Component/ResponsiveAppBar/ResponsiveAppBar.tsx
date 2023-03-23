@@ -8,7 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import useAuth from "./Hooks/useAuth";
+import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
 
 export default function ResponsiveAppBar() {
