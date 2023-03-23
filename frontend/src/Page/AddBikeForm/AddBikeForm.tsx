@@ -20,15 +20,18 @@ import EditComponents from "../../Component/EditComponents/EditComponents";
 import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {useNavigate} from "react-router-dom";
-import AddService from "../AddService/AddService";
+import {ServiceEvent} from "../../model/ServiceEvent";
+import {Component} from "../../model/Component";
 
 export default function AddBikeForm() {
     const navigate = useNavigate()
     const[description, setDescription] =useState<string>("")
     const[workshopName, setWorkshopName] = useState<string>("")
     const[date, setDate] = useState<string>("")
+    const[services, setServices] = useState<ServiceEvent[]>([])
+    const[newComponents, setNewComponents] = useState<Component[]>([])
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        mileage, modelName, newComponentAgeValue, services,
+        mileage, modelName, newComponentAgeValue,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
@@ -39,9 +42,7 @@ export default function AddBikeForm() {
         handleSubmitBike,
         handleCancel} = useAddBike()
 
-    function handleSubmitReplacedComponent(){
 
-    }
     function handleInputDescription(event: ChangeEvent<HTMLInputElement>){
         setDescription(event.target.value)
     }
@@ -50,6 +51,13 @@ export default function AddBikeForm() {
     }
     function handleInputDate(event: ChangeEvent<HTMLInputElement>){
         setDate(event.target.value)
+    }
+    function handleSubmitReplacedComponent(){
+        setNewComponents([...components,
+            {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
+    }
+    function handleSubmitNewService() {
+
     }
     return(
         <>
@@ -136,7 +144,7 @@ export default function AddBikeForm() {
                     <EditComponents
                         components={components}
                         handleDeleteComponent={handleDeleteComponent}
-                        handleSubmitNewComponent={handleSubmitNewComponent}
+                        handleSubmitNewComponent={handleSubmitReplacedComponent}
                         handleInputComponentCategory={handleInputComponentCategory}
                         handleInputComponentModel={handleInputComponentModel}
                         handleInputComponentAge={handleInputComponentAge}
@@ -150,9 +158,113 @@ export default function AddBikeForm() {
                         flexDirection: 'column'
                     }}>
                     {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
-                    <AddService handleInputDate={handleInputDate}
-                                handleInputDescription={handleInputDescription}
-                                handleInputWorkshopName={handleInputWorkshopName}/>
+                    {/*<AddService handleInputDate={handleInputDate}*/}
+                    {/*            handleInputDescription={handleInputDescription}*/}
+                    {/*            handleInputWorkshopName={handleInputWorkshopName}*/}
+                    {/*            handleSubmitNewService={handleSubmitNewService}*/}
+                    {/*            handleSubmitReplacedComponent={handleSubmitReplacedComponent}/>*/}
+                    <Box sx = {{
+                        border: 2,
+                        borderRadius: 1,
+                        borderColor: 'primary.main',
+                        p: 1,
+                        mt: 2
+                    }}>
+                        <Box sx={{
+                            display:'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+
+                        }}>
+                            <Typography variant={"h6"} sx={{m: 1}}>Document a service</Typography>
+                        </Box>
+                        <Box sx={{
+
+                        }}>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Description"
+                                    fullWidth
+                                    onChange={handleInputDescription}
+                                    sx={{mt: 1}}
+                                />
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Workshop name"
+                                    fullWidth
+                                    onChange={handleInputWorkshopName}
+                                    sx={{mt: 1}}
+                                />
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Date"
+                                    onChange={handleInputDate}
+                                    sx={{mt: 1}}
+                                />
+                                <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>
+                                <TableContainer component={Paper}>
+                                    <Table aria-label="simple table">
+                                        <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                            {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
+                                            {cellName:"", align: "right"}]}/>
+                                        <TableBody>
+                                            {components.map((component) => (
+                                                <TableRow
+                                                    key={component.category}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        {component.category}
+                                                    </TableCell>
+                                                    <TableCell align="left">{component.type}</TableCell>
+                                                    <TableCell align="right">{component.age}</TableCell>
+                                                    <TableCell align="right" sx={{
+                                                        p: 0,
+                                                        width: 20
+                                                    }}>
+                                                        <DeleteIcon onClick={() =>handleDeleteComponent(component)} sx={{
+                                                            alignSelf: 'end',
+                                                            cursor: 'pointer',
+                                                            color: '#2196f3',
+                                                            mr: 1
+                                                        }}/>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <EditComponents components={components}
+                                                handleDeleteComponent={handleDeleteComponent}
+                                                handleSubmitNewComponent={handleSubmitReplacedComponent}
+                                                handleInputComponentCategory={handleInputComponentCategory}
+                                                handleInputComponentModel={handleInputComponentModel}
+                                                handleInputComponentAge={handleInputComponentAge}
+                                                newComponentCategory={newComponentCategory}
+                                                newComponentModel={newComponentModel}
+                                                newComponentAge={newComponentAge}
+                                                newComponentAgeValue={newComponentAgeValue}/>
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-evenly',
+                                    mt: 1
+                                }}>
+                                    <Button variant={"contained"} onClick={handleSubmitNewService}>
+                                        Save
+                                    </Button>
+                                    <Button variant={"contained"} onClick={()=> navigate("/bikes/edit-form")}>Cancel</Button>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
                     <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>
                         Add Service
                     </Button>
@@ -161,11 +273,12 @@ export default function AddBikeForm() {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
-                    mt: 1
+                    mt: 2
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
-                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}
-                    >Save</Button>
+                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}>
+                        Save new Bike
+                    </Button>
                     <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
                 </Box>
             </Box>

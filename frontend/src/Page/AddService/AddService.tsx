@@ -16,17 +16,19 @@ import useAddBike from "../../Hooks/useAddBike";
 import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useNavigate} from "react-router-dom";
+import {Component} from "../../model/Component";
 
 type AddServiceProps = {
     handleInputDescription(event: ChangeEvent<HTMLInputElement>): void
     handleInputWorkshopName(event: ChangeEvent<HTMLInputElement>): void
     handleInputDate(event: ChangeEvent<HTMLInputElement>): void
+    handleSubmitNewService(): void
+    handleSubmitReplacedComponent(): void
 }
 export default function AddService(props: AddServiceProps) {
     const navigate = useNavigate()
     const {components,
         handleDeleteComponent,
-        handleSubmitNewComponent,
         handleInputComponentCategory,
         handleInputComponentAge,
         handleInputComponentModel,
@@ -118,7 +120,7 @@ export default function AddService(props: AddServiceProps) {
                         </TableContainer>
                         <EditComponents components={components}
                                         handleDeleteComponent={handleDeleteComponent}
-                                        handleSubmitNewComponent={handleSubmitNewComponent}
+                                        handleSubmitNewComponent={props.handleSubmitReplacedComponent}
                                         handleInputComponentCategory={handleInputComponentCategory}
                                         handleInputComponentModel={handleInputComponentModel}
                                         handleInputComponentAge={handleInputComponentAge}
@@ -132,9 +134,9 @@ export default function AddService(props: AddServiceProps) {
                             justifyContent: 'space-evenly',
                             mt: 1
                         }}>
-                            <Button variant={"contained"}
-                                    disabled
-                            >Save</Button>
+                            <Button variant={"contained"} onClick={props.handleSubmitNewService}>
+                                Save
+                            </Button>
                             <Button variant={"contained"} onClick={()=> navigate("/bikes/edit-form")}>Cancel</Button>
                         </Box>
                     </Box>
