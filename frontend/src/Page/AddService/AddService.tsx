@@ -1,8 +1,24 @@
-import {Box, InputAdornment, TextField, Typography} from "@mui/material";
-import React from "react";
+import {Box, TextField, Typography} from "@mui/material";
+import React, {ChangeEvent, useState} from "react";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
+import EditComponents from "../../Component/EditComponents/EditComponents";
+import useAddBike from "../../Hooks/useAddBike";
 
 export default function AddService() {
+    const[description, setDescription] =useState<string>("")
+    const[workshopName, setWorkshopName] = useState<string>("")
+    const[date, setDate] = useState<string>("")
+    const {components, handleDeleteComponent, handleSubmitNewComponent, handleInputComponentName, handleInputComponentAge, handleInputComponentModel, newComponentCategory, newComponentAge, newComponentModel} = useAddBike()
+
+    function handleInputDescription(event: ChangeEvent<HTMLInputElement>){
+        setDescription(event.target.value)
+    }
+    function handleInputWorkshopName(event: ChangeEvent<HTMLInputElement>){
+        setWorkshopName(event.target.value)
+    }
+    function handleInputDate(event: ChangeEvent<HTMLInputElement>){
+        setDate(event.target.value)
+    }
     return(
         <>
             <ResponsiveAppBar/>
@@ -29,7 +45,7 @@ export default function AddService() {
                         id="outlined-required"
                         label="Description"
                         fullWidth
-                        // onChange={handleInputModelName}
+                        onChange={handleInputDescription}
                         sx={{mt: 1}}
                     />
                     <TextField
@@ -37,22 +53,19 @@ export default function AddService() {
                         id="outlined-required"
                         label="Workshop name"
                         fullWidth
-                        // onChange={handleInputModelName}
+                        onChange={handleInputWorkshopName}
                         sx={{mt: 1}}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Date"
-                        // error={!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!==""}
-                        // helperText={(!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!=="")
-                        //     && "Must be a numeric value"}
-                        // onChange={handleInputMileage}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">km</InputAdornment>,
-                        }}
+                        onChange={handleInputDate}
                         sx={{mt: 1}}
                     />
+                    <EditComponents components={components}
+                                    handleDeleteComponent={handleDeleteComponent}
+                                    handleSubmitNewComponent={handleSubmitNewComponent} handleInputComponentName={} handleInputComponentModel={} handleInputComponentAge={} newComponentCategory={} newComponentModel={} newComponentAge={} newComponentAgeValue={}
 
                 </Box>
             </Box>
