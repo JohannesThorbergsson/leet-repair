@@ -9,7 +9,7 @@ export default function useBikes(){
     useEffect(() =>fetchBikes(), [user])
 
     function fetchBikes(){
-        axios.get("api/bikes/")
+        axios.get("/api/bikes/")
             .then(r => setBikes(r.data))
             .catch((error) => console.error(error))
     }

@@ -2,6 +2,7 @@ import {ServiceEvent} from "../../model/ServiceEvent";
 import React from "react";
 import {
     Box,
+    Card,
     CardContent,
     Paper,
     Table,
@@ -24,13 +25,17 @@ export default function ServiceCard(props: ServiceCardProps){
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent: 'space-between',
                     pt: 1
                 }}>
                     <Typography variant="h6" fontWeight={"medium"}>
                         {props.service.description}
                     </Typography>
-                    <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                        Mileage: {props.service.date}
+                    <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                        {props.service.date}
                     </Typography>
                 </Box>
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
@@ -61,13 +66,18 @@ export default function ServiceCard(props: ServiceCardProps){
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{mt: 1}}>
+                <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{mt: 1}}>
                     {"Serviced by: " + props.service.workshopName}
                 </Typography>
             </CardContent>
         </React.Fragment>
     );
     return (
-            <></>
+        <div>
+            <Card variant={"outlined"} sx={{
+                m: 2,
+                boxShadow: 1
+            }}>{card}</Card>
+        </div>
     )
 }
