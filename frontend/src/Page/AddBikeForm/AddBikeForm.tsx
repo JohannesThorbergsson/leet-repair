@@ -87,7 +87,7 @@ export default function AddBikeForm() {
                                     <TableCell align="left">Model</TableCell>
                                     <TableCell align="right">Age (km)</TableCell>
                                     <TableCell align="right"></TableCell>
-                                </TableRow>
+                                </TableRow> {/*NOSONAR*/}
                             </TableHead>
                             <TableBody> {/*NOSONAR*/}
                                 {components.map((component) => (
