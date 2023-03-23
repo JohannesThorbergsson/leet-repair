@@ -18,11 +18,9 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import React from "react";
 import useAddBike from "../../Hooks/useAddBike";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
-import {useNavigate} from "react-router-dom";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 
 export default function AddBikeForm() {
-    const navigate = useNavigate()
     const { mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
         mileage, modelName, newComponentAgeValue, services,
         handleDeleteComponent,
@@ -137,7 +135,6 @@ export default function AddBikeForm() {
                         flexDirection: 'column'
                     }}>
                     {services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
-                    <Button variant={"contained"} sx={{mt: 1}} onClick={()=> navigate("/bikes/edit-form/add-service")}>Add Service</Button>
                 </Box>
                 <Box sx={{
                     display: 'flex',
