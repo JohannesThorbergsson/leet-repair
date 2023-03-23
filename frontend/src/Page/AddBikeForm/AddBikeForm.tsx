@@ -1,23 +1,9 @@
-import {
-    Box,
-    Button,
-    InputAdornment,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    TextField,
-    Typography
-} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React, {ChangeEvent, useState} from "react";
 import {v4 as uuidv4} from "uuid"
 import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
-import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {useNavigate} from "react-router-dom";
 import AddService from "../AddService/AddService";
@@ -101,38 +87,7 @@ export default function AddBikeForm() {
                     display: 'flex',
                     flexDirection: 'column',}}>
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
-                    <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
-                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
-                                {cellName:"", align: "right"}]}/>
-                            <TableBody>
-                                {components.map((component) => (
-                                    <TableRow
-                                        key={component.category}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {component.category}
-                                        </TableCell>
-                                        <TableCell align="left">{component.type}</TableCell>
-                                        <TableCell align="right">{component.age}</TableCell>
-                                        <TableCell align="right" sx={{
-                                            p: 0,
-                                            width: 20
-                                        }}>
-                                <DeleteIcon onClick={() =>handleDeleteComponent(component)} sx={{
-                                    alignSelf: 'end',
-                                    cursor: 'pointer',
-                                    color: '#2196f3',
-                                    mr: 1
-                                }}/>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+
                     <EditComponents
                         components={components}
                         handleDeleteComponent={handleDeleteComponent}
