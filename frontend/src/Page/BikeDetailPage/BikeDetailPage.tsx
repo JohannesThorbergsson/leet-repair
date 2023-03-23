@@ -1,8 +1,19 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Bike} from "../../model/Bike";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
-import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from "@mui/material";
 import React from "react";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {v4 as uuidv4} from "uuid"
@@ -12,6 +23,7 @@ type Props = {
 }
 export default function BikeDetailPage(props: Props) {
     useAuth(true)
+    const navigate = useNavigate()
     const { bikeId } = useParams<{ bikeId: string }>()
     const bike: Bike | undefined = props.bikes.find((bike) => bike.id === bikeId);
     return (
@@ -64,8 +76,11 @@ export default function BikeDetailPage(props: Props) {
                     </TableContainer>
                 </Box>
                 <Box>
-                    <Typography variant={"h5"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
+                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
                     {bike?.services.map(service => <ServiceCard key={uuidv4()} service={service}/>)}
+                </Box>
+                <Box>
+                    <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
                 </Box>
             </Box>
         </>

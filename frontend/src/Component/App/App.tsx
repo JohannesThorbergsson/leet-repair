@@ -14,6 +14,7 @@ import '@fontsource/roboto/700.css';
 import AddBikeForm from "../../Page/AddBikeForm/AddBikeForm";
 import BikeDetailPage from "../../Page/BikeDetailPage/BikeDetailPage";
 import useBikes from "../../Hooks/useBikes";
+import AddService from "../AddService/AddService";
 
 axios.interceptors.request.use(
     function (config) {
@@ -37,6 +38,7 @@ const {bikes} = useBikes()
           <Route path={"/"} element={<Dashboard/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/edit-form"} element={<AddBikeForm/>}/>
+          <Route path={"/bikes/edit-form/add-service"} element={<AddService/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
         </Routes>
       </div>

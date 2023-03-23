@@ -2,12 +2,14 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {ServiceEvent} from "../model/ServiceEvent";
 
 export default function useAddBike(){
     const[mileage, setMileage] = useState<number | undefined>()
     const[mileageFieldValue, setMileageFieldValue] = useState("")
     const[modelName, setModelName] = useState("")
     const[components, setComponents] = useState<Component[]>([])
+    const[services, setServices] = useState<ServiceEvent[]>([])
     const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
@@ -55,7 +57,7 @@ export default function useAddBike(){
         navigate("/bikes")
     }
     return {mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        modelName, mileage, newComponentAgeValue,
+        modelName, mileage, newComponentAgeValue, services,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
