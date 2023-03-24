@@ -1,14 +1,13 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
-import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import React from "react";
 import {v4 as uuidv4} from "uuid"
 import useAddBike from "../../Hooks/useAddBike";
-import EditComponents from "../../Component/EditComponents/EditComponents";
-import ServiceCard from "../../Component/ServiceCard/ServiceCard";
-import AddService from "../AddService/AddService";
+import EditComponents from "../EditComponents/EditComponents";
+import ServiceCard from "../ServiceCard/ServiceCard";
+import AddService from "../../Page/AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 
-export default function AddBikeForm() {
+export default function EditBikeForm() {
     useAuth(true)
     const {
         mileageFieldValue,
@@ -26,14 +25,6 @@ export default function AddBikeForm() {
     } = useAddBike()
     return(
         <>
-            <ResponsiveAppBar/>
-            <Box sx={{
-                display:'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-            }}>
-                <Typography variant={"h4"} sx={{m: 1}}>New Bike</Typography>
-            </Box>
             <Box sx={{
                 border: 2,
                 borderRadius: 1,
