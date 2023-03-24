@@ -61,7 +61,7 @@ class BikeServiceTest {
     void updateBike_whenValidRequest_thenReturnUpdatedBike(){
         //GIVEN
         BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
-                updatedTestBike.ownerName(), updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
+                updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
         when(bikeRepository.existsById(updatedBike.id())).thenReturn(true);
         when(bikeRepository.findById(updatedBike.id())).thenReturn(Optional.of(testBike));
         when(bikeRepository.save(updatedTestBike)).thenReturn(updatedTestBike);
@@ -76,7 +76,7 @@ class BikeServiceTest {
     void updateBike_whenBikeNotFound_thenThrowBikeNotFoundException(){
         //GIVEN
         BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
-                updatedTestBike.ownerName(), updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
+                updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
         when(bikeRepository.existsById(updatedBike.id())).thenReturn(false);
         when(principal.getName()).thenReturn("steven");
         Class<NoSuchBikeException> expected = NoSuchBikeException.class;
@@ -88,7 +88,7 @@ class BikeServiceTest {
     void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
         //GIVEN
         BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
-                updatedTestBike.ownerName(), updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
+                updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
         when(bikeRepository.existsById(updatedBike.id())).thenReturn(true);
         when(bikeRepository.findById(updatedBike.id())).thenReturn(Optional.of(testBike));
         when(principal.getName()).thenReturn("h4xx()r");

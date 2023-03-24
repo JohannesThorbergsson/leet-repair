@@ -148,7 +148,6 @@ class BikeControllerTest {
                             {
                                 "id": "1",
                                 "modelName": "MegaBike9000",
-                                "ownerName": "steven",
                                 "mileage": 1337,
                                 "components": [
                                     {
@@ -215,7 +214,6 @@ class BikeControllerTest {
                             {
                                 "id": "5",
                                 "modelName": "MegaBike9000",
-                                "ownerName": "steven",
                                 "mileage": 1337,
                                 "components": [
                                     {
@@ -254,7 +252,6 @@ class BikeControllerTest {
                             {
                                 "id": "1",
                                 "modelName": "MegaBike9000",
-                                "ownerName": "steven",
                                 "mileage": 1337,
                                 "components": [
                                     {
