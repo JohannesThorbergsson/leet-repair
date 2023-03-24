@@ -7,6 +7,7 @@ import {Typography} from "@mui/material";
 
 type EditBikePageProps = {
     bikes: Bike[]
+    updateBikeList(bikes: Bike[]): void
 }
 export default function EditBikePage(props: EditBikePageProps){
     useAuth(true)
@@ -20,7 +21,7 @@ export default function EditBikePage(props: EditBikePageProps){
             <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{mt: 1}}>
                 {bike?.modelName}
             </Typography>
-            <EditBikeForm/>
+            <EditBikeForm editMode={true} bikes={props.bikes} updateBikeList={props.updateBikeList}/>
         </>
     )
 }

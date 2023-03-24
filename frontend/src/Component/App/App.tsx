@@ -29,7 +29,7 @@ axios.interceptors.request.use(
 )
 
 function App() {
-const {bikes} = useBikes()
+const {bikes, updateBikeList} = useBikes()
   return (
       <div className="App">
         <Routes>
@@ -37,9 +37,9 @@ const {bikes} = useBikes()
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={<Dashboard/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
-          <Route path={"/bikes/add-bike"} element={<AddBikePage/>}/>
+          <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
-          <Route path={"/bikes/edit-bike/:bikeId"} element={<EditBikePage bikes={bikes}/>}/>
+          <Route path={"/bikes/edit-bike/:bikeId"} element={<EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
         </Routes>
       </div>
   );

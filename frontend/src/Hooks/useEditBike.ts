@@ -3,8 +3,14 @@ import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {ServiceEvent} from "../model/ServiceEvent";
+import {Bike} from "../model/Bike";
 
-export default function useAddBike(){
+type UseEditBikeProps = {
+    editMode: boolean
+    bikes: Bike[]
+    updateBikeList(bikes: Bike[]): void
+}
+export default function useEditBike(props: UseEditBikeProps){
     const[mileage, setMileage] = useState<number | undefined>()
     const[mileageFieldValue, setMileageFieldValue] = useState("")
     const[modelName, setModelName] = useState("")
@@ -53,10 +59,14 @@ export default function useAddBike(){
         setServices(services.filter(serviceEvent => serviceEvent.id!==id))
     }
     function handleSubmitBike(){
-        axios.post("/api/bikes/",
-            {modelName: modelName, mileage: mileage, components: components, services: services})
-            .then(() => navigate("/bikes"))
-            .catch((error) => console.error(error))
+        if(!props.editMode) {
+            axios.post("/api/bikes/",
+                {modelName: modelName, mileage: mileage, components: components, services: services})
+                .then((r) => props.updateBikeList(r.data))
+                .then(() => navigate("/bikes"))
+                .catch((error) => console.error(error))
+
+        }
     }
     function handleCancel(){
         navigate("/bikes")
