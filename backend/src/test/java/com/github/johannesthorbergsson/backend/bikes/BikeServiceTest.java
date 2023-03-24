@@ -70,6 +70,9 @@ class BikeServiceTest {
         //WHEN
         Bike actual = bikeService.updateBike(testId, updatedBike, principal);
         //THEN
+        verify(bikeRepository).findById(testId);
+        verify(bikeRepository).save(updatedTestBike);
+        verify(principal, times(2)).getName();
         assertEquals(expected, actual);
     }
     @Test
@@ -77,7 +80,6 @@ class BikeServiceTest {
         //GIVEN
         BikeRequest updatedBike = new BikeRequest(updatedTestBike.modelName(),
                 updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
-        when(principal.getName()).thenReturn("steven");
         Class<NoSuchBikeException> expected = NoSuchBikeException.class;
         //THEN
         assertThrows(expected, ()->bikeService.updateBike(testId, updatedBike, principal));
@@ -93,5 +95,7 @@ class BikeServiceTest {
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //THEN
         assertThrows(expected, () -> bikeService.updateBike(testId, updatedBike, principal));
+        verify(bikeRepository).findById(testId);
+        verify(principal).getName();
     }
 }

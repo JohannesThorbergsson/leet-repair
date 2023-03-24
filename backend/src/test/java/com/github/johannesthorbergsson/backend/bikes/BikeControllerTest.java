@@ -48,7 +48,7 @@ class BikeControllerTest {
                             "mileage": 1337,
                             "components": [
                                 {
-                                    "category": "tyre", 
+                                    "category": "tyre",
                                     "type": "Pirelli",
                                     "age": 1337
                                 }
@@ -142,11 +142,10 @@ class BikeControllerTest {
     @WithMockUser(username = "steven")
     void updateBike_whenValidRequest_thenReturnUpdatedBike() throws Exception {
         bikeRepository.save(testBike);
-        mockMvc.perform(put("/api/bikes/")
+        mockMvc.perform(put("/api/bikes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                             {
-                                "id": "1",
                                 "modelName": "MegaBike9000",
                                 "mileage": 1337,
                                 "components": [
@@ -201,18 +200,18 @@ class BikeControllerTest {
                             }
                         ]
                     }
-                """));
+                """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
     }
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
     void updateBike_whenBikeNotFound_thenThrowBikeNotFoundException() throws Exception {
         bikeRepository.save(testBike);
-        mockMvc.perform(put("/api/bikes/")
+        mockMvc.perform(put("/api/bikes/5")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                             {
-                                "id": "5",
                                 "modelName": "MegaBike9000",
                                 "mileage": 1337,
                                 "components": [
@@ -246,11 +245,10 @@ class BikeControllerTest {
     @WithMockUser(username = "h4xx()r")
     void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
         bikeRepository.save(testBike);
-        mockMvc.perform(put("/api/bikes/")
+        mockMvc.perform(put("/api/bikes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                             {
-                                "id": "1",
                                 "modelName": "MegaBike9000",
                                 "mileage": 1337,
                                 "components": [
