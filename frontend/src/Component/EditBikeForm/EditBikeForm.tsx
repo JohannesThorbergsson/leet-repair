@@ -11,6 +11,7 @@ import {Bike} from "../../model/Bike";
 type EditBikeFormProps = {
     editMode: boolean
     bikes: Bike[]
+    bikeToEdit?: Bike
     updateBikeList(bikes: Bike[]): void
 }
 export default function EditBikeForm(props: EditBikeFormProps) {
@@ -27,8 +28,10 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleSubmitBike,
         handleSetInstalledComponents,
         deleteService,
-        handleCancel
+        handleCancel,
+        setValuesOnEditMode
     } = useEditBike(props)
+
     return(
         <>
             <Box sx={{
@@ -55,6 +58,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
+                        value={mileage}
                         error={!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!=="")
                             && "Must be a numeric value"}

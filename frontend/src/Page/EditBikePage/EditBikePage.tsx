@@ -21,7 +21,7 @@ export default function EditBikePage(props: EditBikePageProps){
             <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{mt: 1}}>
                 {bike?.modelName}
             </Typography>
-            <EditBikeForm editMode={true} bikes={props.bikes} updateBikeList={props.updateBikeList}/>
+            <EditBikeForm editMode={true} bikes={props.bikes} updateBikeList={props.updateBikeList} bikeToEdit={bike}/>
         </>
     )
 }

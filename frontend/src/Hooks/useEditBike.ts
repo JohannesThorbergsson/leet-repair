@@ -8,20 +8,32 @@ import {Bike} from "../model/Bike";
 type UseEditBikeProps = {
     editMode: boolean
     bikes: Bike[]
+    bikeToEdit?: Bike
     updateBikeList(bikes: Bike[]): void
 }
 export default function useEditBike(props: UseEditBikeProps){
-    const[mileage, setMileage] = useState<number | undefined>()
+    const[modelName, setModelName] =
+        useState(props.bikeToEdit? props.bikeToEdit.modelName : "")
+    const[mileage, setMileage] =
+        useState<number | undefined>(props.bikeToEdit? props.bikeToEdit.mileage : undefined)
     const[mileageFieldValue, setMileageFieldValue] = useState("")
-    const[modelName, setModelName] = useState("")
-    const[components, setComponents] = useState<Component[]>([])
-    const[services, setServices] = useState<ServiceEvent[]>([])
+    const[components, setComponents] =
+        useState<Component[]>(props.bikeToEdit? props.bikeToEdit.components : [])
+    const[services, setServices] = useState<ServiceEvent[]>(props.bikeToEdit? props.bikeToEdit.services : [])
     const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
     const[newComponentAgeValue, setNewComponentAgeValue] =useState("")
     const navigate = useNavigate()
 
+    function setValuesOnEditMode(editMode: boolean, bikeToEdit?: Bike) {
+        if(editMode && bikeToEdit) {
+            setModelName(bikeToEdit.modelName)
+            setMileage(bikeToEdit.mileage)
+            setComponents(bikeToEdit.components)
+            setServices(bikeToEdit.services)
+        }
+    }
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
         setModelName(event.target.value)
     }
@@ -65,7 +77,6 @@ export default function useEditBike(props: UseEditBikeProps){
                 .then((r) => props.updateBikeList([...props.bikes, r.data]))
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
-
         }
     }
     function handleCancel(){
@@ -91,6 +102,7 @@ export default function useEditBike(props: UseEditBikeProps){
         handleSetServices,
         deleteService,
         handleSubmitBike,
-        handleCancel
+        handleCancel,
+        setValuesOnEditMode
     }
 }
