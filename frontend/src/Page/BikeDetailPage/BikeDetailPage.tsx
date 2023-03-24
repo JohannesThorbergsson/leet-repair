@@ -19,60 +19,62 @@ export default function BikeDetailPage(props: Props) {
     return (
         <>
             <ResponsiveAppBar/>
-            <Box sx={{
+            {bike?
+                <Box sx={{
                     border: 2,
                     borderRadius: 1,
                     borderColor: 'primary.main',
                     m: 1,
-                    p: 2
-                }}>
-                <Box sx={{
-                    display:'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                }}>
-                    <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>MegaBike9000</Typography>
-                    <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>1337 km</Typography>
-                </Box>
-                <Box sx={{
-                    justifyContent: 'start',
-                    display: 'flex',
-                    flexDirection: 'column',}}>
-                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
-                        Installed Components
-                    </Typography>
-                    <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
-                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"}]}/>
-                            <TableBody>
-                                {bike?.components.map((component) => (
-                                    <TableRow
-                                        key={component.category}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {component.category}
-                                        </TableCell>
-                                        <TableCell align="left">{component.type}</TableCell>
-                                        <TableCell align="right">{component.age}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-                <Box>
-                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
-                    {(bike?.services.length === undefined || bike?.services.length<1)?
-                        <Typography variant={"h6"}>No services recorded</Typography>:
-                    bike.services.map(service =>
-                        <ServiceCard key={uuidv4()} service={service} />)}
-                </Box>
-                <Box>
-                    <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
-                </Box>
-            </Box>
+                    p: 2}}>
+                    <Box sx={{
+                        display:'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        }}>
+                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>MegaBike9000</Typography>
+                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>1337 km</Typography>
+                    </Box>
+                    <Box sx={{
+                        justifyContent: 'start',
+                        display: 'flex',
+                        flexDirection: 'column',}}>
+                        <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
+                            Installed Components
+                        </Typography>
+                        <TableContainer component={Paper}>
+                            <Table aria-label="simple table">
+                                <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                    {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"}]}/>
+                                <TableBody>
+                                    {bike?.components.map((component) => (
+                                        <TableRow
+                                            key={component.category}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {component.category}
+                                            </TableCell>
+                                            <TableCell align="left">{component.type}</TableCell>
+                                            <TableCell align="right">{component.age}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                    <Box>
+                        <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
+                        {(bike?.services.length === undefined || bike?.services.length<1)?
+                            <Typography variant={"h6"}>No services recorded</Typography>:
+                        bike.services.map(service =>
+                            <ServiceCard key={uuidv4()} service={service} />)}
+                    </Box>
+                    <Box>
+                        <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
+                    </Box>
+                </Box>:
+                <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{mt: 3}}>Invalid id</Typography>
+            }
         </>
     )
 }
