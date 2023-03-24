@@ -11,6 +11,7 @@ type Props = {
 export default function BikeGallery(props: Props) {
     useAuth(true)
     const navigate = useNavigate()
+    console.log(props.bikes)
     return (
         <>
             <ResponsiveAppBar/>

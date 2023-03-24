@@ -62,7 +62,7 @@ export default function useEditBike(props: UseEditBikeProps){
         if(!props.editMode) {
             axios.post("/api/bikes/",
                 {modelName: modelName, mileage: mileage, components: components, services: services})
-                .then((r) => props.updateBikeList(r.data))
+                .then((r) => props.updateBikeList([...props.bikes, r.data]))
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
 
