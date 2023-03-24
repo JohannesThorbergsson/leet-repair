@@ -35,7 +35,7 @@ public class BikeService {
         Bike editedBike = new Bike(
                 bikeEditRequest.id(),
                 bikeEditRequest.modelName(),
-                bikeEditRequest.ownerName(),
+                principal.getName(),
                 bikeEditRequest.mileage(),
                 bikeEditRequest.components(),
                 bikeEditRequest.services());
