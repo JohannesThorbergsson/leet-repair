@@ -33,6 +33,15 @@ export default function useEditComponents(props: useEditComponentsProps){
     function handleDeleteComponent(component: Component) {
         props.handleSetComponents(props.components.filter((c => c.type !== component.type)))
     }
-    return {handleInputComponentAge, handleInputComponentModel, handleInputComponentCategory, handleSubmitNewComponent,
-    newComponentAge, newComponentAgeValue, newComponentCategory, newComponentModel, handleDeleteComponent}
+    return {
+        handleInputComponentAge,
+        handleInputComponentModel,
+        handleInputComponentCategory,
+        handleSubmitNewComponent,
+        handleDeleteComponent,
+        newComponentAge,
+        newComponentAgeValue,
+        newComponentCategory,
+        newComponentModel
+    }
 }

@@ -8,15 +8,20 @@ import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import AddService from "../AddService/AddService";
 
 export default function AddBikeForm() {
-    const { mileageFieldValue, components,
-        mileage, modelName, services,
+    const {
+        mileageFieldValue,
+        components,
+        mileage,
+        modelName,
+        services,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
         handleSubmitBike,
         handleSetInstalledComponents,
         deleteService,
-        handleCancel} = useAddBike()
+        handleCancel
+    } = useAddBike()
     return(
         <>
             <ResponsiveAppBar/>

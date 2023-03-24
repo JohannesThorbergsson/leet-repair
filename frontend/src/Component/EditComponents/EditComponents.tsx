@@ -11,7 +11,8 @@ type EditComponentsProp = {
 }
 
 export default function EditComponents(props: EditComponentsProp) {
-    const {handleInputComponentAge,
+    const {
+        handleInputComponentAge,
         handleInputComponentCategory,
         handleInputComponentModel,
         handleDeleteComponent,
@@ -19,7 +20,8 @@ export default function EditComponents(props: EditComponentsProp) {
         newComponentModel,
         newComponentCategory,
         newComponentAge,
-        newComponentAgeValue } = useEditComponents(props)
+        newComponentAgeValue
+    } = useEditComponents(props)
     return (
         <>
             <Box sx={{

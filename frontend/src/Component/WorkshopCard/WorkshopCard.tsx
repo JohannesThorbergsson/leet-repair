@@ -5,6 +5,7 @@ import React from "react";
 type Props = {
     workshop: Workshop
 }
+
 export default function WorkshopCard(props: Props) {
     const card = (
         <React.Fragment>

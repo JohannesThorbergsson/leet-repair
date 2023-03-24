@@ -61,8 +61,16 @@ export default function useAddBike(){
     function handleCancel(){
         navigate("/bikes")
     }
-    return {mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        modelName, mileage, newComponentAgeValue, services,
+    return {
+        mileageFieldValue,
+        components,
+        newComponentAge,
+        newComponentModel,
+        newComponentCategory,
+        modelName,
+        mileage,
+        newComponentAgeValue,
+        services,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
