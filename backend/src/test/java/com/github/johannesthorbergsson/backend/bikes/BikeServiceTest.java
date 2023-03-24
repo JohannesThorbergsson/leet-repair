@@ -23,6 +23,7 @@ class BikeServiceTest {
             "2020" );
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
     Bike updatedTestBike = new Bike("1", "MegaBikeUpgrade", "steven", 9000, List.of(tyre), List.of(tyreChange));
+    String testId = "1";
 
     @BeforeEach
     void setUp(){
@@ -60,40 +61,37 @@ class BikeServiceTest {
     @Test
     void updateBike_whenValidRequest_thenReturnUpdatedBike(){
         //GIVEN
-        BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
+        BikeRequest updatedBike = new BikeRequest(updatedTestBike.modelName(),
                 updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
-        when(bikeRepository.existsById(updatedBike.id())).thenReturn(true);
-        when(bikeRepository.findById(updatedBike.id())).thenReturn(Optional.of(testBike));
+        when(bikeRepository.findById(testId)).thenReturn(Optional.of(testBike));
         when(bikeRepository.save(updatedTestBike)).thenReturn(updatedTestBike);
         when(principal.getName()).thenReturn("steven");
         Bike expected = updatedTestBike;
         //WHEN
-        Bike actual = bikeService.updateBike(updatedBike, principal);
+        Bike actual = bikeService.updateBike(testId, updatedBike, principal);
         //THEN
         assertEquals(expected, actual);
     }
     @Test
     void updateBike_whenBikeNotFound_thenThrowBikeNotFoundException(){
         //GIVEN
-        BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
+        BikeRequest updatedBike = new BikeRequest(updatedTestBike.modelName(),
                 updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
-        when(bikeRepository.existsById(updatedBike.id())).thenReturn(false);
         when(principal.getName()).thenReturn("steven");
         Class<NoSuchBikeException> expected = NoSuchBikeException.class;
         //THEN
-        assertThrows(expected, ()->bikeService.updateBike(updatedBike, principal));
+        assertThrows(expected, ()->bikeService.updateBike(testId, updatedBike, principal));
 
     }
     @Test
     void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
         //GIVEN
-        BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
+        BikeRequest updatedBike = new BikeRequest(updatedTestBike.modelName(),
                 updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
-        when(bikeRepository.existsById(updatedBike.id())).thenReturn(true);
-        when(bikeRepository.findById(updatedBike.id())).thenReturn(Optional.of(testBike));
+        when(bikeRepository.findById(testId)).thenReturn(Optional.of(testBike));
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //THEN
-        assertThrows(expected, () -> bikeService.updateBike(updatedBike, principal));
+        assertThrows(expected, () -> bikeService.updateBike(testId, updatedBike, principal));
     }
 }
