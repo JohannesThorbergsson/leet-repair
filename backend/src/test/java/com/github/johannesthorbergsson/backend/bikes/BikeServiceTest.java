@@ -84,5 +84,16 @@ class BikeServiceTest {
         assertThrows(expected, ()->bikeService.updateBike(updatedBike, principal));
 
     }
-
+    @Test
+    void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
+        //GIVEN
+        BikeEditRequest updatedBike = new BikeEditRequest(updatedTestBike.id(), updatedTestBike.modelName(),
+                updatedTestBike.ownerName(), updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
+        when(bikeRepository.existsById(updatedBike.id())).thenReturn(true);
+        when(bikeRepository.findById(updatedBike.id())).thenReturn(Optional.of(testBike));
+        when(principal.getName()).thenReturn("h4xx()r");
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //THEN
+        assertThrows(expected, () -> bikeService.updateBike(updatedBike, principal));
+    }
 }
