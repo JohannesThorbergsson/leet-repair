@@ -76,11 +76,16 @@ export default function AddBikeForm() {
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
                     <EditComponents components={components} handleSetComponents={handleSetInstalledComponents}/>
                 </Box>
-                <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-                    {services.map(service => <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
+                <Box>
+                    {services.length>0 &&
+                        <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Recorded Services</Typography>
+                            {services.map(service => <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
+                        </Box>
+                    }
                     <AddService handleSetServices={handleSetServices} services={services}/>
                 </Box>
                 <Box sx={{
