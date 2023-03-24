@@ -95,8 +95,9 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
-                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}
-                    >Save</Button>
+                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}>
+                        {props.editMode? "Save Changes" : "Save"}
+                    </Button>
                     <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
                 </Box>
             </Box>
