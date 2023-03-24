@@ -36,8 +36,9 @@ const {bikes} = useBikes()
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={<Dashboard/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
-          <Route path={"/bikes/edit-form"} element={<AddBikeForm/>}/>
+          <Route path={"/bikes/add-bike"} element={<AddBikeForm/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
+          <Route path={"/bikes/edit-bike/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
         </Routes>
       </div>
   );

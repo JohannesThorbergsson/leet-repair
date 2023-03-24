@@ -65,10 +65,14 @@ export default function BikeCard(props: Props) {
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'row',
+                    justifyContent: 'space-evenly',
                     pt: 1
                 }}>
                     <Button variant="contained" onClick={()=> navigate("/bikes/details/"+props.bike.id)}>
                         Show details
+                    </Button>
+                    <Button variant="contained" onClick={()=> navigate("/bikes/edit-bike/"+props.bike.id)}>
+                        Manage Bike
                     </Button>
                 </Box>
             </CardContent>

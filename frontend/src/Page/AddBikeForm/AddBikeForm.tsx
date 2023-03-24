@@ -6,8 +6,10 @@ import useAddBike from "../../Hooks/useAddBike";
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import AddService from "../AddService/AddService";
+import useAuth from "../../Hooks/useAuth";
 
 export default function AddBikeForm() {
+    useAuth(true)
     const {
         mileageFieldValue,
         components,
