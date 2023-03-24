@@ -16,24 +16,14 @@ export default function useEditBike(props: UseEditBikeProps){
         useState(props.bikeToEdit? props.bikeToEdit.modelName : "")
     const[mileage, setMileage] =
         useState<number | undefined>(props.bikeToEdit? props.bikeToEdit.mileage : undefined)
-    const[mileageFieldValue, setMileageFieldValue] = useState("")
+    const[mileageFieldValue, setMileageFieldValue] =
+        useState(props.bikeToEdit? props.bikeToEdit.mileage.toString() : "")
     const[components, setComponents] =
         useState<Component[]>(props.bikeToEdit? props.bikeToEdit.components : [])
     const[services, setServices] = useState<ServiceEvent[]>(props.bikeToEdit? props.bikeToEdit.services : [])
-    const[newComponentCategory, setNewComponentCategory] =useState<string>("")
-    const[newComponentModel, setNewComponentModel] =useState<string>("")
-    const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
-    const[newComponentAgeValue, setNewComponentAgeValue] =useState("")
+
     const navigate = useNavigate()
 
-    function setValuesOnEditMode(editMode: boolean, bikeToEdit?: Bike) {
-        if(editMode && bikeToEdit) {
-            setModelName(bikeToEdit.modelName)
-            setMileage(bikeToEdit.mileage)
-            setComponents(bikeToEdit.components)
-            setServices(bikeToEdit.services)
-        }
-    }
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
         setModelName(event.target.value)
     }
@@ -43,23 +33,8 @@ export default function useEditBike(props: UseEditBikeProps){
             setMileage(Number(event.target.value.trim()))
         }
     }
-    function handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>){
-        setNewComponentCategory(event.target.value)
-    }
-    function handleInputComponentModel(event: ChangeEvent<HTMLInputElement>) {
-        setNewComponentModel(event.target.value)
-    }
-    function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
-        setNewComponentAgeValue(event.target.value)
-        if(/^\d+$/.test(event.target.value)) {
-            setNewComponentAge(Number(event.target.value))
-        }
-    }
     function handleSetInstalledComponents(components: Component[]){
         setComponents(components)
-        setNewComponentAge(0)
-        setNewComponentModel("")
-        setNewComponentCategory("")
     }
     function handleDeleteComponent(component: Component) {
         setComponents(components.filter((c => c.type !== component.type)))
@@ -85,24 +60,16 @@ export default function useEditBike(props: UseEditBikeProps){
     return {
         mileageFieldValue,
         components,
-        newComponentAge,
-        newComponentModel,
-        newComponentCategory,
         modelName,
         mileage,
-        newComponentAgeValue,
         services,
         handleDeleteComponent,
-        handleInputComponentAge,
         handleInputMileage,
         handleInputModelName,
-        handleInputComponentModel,
-        handleInputComponentCategory,
         handleSetInstalledComponents,
         handleSetServices,
         deleteService,
         handleSubmitBike,
-        handleCancel,
-        setValuesOnEditMode
+        handleCancel
     }
 }

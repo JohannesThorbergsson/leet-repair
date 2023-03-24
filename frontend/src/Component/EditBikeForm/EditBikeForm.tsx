@@ -28,8 +28,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleSubmitBike,
         handleSetInstalledComponents,
         deleteService,
-        handleCancel,
-        setValuesOnEditMode
+        handleCancel
     } = useEditBike(props)
 
     return(

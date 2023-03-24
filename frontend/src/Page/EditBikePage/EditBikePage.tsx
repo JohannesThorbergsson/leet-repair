@@ -1,6 +1,6 @@
 import {Bike} from "../../model/Bike";
 import useAuth from "../../Hooks/useAuth";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import EditBikeForm from "../../Component/EditBikeForm/EditBikeForm";
 import {Typography} from "@mui/material";
@@ -11,7 +11,6 @@ type EditBikePageProps = {
 }
 export default function EditBikePage(props: EditBikePageProps){
     useAuth(true)
-    const navigate = useNavigate()
     const { bikeId } = useParams<{ bikeId: string }>()
     const bike: Bike | undefined = props.bikes.find((bike) => bike.id === bikeId);
 
