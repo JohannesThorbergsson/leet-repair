@@ -60,7 +60,7 @@ export default function BikeCard(props: Props) {
                     </Table>
                 </TableContainer>
                 <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{mt: 1}}>
-                    {"Recorded services: " + props.bike.components.length}
+                    {"Recorded services: " + props.bike.services.length}
                 </Typography>
                 <Box sx={{
                     display: 'flex',

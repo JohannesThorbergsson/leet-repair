@@ -1,13 +1,15 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {ServiceEvent} from "../model/ServiceEvent";
 
 export default function useAddBike(){
     const[mileage, setMileage] = useState<number | undefined>()
     const[mileageFieldValue, setMileageFieldValue] = useState("")
     const[modelName, setModelName] = useState("")
     const[components, setComponents] = useState<Component[]>([])
+    const[services, setServices] = useState<ServiceEvent[]>([])
     const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number | undefined>()
@@ -23,7 +25,7 @@ export default function useAddBike(){
             setMileage(Number(event.target.value.trim()))
         }
     }
-    function handleInputComponentName(event: ChangeEvent<HTMLInputElement>){
+    function handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>){
         setNewComponentCategory(event.target.value)
     }
     function handleInputComponentModel(event: ChangeEvent<HTMLInputElement>) {
@@ -35,10 +37,8 @@ export default function useAddBike(){
             setNewComponentAge(Number(event.target.value))
         }
     }
-    function handleSubmitNewComponent(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
-        setComponents([...components,
-            {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
+    function handleSetInstalledComponents(components: Component[]){
+        setComponents(components)
         setNewComponentAge(0)
         setNewComponentModel("")
         setNewComponentCategory("")
@@ -46,23 +46,40 @@ export default function useAddBike(){
     function handleDeleteComponent(component: Component) {
         setComponents(components.filter((c => c.type !== component.type)))
     }
+    function handleSetServices(services: ServiceEvent[]){
+        setServices(services)
+    }
+    function deleteService(id: string){
+        setServices(services.filter(serviceEvent => serviceEvent.id!==id))
+    }
     function handleSubmitBike(){
         axios.post("/api/bikes/",
-            {modelName: modelName, mileage: mileage, components: components}).then()
+            {modelName: modelName, mileage: mileage, components: components, services: services})
+            .then(() => navigate("/bikes"))
             .catch((error) => console.error(error))
     }
     function handleCancel(){
         navigate("/bikes")
     }
-    return {mileageFieldValue, components, newComponentAge, newComponentModel, newComponentCategory,
-        modelName, mileage, newComponentAgeValue,
+    return {
+        mileageFieldValue,
+        components,
+        newComponentAge,
+        newComponentModel,
+        newComponentCategory,
+        modelName,
+        mileage,
+        newComponentAgeValue,
+        services,
         handleDeleteComponent,
         handleInputComponentAge,
         handleInputMileage,
         handleInputModelName,
         handleInputComponentModel,
-        handleInputComponentName,
-        handleSubmitNewComponent,
+        handleInputComponentCategory,
+        handleSetInstalledComponents,
+        handleSetServices,
+        deleteService,
         handleSubmitBike,
         handleCancel
     }
