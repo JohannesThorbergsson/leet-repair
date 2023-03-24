@@ -53,8 +53,8 @@ export default function useEditBike(props: UseEditBikeProps){
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
         } else {
-            axios.put("/api/bikes/",
-                {id: props.bikeToEdit?.id, modelName: modelName, mileage: mileage, components: components, services: services})
+            axios.put("/api/bikes/" + props.bikeToEdit?.id,
+                {modelName: modelName, mileage: mileage, components: components, services: services})
                 .then(r => r.data)
                 .then(updatedBike => props.updateBikeList([...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
                 .then((() => navigate("/bikes")))
