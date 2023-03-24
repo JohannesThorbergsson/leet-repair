@@ -26,4 +26,17 @@ public class BikeService {
                 bikeRequest.services());
         return bikeRepository.save(newBike);
     }
+    public Bike updateBike (BikeEditRequest bikeEditRequest) throws NoSuchBikeException{
+        if(!bikeRepository.existsById(bikeEditRequest.id())) {
+            throw new NoSuchBikeException();
+        }
+        Bike editedBike = new Bike(
+                bikeEditRequest.id(),
+                bikeEditRequest.modelName(),
+                bikeEditRequest.ownerName(),
+                bikeEditRequest.mileage(),
+                bikeEditRequest.components(),
+                bikeEditRequest.services());
+        return bikeRepository.save(editedBike);
+    }
 }

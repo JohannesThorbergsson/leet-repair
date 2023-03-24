@@ -7,6 +7,5 @@ public record BikeRequest(
         int mileage,
         List<Component> components,
         List<ServiceEvent> services
-
 ){
 }

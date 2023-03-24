@@ -54,4 +54,5 @@ class BikeServiceTest {
         verify(principal).getName();
         assertEquals(expected, actual);
     }
+
 }
