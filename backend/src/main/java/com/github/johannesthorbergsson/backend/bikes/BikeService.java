@@ -26,9 +26,11 @@ public class BikeService {
                 bikeRequest.services());
         return bikeRepository.save(newBike);
     }
-    public Bike updateBike (BikeEditRequest bikeEditRequest) throws NoSuchBikeException{
+    public Bike updateBike (BikeEditRequest bikeEditRequest, Principal principal) throws NoSuchBikeException{
         if(!bikeRepository.existsById(bikeEditRequest.id())) {
             throw new NoSuchBikeException();
+        } else if (!bikeRepository.findById(bikeEditRequest.id()).orElseThrow().ownerName().equals(principal.getName())) {
+            throw new UnauthorizedAccessException();
         }
         Bike editedBike = new Bike(
                 bikeEditRequest.id(),
