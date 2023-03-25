@@ -13,7 +13,6 @@ export default function EditBikePage(props: EditBikePageProps){
     useAuth(true)
     const { bikeId } = useParams<{ bikeId: string }>()
     const bike: Bike | undefined = props.bikes.find((bike) => bike.id === bikeId);
-    console.log(bike)
     return (
         <>
             <ResponsiveAppBar/>
