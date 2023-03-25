@@ -1,7 +1,7 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 import {v4 as uuidv4} from "uuid"
-import EditComponents from "../../Component/EditComponents/EditComponents";
+import EditComponents from "../EditComponents/EditComponents";
 import useEditServices from "../../Hooks/useEditServices";
 import {ServiceEvent} from "../../model/ServiceEvent";
 import {Component} from "../../model/Component";
@@ -71,6 +71,7 @@ export default function AddService(props: AddServiceProps) {
                         <TextField
                             required
                             id="outlined-required"
+                            type={"date"}
                             label="Date"
                             value={date}
                             onChange={handleInputDate}

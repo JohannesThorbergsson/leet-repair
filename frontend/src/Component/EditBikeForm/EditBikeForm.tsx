@@ -4,7 +4,7 @@ import {v4 as uuidv4} from "uuid"
 import useEditBike from "../../Hooks/useEditBike";
 import EditComponents from "../EditComponents/EditComponents";
 import ServiceCard from "../ServiceCard/ServiceCard";
-import AddService from "../../Page/AddService/AddService";
+import AddService from "../AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
 
