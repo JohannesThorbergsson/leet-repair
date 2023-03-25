@@ -2,6 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import { LocalDate } from 'js-joda';
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Bike} from "../model/Bike";
 
@@ -52,13 +53,25 @@ export default function useEditBike(props: UseEditBikeProps){
                     modelName: modelName,
                     mileage: mileage,
                     components: components,
-                    services: services})
+                    services: services.map((service) => ({
+                        description: service.description,
+                        newComponents: service.newComponents,
+                        workshopName: service.workshopName,
+                        date: LocalDate.parse(service.date)}))})
                 .then((r) => props.updateBikeList([...props.bikes, r.data]))
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
         } else {
             axios.put("/api/bikes/" + props.bikeToEdit?.id,
-                {modelName: modelName, mileage: mileage, components: components, services: services})
+                {
+                    modelName: modelName,
+                    mileage: mileage,
+                    components: components,
+                    services: services.map((service) => ({
+                        description: service.description,
+                        newComponents: service.newComponents,
+                        workshopName: service.workshopName,
+                        date: LocalDate.parse(service.date)}))})
                 .then(r => r.data)
                 .then(updatedBike => props.updateBikeList(
                     [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
