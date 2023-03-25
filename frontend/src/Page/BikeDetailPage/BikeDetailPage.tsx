@@ -7,6 +7,7 @@ import React from "react";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {v4 as uuidv4} from "uuid"
 import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
+import InvalidId from "../../Component/InvalidId/InvalidId";
 
 type Props = {
     bikes: Bike[]
@@ -73,7 +74,7 @@ export default function BikeDetailPage(props: Props) {
                         <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
                     </Box>
                 </Box>:
-                <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{mt: 3}}>Invalid id</Typography>
+                <InvalidId/>
             }
         </>
     )
