@@ -11,6 +11,7 @@ type AddServiceProps = {
     services: ServiceEvent[]
     handleSetInstalledComponents(components: Component[]): void
     components: Component[]
+    editMode: boolean
 }
 export default function AddService(props: AddServiceProps) {
 
@@ -18,11 +19,13 @@ export default function AddService(props: AddServiceProps) {
         newBikeComponents,
         description, workshopName, date } = useEditServices()
     function handleSubmitService(){
-        const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
         props.handleSetServices([...props.services,
             {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
-        props.handleSetInstalledComponents([...props.components.filter(
-            oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
+        if (props.editMode) {
+            const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
+            props.handleSetInstalledComponents([...props.components.filter(
+                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
+        }
         clearInputFields()
     }
 

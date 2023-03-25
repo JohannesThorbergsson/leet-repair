@@ -89,7 +89,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     <AddService handleSetServices={handleSetServices}
                                 services={services}
                                 components={components}
-                                handleSetInstalledComponents={handleSetInstalledComponents}/>
+                                handleSetInstalledComponents={handleSetInstalledComponents}
+                                editMode={props.editMode}/>
                 </Box>
                 <Box sx={{
                     display: 'flex',
