@@ -73,11 +73,18 @@ export default function AddService(props: AddServiceProps) {
                         />
                         <TextField
                             required
-                            id="outlined-required"
+                            id="date-input"
                             type={"date"}
                             label="Date"
                             value={date}
                             onChange={handleInputDate}
+                            inputProps={{
+                                pattern: '\\d{4}-\\d{2}-\\d{2}',
+                                placeholder: 'YYYY-MM-DD'
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             sx={{mt: 1}}
                         />
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>
