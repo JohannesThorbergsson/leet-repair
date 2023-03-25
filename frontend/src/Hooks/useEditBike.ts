@@ -48,7 +48,11 @@ export default function useEditBike(props: UseEditBikeProps){
     function handleSubmitBike(){
         if(!props.editMode) {
             axios.post("/api/bikes/",
-                {modelName: modelName, mileage: mileage, components: components, services: services})
+                {
+                    modelName: modelName,
+                    mileage: mileage,
+                    components: components,
+                    services: services})
                 .then((r) => props.updateBikeList([...props.bikes, r.data]))
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
@@ -56,7 +60,8 @@ export default function useEditBike(props: UseEditBikeProps){
             axios.put("/api/bikes/" + props.bikeToEdit?.id,
                 {modelName: modelName, mileage: mileage, components: components, services: services})
                 .then(r => r.data)
-                .then(updatedBike => props.updateBikeList([...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
+                .then(updatedBike => props.updateBikeList(
+                    [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
                 .then((() => navigate("/bikes")))
                 .catch((error) => console.error(error))
         }

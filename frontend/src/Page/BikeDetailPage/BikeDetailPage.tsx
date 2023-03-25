@@ -31,8 +31,8 @@ export default function BikeDetailPage(props: Props) {
                         flexDirection: 'row',
                         justifyContent: 'space-around',
                         }}>
-                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>MegaBike9000</Typography>
-                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>1337 km</Typography>
+                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>{bike?.modelName}</Typography>
+                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>{bike?.mileage}</Typography>
                     </Box>
                     <Box sx={{
                         justifyContent: 'start',

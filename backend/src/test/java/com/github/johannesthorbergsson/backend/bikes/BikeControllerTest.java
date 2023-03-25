@@ -9,6 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -26,7 +27,7 @@ class BikeControllerTest {
     BikeRepository bikeRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
     ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
-            "2020" );
+            LocalDate.of(2022, 12, 1));
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
     @Test
@@ -64,7 +65,7 @@ class BikeControllerTest {
                                         }
                                     ],
                                     "workshopName": "Workshop 42",
-                                    "date": "2020"
+                                    "date": "2022-12-01"
                                 }
                             ]
                         }
@@ -100,7 +101,7 @@ class BikeControllerTest {
                                             }
                                         ],
                                         "workshopName": "Workshop 42",
-                                        "date": "2020"
+                                        "date": "2022-12-01"
                                     }
                                 ]
                             }
@@ -130,7 +131,7 @@ class BikeControllerTest {
                                         }
                                     ],
                                     "workshopName": "Workshop 42",
-                                    "date": "2020"
+                                    "date": "2022-12-01"
                                 }
                             ]
                     }
@@ -166,7 +167,7 @@ class BikeControllerTest {
                                             }
                                         ],
                                         "workshopName": "Workshop 42",
-                                        "date": "2020"
+                                        "date": "2022-12-01"
                                     }
                                 ]
                             }
@@ -196,7 +197,7 @@ class BikeControllerTest {
                                     }
                                 ],
                                 "workshopName": "Workshop 42",
-                                "date": "2020"
+                                "date": "2022-12-01"
                             }
                         ]
                     }
@@ -232,7 +233,7 @@ class BikeControllerTest {
                                             }
                                         ],
                                         "workshopName": "Workshop 42",
-                                        "date": "2020"
+                                        "date": "2022-12-01"
                                     }
                                 ]
                             }
@@ -269,7 +270,7 @@ class BikeControllerTest {
                                             }
                                         ],
                                         "workshopName": "Workshop 42",
-                                        "date": "2020"
+                                        "date": "2022-12-01"
                                     }
                                 ]
                             }
