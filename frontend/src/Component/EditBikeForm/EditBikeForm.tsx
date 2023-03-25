@@ -86,7 +86,10 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             {services.map(service => <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
-                    <AddService handleSetServices={handleSetServices} services={services}/>
+                    <AddService handleSetServices={handleSetServices}
+                                services={services}
+                                components={components}
+                                handleSetInstalledComponents={handleSetInstalledComponents}/>
                 </Box>
                 <Box sx={{
                     display: 'flex',

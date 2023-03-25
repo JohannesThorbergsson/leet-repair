@@ -4,10 +4,13 @@ import {v4 as uuidv4} from "uuid"
 import EditComponents from "../../Component/EditComponents/EditComponents";
 import useEditServices from "../../Hooks/useEditServices";
 import {ServiceEvent} from "../../model/ServiceEvent";
+import {Component} from "../../model/Component";
 
 type AddServiceProps = {
     handleSetServices(services: ServiceEvent[]): void
     services: ServiceEvent[]
+    handleSetInstalledComponents(components: Component[]): void
+    components: Component[]
 }
 export default function AddService(props: AddServiceProps) {
 
@@ -15,8 +18,11 @@ export default function AddService(props: AddServiceProps) {
         newBikeComponents,
         description, workshopName, date } = useEditServices()
     function handleSubmitService(){
+        const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
         props.handleSetServices([...props.services,
             {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
+        props.handleSetInstalledComponents([...props.components.filter(
+            oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
         clearInputFields()
     }
 
