@@ -40,7 +40,7 @@ export default function ServiceCard(props: ServiceCardProps){
                         display: 'flex',
                         alignItems: 'center'
                     }}>
-                        {moment(props.service.date, "DD-MM-YYYY").format('DD.MM.YYYY')}
+                        {moment(props.service.date).format('DD.MM.YYYY')}
                     </Typography>
                 </Box>
                 {props.service.newComponents.length <1 ?

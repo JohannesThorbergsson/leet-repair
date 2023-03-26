@@ -14,10 +14,18 @@ type AddServiceProps = {
     editMode: boolean
 }
 export default function AddService(props: AddServiceProps) {
-
-    const {handleInputWorkshopName, handleInputDescription, handleInputDate, handleSetNewComponents, clearInputFields,
+    const {
+        handleInputWorkshopName,
+        handleInputDescription,
+        handleInputDate,
+        handleSetNewComponents,
+        clearInputFields,
         newBikeComponents,
-        description, workshopName, date } = useEditServices()
+        description,
+        workshopName,
+        date
+    } = useEditServices()
+
     function handleSubmitService(){
         props.handleSetServices([...props.services,
             {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
