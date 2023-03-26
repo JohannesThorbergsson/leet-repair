@@ -9,11 +9,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -27,7 +27,7 @@ class BikeControllerTest {
     BikeRepository bikeRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
     ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
-            "2020" );
+            LocalDate.of(2022, 12, 1));
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
     @Test
@@ -49,7 +49,7 @@ class BikeControllerTest {
                             "mileage": 1337,
                             "components": [
                                 {
-                                    "category": "tyre", 
+                                    "category": "tyre",
                                     "type": "Pirelli",
                                     "age": 1337
                                 }
@@ -65,7 +65,7 @@ class BikeControllerTest {
                                         }
                                     ],
                                     "workshopName": "Workshop 42",
-                                    "date": "2020"
+                                    "date": "2022-12-01"
                                 }
                             ]
                         }
@@ -101,7 +101,7 @@ class BikeControllerTest {
                                             }
                                         ],
                                         "workshopName": "Workshop 42",
-                                        "date": "2020"
+                                        "date": "2022-12-01"
                                     }
                                 ]
                             }
@@ -131,11 +131,151 @@ class BikeControllerTest {
                                         }
                                     ],
                                     "workshopName": "Workshop 42",
-                                    "date": "2020"
+                                    "date": "2022-12-01"
                                 }
                             ]
                     }
                     """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void updateBike_whenValidRequest_thenReturnUpdatedBike() throws Exception {
+        bikeRepository.save(testBike);
+        mockMvc.perform(put("/api/bikes/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "modelName": "MegaBike9000",
+                                "mileage": 1337,
+                                "components": [
+                                    {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                    }
+                                ],
+                                "services": [
+                                    {
+                                        "description": "Tyre change",
+                                        "newComponents": [
+                                            {
+                                            "category": "tyre",
+                                            "type": "Pirelli",
+                                            "age": 1337
+                                            }
+                                        ],
+                                        "workshopName": "Workshop 42",
+                                        "date": "2022-12-01"
+                                    }
+                                ]
+                            }
+                            """)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                        "modelName": "MegaBike9000",
+                        "ownerName": "steven",
+                        "mileage": 1337,
+                        "components": [
+                            {
+                                "category": "tyre",
+                                "type": "Pirelli",
+                                "age": 1337
+                            }
+                        ],
+                        "services": [
+                            {
+                                "description": "Tyre change",
+                                "newComponents": [
+                                    {
+                                    "category": "tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                    }
+                                ],
+                                "workshopName": "Workshop 42",
+                                "date": "2022-12-01"
+                            }
+                        ]
+                    }
+                """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void updateBike_whenBikeNotFound_thenThrowBikeNotFoundException() throws Exception {
+        bikeRepository.save(testBike);
+        mockMvc.perform(put("/api/bikes/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "modelName": "MegaBike9000",
+                                "mileage": 1337,
+                                "components": [
+                                    {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                    }
+                                ],
+                                "services": [
+                                    {
+                                        "description": "Tyre change",
+                                        "newComponents": [
+                                            {
+                                            "category": "tyre",
+                                            "type": "Pirelli",
+                                            "age": 1337
+                                            }
+                                        ],
+                                        "workshopName": "Workshop 42",
+                                        "date": "2022-12-01"
+                                    }
+                                ]
+                            }
+                            """)
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+        }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "h4xx()r")
+    void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
+        bikeRepository.save(testBike);
+        mockMvc.perform(put("/api/bikes/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                                "modelName": "MegaBike9000",
+                                "mileage": 1337,
+                                "components": [
+                                    {
+                                        "category": "tyre",
+                                        "type": "Pirelli",
+                                        "age": 1337
+                                    }
+                                ],
+                                "services": [
+                                    {
+                                        "description": "Tyre change",
+                                        "newComponents": [
+                                            {
+                                            "category": "tyre",
+                                            "type": "Pirelli",
+                                            "age": 1337
+                                            }
+                                        ],
+                                        "workshopName": "Workshop 42",
+                                        "date": "2022-12-01"
+                                    }
+                                ]
+                            }
+                            """)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized());
     }
 }

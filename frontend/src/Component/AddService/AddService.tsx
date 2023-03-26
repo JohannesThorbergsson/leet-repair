@@ -1,22 +1,39 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 import {v4 as uuidv4} from "uuid"
-import EditComponents from "../../Component/EditComponents/EditComponents";
+import EditComponents from "../EditComponents/EditComponents";
 import useEditServices from "../../Hooks/useEditServices";
 import {ServiceEvent} from "../../model/ServiceEvent";
+import {Component} from "../../model/Component";
 
 type AddServiceProps = {
     handleSetServices(services: ServiceEvent[]): void
     services: ServiceEvent[]
+    handleSetInstalledComponents(components: Component[]): void
+    components: Component[]
+    editMode: boolean
 }
 export default function AddService(props: AddServiceProps) {
-
-    const {handleInputWorkshopName, handleInputDescription, handleInputDate, handleSetNewComponents, clearInputFields,
+    const {
+        handleInputWorkshopName,
+        handleInputDescription,
+        handleInputDate,
+        handleSetNewComponents,
+        clearInputFields,
         newBikeComponents,
-        description, workshopName, date } = useEditServices()
+        description,
+        workshopName,
+        date
+    } = useEditServices()
+
     function handleSubmitService(){
         props.handleSetServices([...props.services,
             {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
+        if (props.editMode) {
+            const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
+            props.handleSetInstalledComponents([...props.components.filter(
+                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
+        }
         clearInputFields()
     }
 
@@ -64,10 +81,18 @@ export default function AddService(props: AddServiceProps) {
                         />
                         <TextField
                             required
-                            id="outlined-required"
+                            id="date-input"
+                            type={"date"}
                             label="Date"
                             value={date}
                             onChange={handleInputDate}
+                            inputProps={{
+                                pattern: '\\d{4}-\\d{2}-\\d{2}',
+                                placeholder: 'YYYY-MM-DD'
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             sx={{mt: 1}}
                         />
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>

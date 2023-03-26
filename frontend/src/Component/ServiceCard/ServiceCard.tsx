@@ -15,6 +15,8 @@ import {
     Typography
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import moment from "moment";
+
 
 type ServiceCardProps = {
     service: ServiceEvent
@@ -38,7 +40,7 @@ export default function ServiceCard(props: ServiceCardProps){
                         display: 'flex',
                         alignItems: 'center'
                     }}>
-                        {props.service.date}
+                        {moment(props.service.date).format('DD.MM.YYYY')}
                     </Typography>
                 </Box>
                 {props.service.newComponents.length <1 ?

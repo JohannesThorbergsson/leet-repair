@@ -21,4 +21,8 @@ public class BikeController {
     public Bike addBike(Principal principal, @RequestBody BikeRequest bikeRequest){
         return bikeService.addBike(principal, bikeRequest);
     }
+    @PutMapping("{id}")
+    public Bike updateBike(@PathVariable String id, @RequestBody BikeRequest bikeRequest, Principal principal) {
+        return bikeService.updateBike(id, bikeRequest, principal);
+    }
 }

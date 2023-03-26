@@ -1,4 +1,15 @@
-import {Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, TextField} from "@mui/material";
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    TextField,
+    Typography
+} from "@mui/material";
 import React from "react";
 import {Component} from "../../model/Component";
 import TableHeadComponentTable from "../TableHeadComponentTable/TableHeadComponentTable";
@@ -33,36 +44,39 @@ export default function EditComponents(props: EditComponentsProp) {
                     flexDirection: 'column',
                 }}>
                     <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
-                                {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
-                                {cellName:"", align: "right"}]}/>
-                            <TableBody>
-                                {props.components.map((component) => (
-                                    <TableRow
-                                        key={component.category}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {component.category}
-                                        </TableCell>
-                                        <TableCell align="left">{component.type}</TableCell>
-                                        <TableCell align="right">{component.age}</TableCell>
-                                        <TableCell align="right" sx={{
-                                            p: 0,
-                                            width: 20
-                                        }}>
-                                            <DeleteIcon onClick={() =>handleDeleteComponent(component)} sx={{
-                                                alignSelf: 'end',
-                                                cursor: 'pointer',
-                                                color: '#2196f3',
-                                                mr: 1
-                                            }}/>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                        {props.components.length>0?
+                            <Table aria-label="simple table">
+                                <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
+                                    {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"},
+                                    {cellName:"", align: "right"}]}/>
+                                <TableBody>
+                                    {props.components.map((component) => (
+                                        <TableRow
+                                            key={component.category}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {component.category}
+                                            </TableCell>
+                                            <TableCell align="left">{component.type}</TableCell>
+                                            <TableCell align="right">{component.age}</TableCell>
+                                            <TableCell align="right" sx={{
+                                                p: 0,
+                                                width: 20
+                                            }}>
+                                                <DeleteIcon onClick={() =>handleDeleteComponent(component)} sx={{
+                                                    alignSelf: 'end',
+                                                    cursor: 'pointer',
+                                                    color: '#2196f3',
+                                                    mr: 1
+                                                }}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>:
+                            <Typography variant={"subtitle2"} fontWeight={"small"} sx={{mt: 1}}>No Components</Typography>
+                        }
                     </TableContainer>
                     <Box sx={{
                         display: 'flex',

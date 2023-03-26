@@ -4,9 +4,9 @@ import Toolbar from "@mui/material/Toolbar";
 import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
 import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
@@ -16,7 +16,10 @@ export default function ResponsiveAppBar() {
     const user = useAuth()
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-    };
+    }
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    }
     const handleLogout = () => {
         setAnchorElUser(null);
         axios.post('/api/users/logout')
@@ -44,7 +47,6 @@ export default function ResponsiveAppBar() {
                         >
                             LeetRepair
                         </Typography>
-
                         <BuildCircleIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                         <Typography
                             variant="h5"
@@ -64,12 +66,15 @@ export default function ResponsiveAppBar() {
                         >
                             LeetRepair
                         </Typography>
-
-
                         <Box sx={{ flexGrow: 0 }}>
                             {user? <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <IconButton onClick={handleOpenUserMenu}
+                                            size="large"
+                                            edge="start"
+                                            color="inherit"
+                                            aria-label="open drawer"
+                                            sx={{ p: 0, ml: 1 }}>
+                                    <MenuIcon/>
                                 </IconButton>
                             </Tooltip>:
                                 <></>
@@ -88,7 +93,7 @@ export default function ResponsiveAppBar() {
                                     horizontal: 'right',
                                 }}
                                 open={Boolean(anchorElUser)}
-                                onClose={handleLogout}
+                                onClose={handleCloseUserMenu}
                             >
                                     <MenuItem key={"logout"} onClick={handleLogout}>
                                         <Typography textAlign="center">Logout</Typography>

@@ -21,7 +21,7 @@ export default function BikeGallery(props: Props) {
                 p: 2
             }}>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Your Bikes:</Typography>
-                <Button variant={"contained"} onClick={()=>navigate("/bikes/edit-form")}>
+                <Button variant={"contained"} onClick={()=>navigate("/bikes/add-bike")}>
                     Add new bike
                 </Button>
             </Box>

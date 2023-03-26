@@ -11,9 +11,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import AddBikeForm from "../../Page/AddBikeForm/AddBikeForm";
 import BikeDetailPage from "../../Page/BikeDetailPage/BikeDetailPage";
 import useBikes from "../../Hooks/useBikes";
+import EditBikePage from "../../Page/EditBikePage/EditBikePage";
+import AddBikePage from "../../Page/AddBikePage/AddBikePage";
 
 axios.interceptors.request.use(
     function (config) {
@@ -28,7 +29,7 @@ axios.interceptors.request.use(
 )
 
 function App() {
-const {bikes} = useBikes()
+const {bikes, updateBikeList} = useBikes()
   return (
       <div className="App">
         <Routes>
@@ -36,8 +37,9 @@ const {bikes} = useBikes()
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={<Dashboard/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
-          <Route path={"/bikes/edit-form"} element={<AddBikeForm/>}/>
+          <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
+          <Route path={"/bikes/edit-bike/:bikeId"} element={<EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
         </Routes>
       </div>
   );
