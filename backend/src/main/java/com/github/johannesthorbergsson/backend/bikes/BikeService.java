@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,14 @@ public class BikeService {
                 bikeRequest.components(),
                 bikeRequest.services());
         return bikeRepository.save(editedBike);
+    }
+    public Bike deleteBike(String id, Principal principal) {
+        Optional<Bike> bikeToDeleteOptional = bikeRepository.findById(id);
+        Bike bikeToDelete = bikeToDeleteOptional.orElseThrow(NoSuchBikeException::new);
+        if (!bikeToDelete.ownerName().equals(principal.getName())) {
+            throw new UnauthorizedAccessException();
+        }
+        bikeRepository.deleteById(id);
+        return bikeToDelete;
     }
 }
