@@ -17,11 +17,7 @@ type EditBikeFormProps = {
 export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
     const {
-        mileageFieldValue,
-        components,
-        mileage,
-        modelName,
-        services,
+        editBikeFormState,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
@@ -49,7 +45,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         id="outlined-required"
                         label="Model Name"
                         fullWidth
-                        value={modelName}
+                        value={editBikeFormState.modelName}
                         onChange={handleInputModelName}
                         sx={{mt: 1}}
                     />
@@ -57,9 +53,11 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        value={mileage}
-                        error={!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!==""}
-                        helperText={(!/^\d+$/.test(mileageFieldValue.trim()) && mileageFieldValue!=="")
+                        value={editBikeFormState.mileage}
+                        error={!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
+                            && editBikeFormState.mileageFieldValue!==""}
+                        helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
+                            && editBikeFormState.mileageFieldValue!=="")
                             && "Must be a numeric value"}
                         onChange={handleInputMileage}
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -73,22 +71,28 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     justifyContent: 'start',
                     display: 'flex',
                     flexDirection: 'column',}}>
-                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Installed Components</Typography>
-                    <EditComponents components={components} handleSetComponents={handleSetInstalledComponents}/>
+                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
+                        Installed Components
+                    </Typography>
+                    <EditComponents components={editBikeFormState.components}
+                                    handleSetComponents={handleSetInstalledComponents}/>
                 </Box>
                 <Box>
-                    {services.length>0 &&
+                    {editBikeFormState.services.length>0 &&
                         <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
-                            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Recorded Services</Typography>
-                            {services.map(service => <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
+                            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
+                                Recorded Services
+                            </Typography>
+                            {editBikeFormState.services.map(service =>
+                                <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
                     <AddService handleSetServices={handleSetServices}
-                                services={services}
-                                components={components}
+                                services={editBikeFormState.services}
+                                components={editBikeFormState.components}
                                 handleSetInstalledComponents={handleSetInstalledComponents}
                                 editMode={props.editMode}/>
                 </Box>
@@ -99,7 +103,10 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
-                        disabled ={modelName==="" || mileage===undefined || !/^\d+$/.test(mileageFieldValue.trim())}>
+                        disabled =
+                            {editBikeFormState.modelName===""
+                            || editBikeFormState.mileage===undefined
+                            || !/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())}>
                         {props.editMode? "Save Changes" : "Save"}
                     </Button>
                     <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>

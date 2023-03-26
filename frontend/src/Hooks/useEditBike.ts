@@ -1,10 +1,11 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useReducer} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { LocalDate } from 'js-joda';
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Bike} from "../model/Bike";
+import editBikeFormReducer from "../Reducer/editBikeFormReducer";
 
 type UseEditBikeProps = {
     editMode: boolean
@@ -13,47 +14,45 @@ type UseEditBikeProps = {
     updateBikeList(bikes: Bike[]): void
 }
 export default function useEditBike(props: UseEditBikeProps){
-    const[modelName, setModelName] =
-        useState(props.bikeToEdit? props.bikeToEdit.modelName : "")
-    const[mileage, setMileage] =
-        useState<number | undefined>(props.bikeToEdit? props.bikeToEdit.mileage : undefined)
-    const[mileageFieldValue, setMileageFieldValue] =
-        useState(props.bikeToEdit? props.bikeToEdit.mileage.toString() : "")
-    const[components, setComponents] =
-        useState<Component[]>(props.bikeToEdit? props.bikeToEdit.components : [])
-    const[services, setServices] = useState<ServiceEvent[]>(props.bikeToEdit? props.bikeToEdit.services : [])
-
+    const initialFormState = {
+        modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
+        mileage: props.bikeToEdit? props.bikeToEdit.mileage : undefined,
+        mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
+        components: props.bikeToEdit? props.bikeToEdit.components : [],
+        services: props.bikeToEdit? props.bikeToEdit.services : []
+    }
+    const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
 
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
-        setModelName(event.target.value)
+        dispatch({type: "SET_MODEL_NAME", payload: event.target.value})
     }
     function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
-        setMileageFieldValue(event.target.value)
+        dispatch({type: "SET_MILEAGE_FIELD_VALUE", payload: event.target.value})
         if(/^\d+$/.test(event.target.value.trim())) {
-            setMileage(Number(event.target.value.trim()))
+            dispatch({type: "SET_MILEAGE", payload: Number(event.target.value.trim())})
         }
     }
     function handleSetInstalledComponents(components: Component[]){
-        setComponents(components)
-    }
-    function handleDeleteComponent(component: Component) {
-        setComponents(components.filter((c => c.type !== component.type)))
+        dispatch({type: "SET_COMPONENTS", payload: components})
     }
     function handleSetServices(services: ServiceEvent[]){
-        setServices(services)
+        dispatch({type: "SET_SERVICES", payload: services})
+    }
+    function handleDeleteComponent(component: Component) {
+        dispatch({type: "SET_COMPONENTS", payload: editBikeFormState.components.filter((c => c.type !== component.type))})
     }
     function deleteService(id: string){
-        setServices(services.filter(serviceEvent => serviceEvent.id!==id))
+        dispatch({type: "SET_SERVICES", payload: editBikeFormState.services.filter(serviceEvent => serviceEvent.id!==id)})
     }
     function handleSubmitBike(){
         if(!props.editMode) {
             axios.post("/api/bikes/",
                 {
-                    modelName: modelName,
-                    mileage: mileage,
-                    components: components,
-                    services: services.map((service) => ({
+                    modelName: editBikeFormState.modelName,
+                    mileage: editBikeFormState.mileage,
+                    components: editBikeFormState.components,
+                    services: editBikeFormState.services.map((service) => ({
                         description: service.description,
                         newComponents: service.newComponents,
                         workshopName: service.workshopName,
@@ -64,10 +63,10 @@ export default function useEditBike(props: UseEditBikeProps){
         } else {
             axios.put("/api/bikes/" + props.bikeToEdit?.id,
                 {
-                    modelName: modelName,
-                    mileage: mileage,
-                    components: components,
-                    services: services.map((service) => ({
+                    modelName: editBikeFormState.modelName,
+                    mileage: editBikeFormState.mileage,
+                    components: editBikeFormState.components,
+                    services: editBikeFormState.services.map((service) => ({
                         description: service.description,
                         newComponents: service.newComponents,
                         workshopName: service.workshopName,
@@ -83,11 +82,7 @@ export default function useEditBike(props: UseEditBikeProps){
         navigate("/bikes")
     }
     return {
-        mileageFieldValue,
-        components,
-        modelName,
-        mileage,
-        services,
+        editBikeFormState,
         handleDeleteComponent,
         handleInputMileage,
         handleInputModelName,
