@@ -19,7 +19,6 @@ export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
     const {
         editBikeFormState,
-        openDeleteDialog,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
@@ -106,7 +105,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
-                        sx={{width: 1/1}}
+                        sx={{width: 1}}
                         disabled =
                             {editBikeFormState.modelName===""
                             || editBikeFormState.mileage===undefined
@@ -120,15 +119,28 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     justifyContent: 'space-evenly',
                     mt: 1
                 }}>
-                    <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
+                    <Button variant={"contained"} onClick={handleCancel}
+                            sx={{
+                                width: props.editMode? 4/5: 1,
+                                mr: props.editMode? 0.5: 0}}>
+                        Cancel
+                    </Button>
                     {props.editMode &&
                         <Button variant={"contained"} onClick={handleClickDeleteBike}
-                                sx={{bgcolor: 'warning.main',
+                                sx={{
+                                    bgcolor: 'warning.main',
+                                    width: 4/5,
+                                    ml: 0.5,
                                         '&:hover': {bgcolor: 'error.main'}}}>
                             Delete Bike
                         </Button>
                     }
-                    <DeleteBikeDialog openDeleteDialog={openDeleteDialog} handleClickDeleteBike={handleClickDeleteBike}/>
+                    <DeleteBikeDialog
+                        openDeleteDialog={editBikeFormState.openDeleteDialog}
+                        handleClickDeleteBike={handleClickDeleteBike}
+                        bikeToDeleteId={props.bikeToEdit?.id}
+                        bikes={props.bikes}
+                        updateBikeList={props.updateBikeList}/>
                 </Box>
             </Box>
         </>
