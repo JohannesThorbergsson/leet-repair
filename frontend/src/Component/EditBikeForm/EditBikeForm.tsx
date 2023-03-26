@@ -7,6 +7,7 @@ import ServiceCard from "../ServiceCard/ServiceCard";
 import AddService from "../AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
+import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
 
 type EditBikeFormProps = {
     editMode: boolean
@@ -18,13 +19,15 @@ export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
     const {
         editBikeFormState,
+        openDeleteDialog,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
         handleSubmitBike,
         handleSetInstalledComponents,
         deleteService,
-        handleCancel
+        handleCancel,
+        handleClickDeleteBike
     } = useEditBike(props)
 
     return(
@@ -103,13 +106,29 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
+                        sx={{width: 1/1}}
                         disabled =
                             {editBikeFormState.modelName===""
                             || editBikeFormState.mileage===undefined
                             || !/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())}>
                         {props.editMode? "Save Changes" : "Save"}
                     </Button>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    mt: 1
+                }}>
                     <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
+                    {props.editMode &&
+                        <Button variant={"contained"} onClick={handleClickDeleteBike}
+                                sx={{bgcolor: 'warning.main',
+                                        '&:hover': {bgcolor: 'error.main'}}}>
+                            Delete Bike
+                        </Button>
+                    }
+                    <DeleteBikeDialog openDeleteDialog={openDeleteDialog} handleClickDeleteBike={handleClickDeleteBike}/>
                 </Box>
             </Box>
         </>

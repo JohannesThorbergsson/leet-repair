@@ -1,4 +1,4 @@
-import {ChangeEvent, useReducer} from "react";
+import {ChangeEvent, useReducer, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -22,6 +22,7 @@ export default function useEditBike(props: UseEditBikeProps){
         services: props.bikeToEdit? props.bikeToEdit.services : []
     }
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const navigate = useNavigate()
 
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
@@ -46,6 +47,9 @@ export default function useEditBike(props: UseEditBikeProps){
     function deleteService(id: string){
         dispatch({type: "SET_SERVICES",
             payload: editBikeFormState.services.filter(serviceEvent => serviceEvent.id!==id)})
+    }
+    function handleClickDeleteBike(){
+        setOpenDeleteDialog(!openDeleteDialog)
     }
     function handleSubmitBike(){
         if(!props.editMode) {
@@ -85,6 +89,7 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     return {
         editBikeFormState,
+        openDeleteDialog,
         handleDeleteComponent,
         handleInputMileage,
         handleInputModelName,
@@ -92,6 +97,7 @@ export default function useEditBike(props: UseEditBikeProps){
         handleSetServices,
         deleteService,
         handleSubmitBike,
-        handleCancel
+        handleCancel,
+        handleClickDeleteBike
     }
 }
