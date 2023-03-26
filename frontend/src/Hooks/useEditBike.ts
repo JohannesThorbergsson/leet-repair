@@ -40,10 +40,12 @@ export default function useEditBike(props: UseEditBikeProps){
         dispatch({type: "SET_SERVICES", payload: services})
     }
     function handleDeleteComponent(component: Component) {
-        dispatch({type: "SET_COMPONENTS", payload: editBikeFormState.components.filter((c => c.type !== component.type))})
+        dispatch({type: "SET_COMPONENTS",
+            payload: editBikeFormState.components.filter((c => c.type !== component.type))})
     }
     function deleteService(id: string){
-        dispatch({type: "SET_SERVICES", payload: editBikeFormState.services.filter(serviceEvent => serviceEvent.id!==id)})
+        dispatch({type: "SET_SERVICES",
+            payload: editBikeFormState.services.filter(serviceEvent => serviceEvent.id!==id)})
     }
     function handleSubmitBike(){
         if(!props.editMode) {

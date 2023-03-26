@@ -16,7 +16,6 @@ type Action =
     | {type: "SET_SERVICES", payload: ServiceEvent[]
 }
 
-
 export default function editBikeFormReducer(state: State, action: Action) {
     switch (action.type) {
         case "SET_MODEL_NAME":
