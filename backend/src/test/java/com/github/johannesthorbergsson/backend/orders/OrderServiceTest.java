@@ -17,7 +17,8 @@ class OrderServiceTest {
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "steven", Status.OPEN, componentList);
+    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
+            "steven", Status.OPEN, componentList);
     OrderService orderService = new OrderService(orderRepository, idService);
     @Test
     void getAllOrders_whenOrdersMatchPrincipal_thenReturnListOfOrders() {

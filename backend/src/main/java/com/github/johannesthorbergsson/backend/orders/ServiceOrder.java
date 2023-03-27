@@ -12,6 +12,7 @@ public record ServiceOrder(
         String id,
         String bikeId,
         String description,
+        String workshop,
         String username,
         Status status,
         List<Component> componentsToReplace

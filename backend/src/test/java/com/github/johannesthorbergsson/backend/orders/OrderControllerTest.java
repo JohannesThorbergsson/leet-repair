@@ -26,7 +26,7 @@ class OrderControllerTest {
     @Autowired
     OrderRepository orderRepository;
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "steven", Status.OPEN, componentList);
+    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42", "steven", Status.OPEN, componentList);
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
@@ -43,6 +43,7 @@ class OrderControllerTest {
                             "id": "1",
                             "bikeId": "bid",
                             "description": "New Tyre",
+                            "workshop": "Workshop42",
                             "username": "steven",
                             "status": "OPEN",
                             "componentsToReplace": [
