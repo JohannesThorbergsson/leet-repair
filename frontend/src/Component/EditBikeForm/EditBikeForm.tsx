@@ -60,7 +60,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             && editBikeFormState.mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!=="")
-                            && "Must be a numeric value"}
+                            && "Must be a positive numeric value"}
                         onChange={handleInputMileage}
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         InputProps={{
