@@ -1,23 +1,18 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {Workshop} from "../model/Workshop";
-import axios from "axios";
 
-export default function useWorkshops() {
-    const [workshops, setWorkshops] = useState<Workshop[]>([])
+type UseWorkshopsProps = {
+    workshops: Workshop[]
+}
+export default function useWorkshops(props: UseWorkshopsProps) {
     const [searchTerm, setSearchTerm] = useState<string>("")
     const [searchResults, setSearchResults] = useState<Workshop[]>([])
     const [search, setSearch] = useState(false)
 
-    useEffect(fetchWorkshops, [])
-
-    function fetchWorkshops() {
-        axios.get("/api/workshops/")
-            .then(r => setWorkshops(r.data))
-    }
     function searchHandler() {
         if(searchTerm !== "") {
             setSearch(true)
-            setSearchResults(workshops.filter(
+            setSearchResults(props.workshops.filter(
                 w => w.services.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase())).length>0))
         }
     }
