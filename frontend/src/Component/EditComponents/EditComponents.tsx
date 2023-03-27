@@ -107,8 +107,9 @@ export default function EditComponents(props: EditComponentsProp) {
                             required
                             id="outlined-required"
                             label="Age (km)"
-                            value={newComponentAge}
+                            value={Number.isNaN(newComponentAge)? 0 : newComponentAge}
                             error={!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!==""}
+                            helperText={(!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!=="") && "NaN"}
                             sx={{mt: 1}}
                             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             onChange={handleInputComponentAge}
