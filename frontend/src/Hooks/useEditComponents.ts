@@ -19,9 +19,7 @@ export default function useEditComponents(props: useEditComponentsProps){
     }
     function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
         setNewComponentAgeValue(event.target.value)
-        if(/^\d+$/.test(event.target.value)) {
-            setNewComponentAge(Number(event.target.value))
-        }
+        setNewComponentAge(Number(event.target.value))
     }
     function handleSubmitNewComponent(){
         props.handleSetComponents([...props.components,

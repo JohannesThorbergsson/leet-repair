@@ -99,4 +99,37 @@ class BikeServiceTest {
         verify(bikeRepository).findById(testId);
         verify(principal).getName();
     }
+    @Test
+    void deleteBike_whenValidRequest_thenReturnDeletedBike(){
+        //GIVEN
+        when(bikeRepository.findById(testId)).thenReturn(Optional.of(testBike));
+        when(principal.getName()).thenReturn("steven");
+        Bike expected = testBike;
+        //WHEN
+        Bike actual = bikeService.deleteBike(testId, principal);
+        //THEN
+        assertEquals(expected, actual);
+        verify(bikeRepository).findById(testId);
+        verify(principal).getName();
+    }
+    @Test
+    void deleteBike_whenBikeNotFound_thenThrowBikeNotFoundException(){
+        //GIVEN
+        when(bikeRepository.findById(testId)).thenReturn(Optional.empty());
+        Class<NoSuchBikeException> expected = NoSuchBikeException.class;
+        //THEN
+        assertThrows(expected, ()->bikeService.deleteBike(testId, principal));
+        verify(bikeRepository).findById(testId);
+    }
+    @Test
+    void deleteBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
+        //GIVEN
+        when(bikeRepository.findById(testId)).thenReturn(Optional.of(testBike));
+        when(principal.getName()).thenReturn("h4xx()r");
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //THEN
+        assertThrows(expected, () -> bikeService.deleteBike(testId, principal));
+        verify(bikeRepository).findById(testId);
+        verify(principal).getName();
+    }
 }

@@ -105,6 +105,7 @@ export default function AddService(props: AddServiceProps) {
                         }}>
                             <Button variant={"contained"}
                                     onClick={handleSubmitService}
+                                    sx={{width: 1}}
                                     disabled={description==="" || workshopName==="" || date ===""}>
                                 Add Service
                             </Button>

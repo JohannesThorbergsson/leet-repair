@@ -7,6 +7,7 @@ import ServiceCard from "../ServiceCard/ServiceCard";
 import AddService from "../AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
+import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
 
 type EditBikeFormProps = {
     editMode: boolean
@@ -24,7 +25,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleSubmitBike,
         handleSetInstalledComponents,
         deleteService,
-        handleCancel
+        handleCancel,
+        handleClickDeleteBike
     } = useEditBike(props)
 
     return(
@@ -53,18 +55,18 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        value={editBikeFormState.mileage}
+                        value={Number.isNaN(editBikeFormState.mileage)? 0 : editBikeFormState.mileage}
                         error={!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!=="")
-                            && "Must be a numeric value"}
-                        onChange={handleInputMileage}
+                            && "Must be a positive numeric value"}
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">km</InputAdornment>,
                         }}
                         sx={{mt: 1}}
+                        onChange={handleInputMileage}
                     />
                 </Box>
                 <Box sx={{
@@ -103,13 +105,42 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     mt: 1
                 }}>
                     <Button variant={"contained"} onClick={handleSubmitBike}
+                        sx={{width: 1}}
                         disabled =
                             {editBikeFormState.modelName===""
                             || editBikeFormState.mileage===undefined
                             || !/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())}>
                         {props.editMode? "Save Changes" : "Save"}
                     </Button>
-                    <Button variant={"contained"} onClick={handleCancel}>Cancel</Button>
+                </Box>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    mt: 1
+                }}>
+                    <Button variant={"contained"} onClick={handleCancel}
+                            sx={{
+                                width: props.editMode? 4/5: 1,
+                                mr: props.editMode? 0.5: 0}}>
+                        Cancel
+                    </Button>
+                    {props.editMode &&
+                        <Button variant={"contained"} onClick={handleClickDeleteBike}
+                                sx={{
+                                    bgcolor: 'warning.main',
+                                    width: 4/5,
+                                    ml: 0.5,
+                                        '&:hover': {bgcolor: 'error.main'}}}>
+                            Delete Bike
+                        </Button>
+                    }
+                    <DeleteBikeDialog
+                        openDeleteDialog={editBikeFormState.openDeleteDialog}
+                        handleClickDeleteBike={handleClickDeleteBike}
+                        bikeToDeleteId={props.bikeToEdit?.id}
+                        bikes={props.bikes}
+                        updateBikeList={props.updateBikeList}/>
                 </Box>
             </Box>
         </>

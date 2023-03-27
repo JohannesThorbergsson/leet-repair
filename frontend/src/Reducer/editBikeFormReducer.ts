@@ -7,14 +7,15 @@ type State = {
     mileageFieldValue: string
     components: Component[]
     services: ServiceEvent[]
+    openDeleteDialog: boolean
 }
 type Action =
     | {type: "SET_MODEL_NAME", payload: string}
-    | {type: "SET_MILEAGE", payload: number | undefined}
+    | {type: "SET_MILEAGE", payload: number}
     | {type: "SET_MILEAGE_FIELD_VALUE", payload: string}
     | {type: "SET_COMPONENTS", payload: Component[]}
-    | {type: "SET_SERVICES", payload: ServiceEvent[]
-}
+    | {type: "SET_SERVICES", payload: ServiceEvent[] }
+    | {type: "SET_OPEN_DELETE_DIALOG", payload: boolean}
 
 export default function editBikeFormReducer(state: State, action: Action) {
     switch (action.type) {
@@ -28,6 +29,8 @@ export default function editBikeFormReducer(state: State, action: Action) {
             return {...state, components: action.payload}
         case "SET_SERVICES":
             return {...state, services: action.payload}
+        case "SET_OPEN_DELETE_DIALOG":
+            return {...state, openDeleteDialog: action.payload}
         default:
             return state
     }

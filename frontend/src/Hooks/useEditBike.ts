@@ -2,7 +2,7 @@ import {ChangeEvent, useReducer} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import { LocalDate } from 'js-joda';
+import {LocalDate} from 'js-joda';
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Bike} from "../model/Bike";
 import editBikeFormReducer from "../Reducer/editBikeFormReducer";
@@ -16,10 +16,11 @@ type UseEditBikeProps = {
 export default function useEditBike(props: UseEditBikeProps){
     const initialFormState = {
         modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
-        mileage: props.bikeToEdit? props.bikeToEdit.mileage : undefined,
+        mileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
         mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
         components: props.bikeToEdit? props.bikeToEdit.components : [],
-        services: props.bikeToEdit? props.bikeToEdit.services : []
+        services: props.bikeToEdit? props.bikeToEdit.services : [],
+        openDeleteDialog: false
     }
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
@@ -29,9 +30,7 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
         dispatch({type: "SET_MILEAGE_FIELD_VALUE", payload: event.target.value})
-        if(/^\d+$/.test(event.target.value.trim())) {
             dispatch({type: "SET_MILEAGE", payload: Number(event.target.value.trim())})
-        }
     }
     function handleSetInstalledComponents(components: Component[]){
         dispatch({type: "SET_COMPONENTS", payload: components})
@@ -46,6 +45,9 @@ export default function useEditBike(props: UseEditBikeProps){
     function deleteService(id: string){
         dispatch({type: "SET_SERVICES",
             payload: editBikeFormState.services.filter(serviceEvent => serviceEvent.id!==id)})
+    }
+    function handleClickDeleteBike(){
+        dispatch({type: "SET_OPEN_DELETE_DIALOG", payload: !editBikeFormState.openDeleteDialog})
     }
     function handleSubmitBike(){
         if(!props.editMode) {
@@ -92,6 +94,7 @@ export default function useEditBike(props: UseEditBikeProps){
         handleSetServices,
         deleteService,
         handleSubmitBike,
-        handleCancel
+        handleCancel,
+        handleClickDeleteBike
     }
 }

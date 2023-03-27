@@ -278,4 +278,59 @@ class BikeControllerTest {
                         .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void deleteBike_whenValidRequest_thenReturnDeletedBike() throws Exception {
+        bikeRepository.save(testBike);
+        mockMvc.perform(delete("/api/bikes/1")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                        "modelName": "MegaBike9000",
+                        "ownerName": "steven",
+                        "mileage": 1337,
+                        "components": [
+                            {
+                                "category": "tyre",
+                                "type": "Pirelli",
+                                "age": 1337
+                            }
+                        ],
+                        "services": [
+                            {
+                                "description": "Tyre change",
+                                "newComponents": [
+                                    {
+                                    "category": "tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                    }
+                                ],
+                                "workshopName": "Workshop 42",
+                                "date": "2022-12-01"
+                            }
+                        ]
+                    }
+                """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void deleteBike_whenBikeNotFound_thenThrowBikeNotFoundException() throws Exception {
+        mockMvc.perform(delete("/api/bikes/1")
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "h4xx()r")
+    void deleteBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
+        bikeRepository.save(testBike);
+        mockMvc.perform(delete("/api/bikes/1")
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized());
+    }
 }
