@@ -1,9 +1,7 @@
 package com.github.johannesthorbergsson.backend.orders;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -17,5 +15,9 @@ public class OrderController {
     @GetMapping
     public List<ServiceOrder> getAllOrders(Principal principal) {
         return orderService.getAllOrders(principal);
+    }
+    @PostMapping
+    public ServiceOrder addOrder(Principal principal, @RequestBody ServiceOrderRequest serviceOrderRequest){
+        return orderService.addOrder(principal, serviceOrderRequest);
     }
 }
