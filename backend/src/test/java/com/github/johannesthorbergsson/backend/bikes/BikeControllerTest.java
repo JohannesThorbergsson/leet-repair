@@ -276,7 +276,7 @@ class BikeControllerTest {
                             }
                             """)
                         .with(csrf()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
     @Test
     @DirtiesContext
@@ -331,6 +331,6 @@ class BikeControllerTest {
         bikeRepository.save(testBike);
         mockMvc.perform(delete("/api/bikes/1")
                         .with(csrf()))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isForbidden());
     }
 }
