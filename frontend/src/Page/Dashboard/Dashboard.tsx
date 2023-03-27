@@ -46,7 +46,10 @@ export default function Dashboard(props: DashboardProps) {
             <Button variant="contained" onClick={searchHandler} disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
             {!search?
-                <Box>{OrderGallery}</Box>
+                <Box>
+                    <Box>{OrderGallery}</Box>
+                    <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2}}>Manage Bikes</Button>
+                </Box>
                 :
                 <Box>
                     <Typography variant="h6" fontWeight={"medium"}>Search results:</Typography>
