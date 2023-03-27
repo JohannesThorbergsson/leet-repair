@@ -6,12 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("serviceOrder")
+@Document("service_order")
 public record ServiceOrder(
         @Id
         String id,
         String bikeId,
         String description,
+        String username,
         Status status,
         List<Component> componentsToReplace
 ) {

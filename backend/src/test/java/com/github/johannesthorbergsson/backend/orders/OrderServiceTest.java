@@ -29,6 +29,5 @@ class OrderServiceTest {
         List<ServiceOrder> expected = List.of(testOrder);
         //THEN
         assertEquals(expected, actual);
-
     }
 }
