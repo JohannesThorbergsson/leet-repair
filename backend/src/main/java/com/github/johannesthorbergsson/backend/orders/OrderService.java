@@ -17,5 +17,16 @@ public class OrderService {
         return orderRepository.findAll().stream()
                 .filter(order -> order.username().equals(principal.getName())).toList();
     }
+    public ServiceOrder addOrder(Principal principal, ServiceOrderRequest serviceOrderRequest){
+        ServiceOrder newOrder = new ServiceOrder(
+                idService.generateId(),
+                serviceOrderRequest.bikeId(),
+                serviceOrderRequest.description(),
+                serviceOrderRequest.workshop(),
+                principal.getName(),
+                Status.OPEN,
+                serviceOrderRequest.componentsToReplace());
+        return orderRepository.save(newOrder);
+    }
 
 }
