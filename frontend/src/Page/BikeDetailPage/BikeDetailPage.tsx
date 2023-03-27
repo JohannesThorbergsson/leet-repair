@@ -33,7 +33,7 @@ export default function BikeDetailPage(props: Props) {
                         justifyContent: 'space-around',
                         }}>
                         <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>{bike?.modelName}</Typography>
-                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>{bike?.mileage}</Typography>
+                        <Typography variant={"h5"} fontWeight={"medium"} sx={{m: 1}}>{bike?.mileage + " km"}</Typography>
                     </Box>
                     <Box sx={{
                         justifyContent: 'start',
