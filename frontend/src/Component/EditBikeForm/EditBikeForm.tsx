@@ -55,7 +55,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        value={editBikeFormState.mileage}
+                        value={Number.isNaN(editBikeFormState.mileage)? 0 : editBikeFormState.mileage}
                         error={!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())

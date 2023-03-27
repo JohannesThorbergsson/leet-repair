@@ -30,9 +30,7 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
         dispatch({type: "SET_MILEAGE_FIELD_VALUE", payload: event.target.value})
-        if(/^\d+$/.test(event.target.value.trim())) {
             dispatch({type: "SET_MILEAGE", payload: Number(event.target.value.trim())})
-        }
     }
     function handleSetInstalledComponents(components: Component[]){
         dispatch({type: "SET_COMPONENTS", payload: components})
