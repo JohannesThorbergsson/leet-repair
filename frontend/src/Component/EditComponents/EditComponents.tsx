@@ -71,6 +71,7 @@ export default function EditComponents(props: EditComponentsProp) {
                     </Box>
                     <Button variant={"contained"} onClick={handleSubmitNewComponent} sx={{mt: 1}}
                             disabled={props.components.filter(c => c.category === newComponentCategory).length!==0
+                                || !/^\d+$/.test(newComponentAgeValue.trim())
                                 || newComponentModel===""
                                 || newComponentCategory===""}>
                         Add Component

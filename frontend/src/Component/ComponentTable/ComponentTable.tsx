@@ -9,6 +9,7 @@ type ComponentTableProps = {
 }
 export default function ComponentTable(props: ComponentTableProps) {
     const deleteFunction = props.handleDeleteComponent || (() => {})
+
     return (
         <TableContainer component={Paper}>
             {props.components.length>0?
