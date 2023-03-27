@@ -1,6 +1,7 @@
 import {Workshop} from "../../model/Workshop";
 import {Card, CardContent, Typography} from "@mui/material";
 import React from "react";
+import ComponentTable from "../ComponentTable/ComponentTable";
 
 type Props = {
     workshop: Workshop
@@ -19,6 +20,8 @@ export default function WorkshopCard(props: Props) {
                 {props.workshop.services.map(s =>
                     <Typography variant="body1" key={s}>{s}</Typography>
                 )}
+                <ComponentTable components={props.workshop.inventory}/>
+                {/*ToDo Put noAge mode here*/}
             </CardContent>
         </React.Fragment>
     );
