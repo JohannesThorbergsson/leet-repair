@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Box,
     Card,
     CardContent,
     Paper,
@@ -20,17 +21,23 @@ export default function OrderCard(props: OrderCardProps){
     const card = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h2" fontWeight={"medium"}>
+                <Typography variant="h4" fontWeight={"medium"}>
                     {props.order.description}
                 </Typography>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                    Contractor: {props.order.workshop} km
-                </Typography>
-                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                    Status: {props.order.status}
-                </Typography>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly'
+                }}>
+                    <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
+                        Contractor: {props.order.workshop}
+                    </Typography>
+                    <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
+                        Status: {props.order.status}
+                    </Typography>
+                </Box>
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
-                    Installed Components:
+                    New Components:
                 </Typography>
                 <TableContainer component={Paper}>
                     <Table sx={{ }} aria-label="simple table">
