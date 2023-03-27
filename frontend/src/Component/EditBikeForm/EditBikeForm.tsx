@@ -61,12 +61,12 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!=="")
                             && "Must be a positive numeric value"}
-                        onChange={handleInputMileage}
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">km</InputAdornment>,
                         }}
                         sx={{mt: 1}}
+                        onChange={handleInputMileage}
                     />
                 </Box>
                 <Box sx={{

@@ -11,7 +11,7 @@ type State = {
 }
 type Action =
     | {type: "SET_MODEL_NAME", payload: string}
-    | {type: "SET_MILEAGE", payload: number | undefined}
+    | {type: "SET_MILEAGE", payload: number}
     | {type: "SET_MILEAGE_FIELD_VALUE", payload: string}
     | {type: "SET_COMPONENTS", payload: Component[]}
     | {type: "SET_SERVICES", payload: ServiceEvent[] }

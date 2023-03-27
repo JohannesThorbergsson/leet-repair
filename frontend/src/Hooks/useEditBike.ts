@@ -2,7 +2,7 @@ import {ChangeEvent, useReducer} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import { LocalDate } from 'js-joda';
+import {LocalDate} from 'js-joda';
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Bike} from "../model/Bike";
 import editBikeFormReducer from "../Reducer/editBikeFormReducer";
@@ -16,7 +16,7 @@ type UseEditBikeProps = {
 export default function useEditBike(props: UseEditBikeProps){
     const initialFormState = {
         modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
-        mileage: props.bikeToEdit? props.bikeToEdit.mileage : undefined,
+        mileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
         mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
         components: props.bikeToEdit? props.bikeToEdit.components : [],
         services: props.bikeToEdit? props.bikeToEdit.services : [],
