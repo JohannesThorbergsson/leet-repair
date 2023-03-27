@@ -4,6 +4,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Box, Button, Container, TextField, Typography} from "@mui/material";
 import Link from "@mui/material/Link";
+import toast from "react-hot-toast";
 
 
 export default function Login() {
@@ -22,6 +23,7 @@ export default function Login() {
         axios
             .post("/api/users/", {username, password})
             .then(() => navigate("/login"))
+            .then(() =>toast.success(`Successfully signed up 🤗`))
             .catch(error => console.log(error))
     }
     return (
