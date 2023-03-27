@@ -1,13 +1,15 @@
 import {Workshop} from "../../model/Workshop";
-import {Card, CardContent, Typography} from "@mui/material";
+import {Button, Card, CardContent, Typography} from "@mui/material";
 import React from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
+import {useNavigate} from "react-router-dom";
 
 type Props = {
     workshop: Workshop
 }
 
 export default function WorkshopCard(props: Props) {
+    const navigate = useNavigate()
     const card = (
         <React.Fragment>
             <CardContent>
@@ -22,6 +24,10 @@ export default function WorkshopCard(props: Props) {
                 )}
                 <ComponentTable components={props.workshop.inventory}/>
                 {/*ToDo Put noAge mode here*/}
+                <Button variant={"contained"} sx={{mt: 1}}
+                        onClick={() => navigate("/workshops/orders/"+props.workshop.id)}>
+                    Book Services
+                </Button>
             </CardContent>
         </React.Fragment>
     );
@@ -29,6 +35,7 @@ export default function WorkshopCard(props: Props) {
         <div>
             <Card variant={"outlined"} sx={{
                 m: 2,
+                p: 0,
                 boxShadow: 1
             }}>{card}</Card>
         </div>

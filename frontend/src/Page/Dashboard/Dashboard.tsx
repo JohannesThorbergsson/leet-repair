@@ -7,14 +7,17 @@ import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import OrderCard from "../../Component/OrderCard/OrderCard";
+import {Workshop} from "../../model/Workshop";
 
 type DashboardProps = {
     orders: ServiceOrder[]
+    workshops: Workshop[]
 }
 export default function Dashboard(props: DashboardProps) {
     const user = useAuth(true)
     const navigate = useNavigate()
-    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm} = useWorkshops()
+    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
+        = useWorkshops({workshops: props.workshops})
     const OrderGallery =
         (props.orders.length>0?
             <Box>
