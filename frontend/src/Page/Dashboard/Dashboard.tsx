@@ -19,7 +19,7 @@ export default function Dashboard(props: DashboardProps) {
     const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
         = useWorkshops({workshops: props.workshops})
     const OrderGallery =
-        (props.orders.length>0?
+        (props.orders.length>0 && props.orders.map?
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
                 {props.orders.map(order => <OrderCard key={order.id} order={order}/>)}

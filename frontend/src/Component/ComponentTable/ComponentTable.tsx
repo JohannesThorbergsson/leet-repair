@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 type ComponentTableProps = {
     components: Component[]
     handleDeleteComponent? (component: Component): void
+    showAge?: boolean
 }
 export default function ComponentTable(props: ComponentTableProps) {
     const deleteFunction = props.handleDeleteComponent || (() => {})
@@ -18,7 +19,9 @@ export default function ComponentTable(props: ComponentTableProps) {
                         <TableRow>
                             <TableCell>Component</TableCell>
                             <TableCell align="left">Model</TableCell>
-                            <TableCell align="right">Age (km)</TableCell>
+                            {props.showAge &&
+                                <TableCell align="right">Age (km)</TableCell>
+                            }
                             {props.handleDeleteComponent &&
                                 <TableCell align="right"></TableCell>
                             }
@@ -34,7 +37,9 @@ export default function ComponentTable(props: ComponentTableProps) {
                                     {component.category}
                                 </TableCell>
                                 <TableCell align="left">{component.type}</TableCell>
-                                <TableCell align="right">{component.age}</TableCell>
+                                {props.showAge &&
+                                    <TableCell align="right">{component.age}</TableCell>
+                                }
                                 {props.handleDeleteComponent &&
                                     <TableCell align="right" sx={{
                                     p: 0,

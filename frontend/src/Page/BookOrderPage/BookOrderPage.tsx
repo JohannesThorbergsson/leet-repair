@@ -44,7 +44,8 @@ export default function BookOrderPage(props: BookOrderPageProps){
             </Typography>
             <Box sx ={{
                 alignItems: 'center',
-                marginInline: 2}}>
+                marginInline: 2
+            }}>
                     <TextField
                         required
                         multiline
@@ -54,7 +55,7 @@ export default function BookOrderPage(props: BookOrderPageProps){
                         sx={{mt: 1}}
                     />
                     <Autocomplete
-                        sx={{mt: 1}}
+                        sx={{mt: 2}}
                         multiple
                         options={workshop?.inventory.map(component => component.category + " " +component.type) || []}
                         onChange={handleInputComponents}
