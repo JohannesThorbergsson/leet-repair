@@ -33,7 +33,7 @@ export default function Dashboard(props: DashboardProps) {
     return (user &&
         <>
             <ResponsiveAppBar/>
-            <Box sx={{
+            <Box component={'form'} onSubmit={searchHandler} sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
@@ -45,7 +45,7 @@ export default function Dashboard(props: DashboardProps) {
             }}>
             <TextField placeholder="Search for services" value={searchTerm}
                         onChange={handleSearchTerm} />
-            <Button variant="contained" onClick={searchHandler} disabled={searchTerm.trim().length===0}>Search</Button>
+            <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
             {!search?
                 <Box>

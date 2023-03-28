@@ -22,8 +22,7 @@ export default function WorkshopCard(props: Props) {
                 {props.workshop.services.map(s =>
                     <Typography variant="body1" key={s}>{s}</Typography>
                 )}
-                <ComponentTable components={props.workshop.inventory}/>
-                {/*ToDo Put noAge mode here*/}
+                <ComponentTable components={props.workshop.inventory} showAge={false}/>
                 <Button variant={"contained"} sx={{mt: 1}}
                         onClick={() => navigate("/workshops/orders/"+props.workshop.id)}>
                     Book Services

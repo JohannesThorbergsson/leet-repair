@@ -39,7 +39,7 @@ export default function ServiceCard(props: ServiceCardProps){
                         <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
                             Parts replaced:
                         </Typography>
-                        <ComponentTable components={props.service.newComponents}/>
+                        <ComponentTable components={props.service.newComponents} showAge={true}/>
                     </Box>
                 }
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{mt: 1}}>

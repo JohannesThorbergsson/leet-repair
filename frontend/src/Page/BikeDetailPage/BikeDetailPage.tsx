@@ -42,7 +42,7 @@ export default function BikeDetailPage(props: Props) {
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
                             Installed Components
                         </Typography>
-                        <ComponentTable components={bike?.components}/>
+                        <ComponentTable components={bike?.components} showAge={true}/>
                     </Box>
                     <Box>
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>

@@ -69,7 +69,7 @@ export default function BookOrderPage(props: BookOrderPageProps){
                         )}
                     />
                     {orderedComponents.length !== 0 &&
-                        <ComponentTable components={orderedComponents}/>
+                        <ComponentTable components={orderedComponents} showAge={false}/>
                     }
             </Box>
             <Button sx={{mt: 2}} variant={"contained"} onClick={()=>navigate("/")}>Back</Button>

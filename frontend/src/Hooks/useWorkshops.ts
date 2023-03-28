@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {Workshop} from "../model/Workshop";
 
 type UseWorkshopsProps = {
@@ -9,7 +9,8 @@ export default function useWorkshops(props: UseWorkshopsProps) {
     const [searchResults, setSearchResults] = useState<Workshop[]>([])
     const [search, setSearch] = useState(false)
 
-    function searchHandler() {
+    function searchHandler(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
         if(searchTerm !== "") {
             setSearch(true)
             setSearchResults(props.workshops.filter(

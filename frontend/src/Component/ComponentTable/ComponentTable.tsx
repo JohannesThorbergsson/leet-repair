@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 type ComponentTableProps = {
     components: Component[]
     handleDeleteComponent? (component: Component): void
-    showAge?: boolean
+    showAge: boolean
 }
 export default function ComponentTable(props: ComponentTableProps) {
     const deleteFunction = props.handleDeleteComponent || (() => {})

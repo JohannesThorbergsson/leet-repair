@@ -22,7 +22,7 @@ export default function BikeCard(props: Props) {
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
                     Installed Components:
                 </Typography>
-                <ComponentTable components={props.bike.components}/>
+                <ComponentTable components={props.bike.components} showAge={true}/>
                 <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{mt: 1}}>
                     {"Recorded services: " + props.bike.services.length}
                 </Typography>
