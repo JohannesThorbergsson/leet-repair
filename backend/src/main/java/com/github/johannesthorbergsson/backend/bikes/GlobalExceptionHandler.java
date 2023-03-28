@@ -26,6 +26,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put(TIMESTAMP, Instant.now());
         responseBody.put(MESSAGE, exception.getMessage());
-        return new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(responseBody, HttpStatus.FORBIDDEN);
     }
 }

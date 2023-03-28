@@ -2,12 +2,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Bike} from "../../model/Bike";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import useAuth from "../../Hooks/useAuth";
-import {Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import React from "react";
 import ServiceCard from "../../Component/ServiceCard/ServiceCard";
 import {v4 as uuidv4} from "uuid"
-import TableHeadComponentTable from "../../Component/TableHeadComponentTable/TableHeadComponentTable";
 import InvalidId from "../../Component/InvalidId/InvalidId";
+import ComponentTable from "../../Component/ComponentTable/ComponentTable";
 
 type Props = {
     bikes: Bike[]
@@ -42,26 +42,7 @@ export default function BikeDetailPage(props: Props) {
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>
                             Installed Components
                         </Typography>
-                        <TableContainer component={Paper}>
-                            <Table aria-label="simple table">
-                                <TableHeadComponentTable cells={[{cellName:"Component", align: undefined},
-                                    {cellName:"Model", align:"left"}, {cellName:"Age (km)", align:"right"}]}/>
-                                <TableBody>
-                                    {bike?.components.map((component) => (
-                                        <TableRow
-                                            key={component.category}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {component.category}
-                                            </TableCell>
-                                            <TableCell align="left">{component.type}</TableCell>
-                                            <TableCell align="right">{component.age}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <ComponentTable components={bike?.components}/>
                     </Box>
                     <Box>
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>

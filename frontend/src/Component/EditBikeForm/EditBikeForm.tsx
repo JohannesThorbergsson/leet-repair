@@ -1,5 +1,5 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
-import React from "react";
+import React, {useRef} from "react";
 import {v4 as uuidv4} from "uuid"
 import useEditBike from "../../Hooks/useEditBike";
 import EditComponents from "../EditComponents/EditComponents";
@@ -17,6 +17,7 @@ type EditBikeFormProps = {
 }
 export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
+    const cancelButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>
     const {
         editBikeFormState,
         handleInputMileage,
@@ -29,6 +30,9 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleClickDeleteBike
     } = useEditBike(props)
 
+    function scroll(){
+        cancelButtonRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
     return(
         <>
             <Box sx={{
@@ -96,7 +100,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                                 services={editBikeFormState.services}
                                 components={editBikeFormState.components}
                                 handleSetInstalledComponents={handleSetInstalledComponents}
-                                editMode={props.editMode}/>
+                                editMode={props.editMode}
+                                scrollToBottom={scroll}/>
                 </Box>
                 <Box sx={{
                     display: 'flex',
@@ -119,14 +124,17 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                     justifyContent: 'space-evenly',
                     mt: 1
                 }}>
-                    <Button variant={"contained"} onClick={handleCancel}
+                    <Button variant={"contained"}
+                            onClick={handleCancel}
+                            ref={cancelButtonRef}
                             sx={{
                                 width: props.editMode? 4/5: 1,
                                 mr: props.editMode? 0.5: 0}}>
                         Cancel
                     </Button>
                     {props.editMode &&
-                        <Button variant={"contained"} onClick={handleClickDeleteBike}
+                        <Button variant={"contained"}
+                                onClick={handleClickDeleteBike}
                                 sx={{
                                     bgcolor: 'warning.main',
                                     width: 4/5,

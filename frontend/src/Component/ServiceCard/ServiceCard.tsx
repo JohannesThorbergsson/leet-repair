@@ -1,21 +1,9 @@
 import {ServiceEvent} from "../../model/ServiceEvent";
 import React from "react";
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography
-} from "@mui/material";
+import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
+import ComponentTable from "../ComponentTable/ComponentTable";
 
 
 type ServiceCardProps = {
@@ -51,31 +39,7 @@ export default function ServiceCard(props: ServiceCardProps){
                         <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
                             Parts replaced:
                         </Typography>
-                        <TableContainer component={Paper}>
-                            <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Component</TableCell>
-                                        <TableCell align="left">Model</TableCell>
-                                        <TableCell align="right">Age (km)</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {props.service.newComponents.map((component) => (
-                                        <TableRow
-                                            key={component.category}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {component.category}
-                                            </TableCell>
-                                            <TableCell align="left">{component.type}</TableCell>
-                                            <TableCell align="right">{component.age}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <ComponentTable components={props.service.newComponents}/>
                     </Box>
                 }
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{mt: 1}}>
