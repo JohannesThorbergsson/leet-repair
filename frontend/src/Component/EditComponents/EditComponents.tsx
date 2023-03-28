@@ -19,8 +19,9 @@ export default function EditComponents(props: EditComponentsProp) {
         newComponentModel,
         newComponentCategory,
         newComponentAge,
-        newComponentAgeValue
+        submitDisabled
     } = useEditComponents(props)
+
     return (
         <>
             <Box sx={{
@@ -41,8 +42,8 @@ export default function EditComponents(props: EditComponentsProp) {
                             id="outlined-required"
                             label="Component"
                             fullWidth
-                            error = {props.components.filter(c => c.category === newComponentCategory).length!==0}
-                            helperText={props.components.filter(c => c.category === newComponentCategory).length!==0
+                            error = {props.components.filter(c => c.category === newComponentCategory.trim()).length!==0}
+                            helperText={props.components.filter(c => c.category === newComponentCategory.trim()).length!==0
                                 && "Must be unique"}
                             value={newComponentCategory}
                             sx={{mt: 1, mr: 1}}
@@ -61,19 +62,18 @@ export default function EditComponents(props: EditComponentsProp) {
                             required
                             id="outlined-required"
                             label="Age (km)"
-                            value={Number.isNaN(newComponentAge)? 0 : newComponentAge}
-                            error={!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!==""}
-                            helperText={(!/^\d+$/.test(newComponentAgeValue.trim()) && newComponentAgeValue!=="") && "NaN"}
+                            value={Number.isNaN(newComponentAge)? "" : newComponentAge}
+                            error={Number.isNaN(newComponentAge)}
+                            helperText={Number.isNaN(newComponentAge) && "NaN"}
                             sx={{mt: 1}}
                             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             onChange={handleInputComponentAge}
                         />
                     </Box>
-                    <Button variant={"contained"} onClick={handleSubmitNewComponent} sx={{mt: 1}}
-                            disabled={props.components.filter(c => c.category === newComponentCategory).length!==0
-                                || !/^\d+$/.test(newComponentAgeValue.trim())
-                                || newComponentModel===""
-                                || newComponentCategory===""}>
+                    <Button variant={"contained"}
+                            onClick={handleSubmitNewComponent}
+                            sx={{mt: 1}}
+                            disabled={submitDisabled}>
                         Add Component
                     </Button>
                 </Box>

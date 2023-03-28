@@ -3,9 +3,10 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Workshop} from "../../model/Workshop";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {Box, Button, FormControl, InputLabel, Select, TextField, Typography} from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import {v4 as uuidv4} from "uuid"
+import ComponentTable from "../../Component/ComponentTable/ComponentTable";
 
 type BookOrderPageProps = {
     workshops: Workshop[]
@@ -14,6 +15,7 @@ export default function BookOrderPage(props: BookOrderPageProps){
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
+    const [orderedComponents, setOrderedComponents] = useState([])
 
     return (
         <>
@@ -58,6 +60,7 @@ export default function BookOrderPage(props: BookOrderPageProps){
                         }
                     </Select>
                 </FormControl>
+                <ComponentTable components={orderedComponents}/>
             </Box>
             <Button variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
         </>
