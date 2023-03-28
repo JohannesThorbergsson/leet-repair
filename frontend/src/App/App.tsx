@@ -30,7 +30,7 @@ axios.interceptors.request.use(
 )
 
 function App() {
-const {bikes, orders, workshops, updateBikeList} = useFetchData()
+const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
   return (
       <div className="App">
         <Routes>
@@ -41,7 +41,8 @@ const {bikes, orders, workshops, updateBikeList} = useFetchData()
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
           <Route path={"/bikes/edit-bike/:bikeId"} element={<EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
-          <Route path={"/workshops/orders/:workshopId"} element={<BookOrderPage workshops={workshops}/>}/>
+          <Route path={"/workshops/orders/:workshopId"} element={
+              <BookOrderPage workshops={workshops} bikes={bikes} orders={orders} updateOrderList={updateOrderList}/>}/>
         </Routes>
       </div>
   );
