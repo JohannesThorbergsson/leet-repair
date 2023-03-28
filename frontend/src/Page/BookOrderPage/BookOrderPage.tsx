@@ -43,6 +43,7 @@ export default function BookOrderPage(props: BookOrderPageProps){
                 workshop: workshop?.id,
                 componentsToReplace: orderedComponents})
             .then(r => props.updateOrderList([...props.orders, r.data]))
+            .then(()=> navigate("/"))
             .catch((error) => console.error(error))
     }
 
@@ -103,7 +104,12 @@ export default function BookOrderPage(props: BookOrderPageProps){
                         />
                     )}
                 />
-                <Button variant = "contained" sx={{mt: 2}} type={"submit"}>Submit Order</Button>
+                <Button variant = "contained"
+                        sx={{mt: 2}}
+                        type={"submit"}
+                        disabled={orderDescription ==="" || !selectedBike}>
+                    Submit Order
+                </Button>
             </Box>
             <Button sx={{mt: 2}} variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
         </>
