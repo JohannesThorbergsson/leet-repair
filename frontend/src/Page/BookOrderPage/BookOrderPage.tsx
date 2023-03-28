@@ -5,6 +5,7 @@ import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {Box, Button, FormControl, InputLabel, Select, TextField, Typography} from "@mui/material";
 import React from "react";
 import MenuItem from "@mui/material/MenuItem";
+import {v4 as uuidv4} from "uuid"
 
 type BookOrderPageProps = {
     workshops: Workshop[]
@@ -39,21 +40,21 @@ export default function BookOrderPage(props: BookOrderPageProps){
             }}>
                 <TextField
                     required
+                    multiline
                     id="outlined-required"
                     label="Order Description"
                     fullWidth
                     sx={{mt: 1}}
                 />
-                <FormControl fullWidth sx={{mt: 1}}>
+                <FormControl fullWidth sx={{mt: 2}}>
                     <InputLabel id="demo-simple-select-label">Order components</InputLabel>
-                    <Select
-                        // sx={{mt: 1}}
+                    <Select sx={{textAlign: 'left'}}
                         id="demo-simple-select"
                         labelId="demo-simple-select-label"
                         label="Order components"
                     >
                         {workshop && workshop.inventory.map((inventoryItem) =>
-                        <MenuItem value={10}>{inventoryItem.category + " " +inventoryItem.type}</MenuItem>)
+                        <MenuItem key={uuidv4()} value={10}>{inventoryItem.category + " " +inventoryItem.type}</MenuItem>)
                         }
                     </Select>
                 </FormControl>
