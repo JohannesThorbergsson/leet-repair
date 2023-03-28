@@ -1,5 +1,5 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useLayoutEffect, useRef, useState} from "react";
+import React, {useLayoutEffect, useRef} from "react";
 import {v4 as uuidv4} from "uuid"
 import useEditBike from "../../Hooks/useEditBike";
 import EditComponents from "../EditComponents/EditComponents";
@@ -18,7 +18,7 @@ type EditBikeFormProps = {
 export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
     const cancelButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>
-    const [scrollToBottom, setScrollToBottom] = useState(false)
+    // const [scrollToBottom, setScrollToBottom] = useState(false)
     const {
         editBikeFormState,
         handleInputMileage,
@@ -28,17 +28,14 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleSetInstalledComponents,
         deleteService,
         handleCancel,
-        handleClickDeleteBike
+        handleClickDeleteBike,
+        scroll
     } = useEditBike(props)
     useLayoutEffect(() => {
-        if (scrollToBottom && cancelButtonRef) {
+        if (editBikeFormState.scrollToBottom && cancelButtonRef) {
             cancelButtonRef.current.scrollIntoView({ behavior: 'smooth' })
         }
-    }, [scrollToBottom])
-
-    function scroll(){
-        setScrollToBottom(!scrollToBottom)
-    }
+    }, [editBikeFormState.scrollToBottom])
 
     return(
         <>

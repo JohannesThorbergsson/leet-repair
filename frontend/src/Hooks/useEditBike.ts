@@ -20,7 +20,8 @@ export default function useEditBike(props: UseEditBikeProps){
         mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
         components: props.bikeToEdit? props.bikeToEdit.components : [],
         services: props.bikeToEdit? props.bikeToEdit.services : [],
-        openDeleteDialog: false
+        openDeleteDialog: false,
+        scrollToBottom : false
     }
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
@@ -48,6 +49,9 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     function handleClickDeleteBike(){
         dispatch({type: "SET_OPEN_DELETE_DIALOG", payload: !editBikeFormState.openDeleteDialog})
+    }
+    function scroll(){
+        dispatch({type: "SET_SCROLL_TO_BOTTOM", payload: !editBikeFormState.scrollToBottom})
     }
     function handleSubmitBike(){
         if(!props.editMode) {
@@ -95,6 +99,7 @@ export default function useEditBike(props: UseEditBikeProps){
         deleteService,
         handleSubmitBike,
         handleCancel,
-        handleClickDeleteBike
+        handleClickDeleteBike,
+        scroll
     }
 }
