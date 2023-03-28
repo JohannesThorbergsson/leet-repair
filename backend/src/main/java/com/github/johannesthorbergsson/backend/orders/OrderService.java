@@ -14,8 +14,7 @@ public class OrderService {
     private final IdService idService;
 
     public List<ServiceOrder> getAllOrders(Principal principal){
-        return orderRepository.findAll().stream()
-                .filter(order -> order.username().equals(principal.getName())).toList();
+        return orderRepository.findServiceOrderByUsername(principal.getName());
     }
     public ServiceOrder addOrder(Principal principal, ServiceOrderRequest serviceOrderRequest){
         ServiceOrder newOrder = new ServiceOrder(

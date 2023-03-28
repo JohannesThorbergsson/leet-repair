@@ -24,13 +24,15 @@ class OrderServiceTest {
     @Test
     void getAllOrders_whenOrdersMatchPrincipal_thenReturnListOfOrders() {
         //GIVEN
-        when(orderRepository.findAll()).thenReturn(List.of(testOrder));
+        when(orderRepository.findServiceOrderByUsername("steven")).thenReturn(List.of(testOrder));
         when(principal.getName()).thenReturn("steven");
         //WHEN
         List<ServiceOrder> actual = orderService.getAllOrders(principal);
         List<ServiceOrder> expected = List.of(testOrder);
         //THEN
         assertEquals(expected, actual);
+        verify(orderRepository).findServiceOrderByUsername("steven");
+        verify(principal).getName();
     }
     @Test
     void addOrder_whenOrderRequest_thenReturnSavedOrder(){
