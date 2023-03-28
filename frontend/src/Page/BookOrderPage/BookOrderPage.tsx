@@ -2,11 +2,8 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {useNavigate, useParams} from "react-router-dom";
 import {Workshop} from "../../model/Workshop";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
-import {Box, Button, FormControl, InputLabel, Select, TextField, Typography} from "@mui/material";
-import React, {useState} from "react";
-import MenuItem from "@mui/material/MenuItem";
-import {v4 as uuidv4} from "uuid"
-import ComponentTable from "../../Component/ComponentTable/ComponentTable";
+import {Autocomplete, Box, Button, TextField, Typography} from "@mui/material";
+import React, {SyntheticEvent, useState} from "react";
 
 type BookOrderPageProps = {
     workshops: Workshop[]
@@ -15,8 +12,13 @@ export default function BookOrderPage(props: BookOrderPageProps){
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
-    const [orderedComponents, setOrderedComponents] = useState([])
+    const [orderedComponents, setOrderedComponents] = useState<string[]>()
+    const [orderCompV, setOrderCompV] = useState("")
+    function handleInputComponents(event: SyntheticEvent, value: string[]) {
+        setOrderedComponents(value)
+    }
 
+    console.log(orderedComponents)
     return (
         <>
             <ResponsiveAppBar/>
@@ -35,34 +37,37 @@ export default function BookOrderPage(props: BookOrderPageProps){
                 Book Services:
                 {/*//Book services form here*/}
             </Typography>
-            <Box sx={{
-                boxShadow: 1,
-                m: 1,
-                p: 2
-            }}>
-                <TextField
-                    required
-                    multiline
-                    id="outlined-required"
-                    label="Order Description"
-                    fullWidth
-                    sx={{mt: 1}}
-                />
-                <FormControl fullWidth sx={{mt: 2}}>
-                    <InputLabel id="demo-simple-select-label">Order components</InputLabel>
-                    <Select sx={{textAlign: 'left'}}
+            <Box sx ={{
+                alignItems: 'center',
+                marginInline: 2}}>
+                    <TextField
+                        required
+                        multiline
+                        id="outlined-required"
+                        label="Order Description"
+                        fullWidth
+                        sx={{mt: 1}}
+                    />
+                        {/*<InputLabel id="demo-simple-select-label">Order components</InputLabel>*/}
+                    <Autocomplete
+                        sx={{mt: 1}}
+                        multiple
+                        options={workshop?.inventory.map(component => component.category + " " +component.type) || []}
+                        onChange={handleInputComponents}
                         id="demo-simple-select"
-                        labelId="demo-simple-select-label"
-                        label="Order components"
-                    >
-                        {workshop && workshop.inventory.map((inventoryItem) =>
-                        <MenuItem key={uuidv4()} value={10}>{inventoryItem.category + " " +inventoryItem.type}</MenuItem>)
-                        }
-                    </Select>
-                </FormControl>
-                <ComponentTable components={orderedComponents}/>
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Select Components"
+                                placeholder="Favorites"
+                            />
+                        )}
+                    />
+                    {/*{orderedComponents.length !== 0 &&*/}
+                    {/*    // <ComponentTable components={orderedComponents}/>*/}
+                    {/*}*/}
             </Box>
-            <Button variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
+            <Button sx={{mt: 2}} variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
         </>
     )
 }
