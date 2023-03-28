@@ -33,13 +33,13 @@ class BikeServiceTest {
     @Test
     void getAllBikes_whenBikesMatchPrincipal_thenReturnListOfBikes() {
         //GIVEN
-        when(bikeRepository.findAll()).thenReturn(new ArrayList<>(List.of(testBike)));
+        when(bikeRepository.findBikeByOwnerName("steven")).thenReturn(new ArrayList<>(List.of(testBike)));
         when(principal.getName()).thenReturn("steven");
         //WHEN
         List<Bike> actual = bikeService.getAllBikes(principal);
         List<Bike> expected = new ArrayList<>(List.of(testBike));
         //THEN
-        verify(bikeRepository).findAll();
+        verify(bikeRepository).findBikeByOwnerName("steven");
         verify(principal).getName();
         assertEquals(expected, actual);
     }
