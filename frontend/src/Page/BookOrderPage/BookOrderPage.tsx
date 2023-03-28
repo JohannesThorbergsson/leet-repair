@@ -40,10 +40,10 @@ export default function BookOrderPage(props: BookOrderPageProps){
         axios.post("/api/orders/",
             {bikeId: selectedBike?.id,
                 description: orderDescription,
-                workshop: workshop?.id,
+                workshop: workshop?.name,
                 componentsToReplace: orderedComponents})
             .then(r => props.updateOrderList([...props.orders, r.data]))
-            .then(()=> navigate("/"))
+            .finally(()=> navigate("/"))
             .catch((error) => console.error(error))
     }
 
