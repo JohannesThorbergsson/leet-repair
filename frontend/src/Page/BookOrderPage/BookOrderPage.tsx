@@ -4,6 +4,8 @@ import {Workshop} from "../../model/Workshop";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {Autocomplete, Box, Button, TextField, Typography} from "@mui/material";
 import React, {SyntheticEvent, useState} from "react";
+import {Component} from "../../model/Component";
+import ComponentTable from "../../Component/ComponentTable/ComponentTable";
 
 type BookOrderPageProps = {
     workshops: Workshop[]
@@ -12,10 +14,13 @@ export default function BookOrderPage(props: BookOrderPageProps){
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
-    const [orderedComponents, setOrderedComponents] = useState<string[]>()
-    const [orderCompV, setOrderCompV] = useState("")
+    const [orderedComponents, setOrderedComponents] = useState<Component[]>([])
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
-        setOrderedComponents(value)
+        const selectedComponent = workshop?.inventory.filter(
+            component => value.includes(component.category + " " + component.type))
+        if(workshop && selectedComponent) {
+            setOrderedComponents([...selectedComponent])
+        }
     }
 
     console.log(orderedComponents)
@@ -48,7 +53,6 @@ export default function BookOrderPage(props: BookOrderPageProps){
                         fullWidth
                         sx={{mt: 1}}
                     />
-                        {/*<InputLabel id="demo-simple-select-label">Order components</InputLabel>*/}
                     <Autocomplete
                         sx={{mt: 1}}
                         multiple
@@ -63,9 +67,9 @@ export default function BookOrderPage(props: BookOrderPageProps){
                             />
                         )}
                     />
-                    {/*{orderedComponents.length !== 0 &&*/}
-                    {/*    // <ComponentTable components={orderedComponents}/>*/}
-                    {/*}*/}
+                    {orderedComponents.length !== 0 &&
+                        <ComponentTable components={orderedComponents}/>
+                    }
             </Box>
             <Button sx={{mt: 2}} variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
         </>
