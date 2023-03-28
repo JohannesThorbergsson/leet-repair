@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
 import useAuth from "./useAuth";
@@ -9,9 +9,15 @@ export default function useFetchData(){
     const [bikes, setBikes] = useState<Bike[]>([])
     const [orders, setOrders] = useState<ServiceOrder[]>([])
     const [workshops, setWorkshops] = useState<Workshop[]>([])
-    const user = useAuth(false)
-    useEffect(() =>fetchData(), [user])
 
+    const user = useAuth(false)
+    const prevUser = useRef(user);
+    useEffect(() => {
+        if (user !== null && prevUser.current === null) {
+            fetchData()
+        }
+        prevUser.current = user
+    }, [user])
     function updateBikeList(bikes: Bike[]){
         setBikes(bikes)
     }

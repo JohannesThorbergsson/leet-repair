@@ -18,8 +18,8 @@ export default function Dashboard(props: DashboardProps) {
     const navigate = useNavigate()
     const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
         = useWorkshops({workshops: props.workshops})
-    const OrderGallery =
-        (props.orders.length>0 && props.orders.map?
+    let OrderGallery =
+        (props.orders.length>0 && props.orders.map ?
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
                 {props.orders.map(order => <OrderCard key={order.id} order={order}/>)}
@@ -60,9 +60,10 @@ export default function Dashboard(props: DashboardProps) {
                             No workshops matching your search term found
                         </Typography> :
                         searchResults.map(
-                            (workshop) => <WorkshopCard key={workshop.id} workshop={workshop}/>)
+                            (workshop) =>
+                                <WorkshopCard key={workshop.id} workshop={workshop} displayMode={false}/>)
                     }
-                    <Button variant="contained" onClick={closeSearch}>Back</Button>
+                    <Button variant="contained" onClick={closeSearch} sx={{width: 92/100}}>Back</Button>
                 </Box>
             }
         </>
