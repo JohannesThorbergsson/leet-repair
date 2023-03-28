@@ -23,7 +23,6 @@ export default function Dashboard(props: DashboardProps) {
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
                 {props.orders.map(order => <OrderCard key={order.id} order={order}/>)}
-                <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2}}>Manage Bikes</Button>
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )

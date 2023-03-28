@@ -18,7 +18,6 @@ type EditBikeFormProps = {
 export default function EditBikeForm(props: EditBikeFormProps) {
     useAuth(true)
     const cancelButtonRef = useRef() as React.MutableRefObject<HTMLButtonElement>
-    // const [scrollToBottom, setScrollToBottom] = useState(false)
     const {
         editBikeFormState,
         handleInputMileage,

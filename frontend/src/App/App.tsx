@@ -1,21 +1,21 @@
 import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import Login from "../Login/Login";
-import SignUp from "../SignUp/SignUp"
+import Login from "../Page/Login/Login";
+import SignUp from "../Page/SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
-import Dashboard from "../Dashboard/Dashboard";
-import BikeGallery from "../BikeGallery/BikeGallery";
+import Dashboard from "../Page/Dashboard/Dashboard";
+import BikeGallery from "../Page/BikeGallery/BikeGallery";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import BikeDetailPage from "../BikeDetailPage/BikeDetailPage";
-import useFetchData from "../../Hooks/useFetchData";
-import EditBikePage from "../EditBikePage/EditBikePage";
-import AddBikePage from "../AddBikePage/AddBikePage";
-import BookOrderPage from "../BookServices/BookOrderPage";
+import BikeDetailPage from "../Page/BikeDetailPage/BikeDetailPage";
+import useFetchData from "../Hooks/useFetchData";
+import EditBikePage from "../Page/EditBikePage/EditBikePage";
+import AddBikePage from "../Page/AddBikePage/AddBikePage";
+import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 
 axios.interceptors.request.use(
     function (config) {
