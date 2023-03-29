@@ -28,7 +28,7 @@ export default function OrderCard(props: OrderCardProps){
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
                     New Components:
                 </Typography>
-                <ComponentTable components={props.order.componentsToReplace}/>
+                <ComponentTable components={props.order.componentsToReplace} showAge={false}/>
             </CardContent>
         </React.Fragment>
     );

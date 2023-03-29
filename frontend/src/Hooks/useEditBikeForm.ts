@@ -13,14 +13,15 @@ type UseEditBikeProps = {
     bikeToEdit?: Bike
     updateBikeList(bikes: Bike[]): void
 }
-export default function useEditBike(props: UseEditBikeProps){
+export default function useEditBikeForm(props: UseEditBikeProps){
     const initialFormState = {
         modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
         mileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
         mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
         components: props.bikeToEdit? props.bikeToEdit.components : [],
         services: props.bikeToEdit? props.bikeToEdit.services : [],
-        openDeleteDialog: false
+        openDeleteDialog: false,
+        scrollToBottom : false
     }
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
@@ -30,7 +31,7 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     function handleInputMileage(event: ChangeEvent<HTMLInputElement>) {
         dispatch({type: "SET_MILEAGE_FIELD_VALUE", payload: event.target.value})
-            dispatch({type: "SET_MILEAGE", payload: Number(event.target.value.trim())})
+        dispatch({type: "SET_MILEAGE", payload: Number(event.target.value.trim())})
     }
     function handleSetInstalledComponents(components: Component[]){
         dispatch({type: "SET_COMPONENTS", payload: components})
@@ -48,6 +49,9 @@ export default function useEditBike(props: UseEditBikeProps){
     }
     function handleClickDeleteBike(){
         dispatch({type: "SET_OPEN_DELETE_DIALOG", payload: !editBikeFormState.openDeleteDialog})
+    }
+    function scroll(){
+        dispatch({type: "SET_SCROLL_TO_BOTTOM", payload: !editBikeFormState.scrollToBottom})
     }
     function handleSubmitBike(){
         if(!props.editMode) {
@@ -95,6 +99,7 @@ export default function useEditBike(props: UseEditBikeProps){
         deleteService,
         handleSubmitBike,
         handleCancel,
-        handleClickDeleteBike
+        handleClickDeleteBike,
+        scroll
     }
 }

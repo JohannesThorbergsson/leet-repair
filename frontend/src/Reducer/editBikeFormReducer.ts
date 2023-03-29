@@ -8,6 +8,7 @@ type State = {
     components: Component[]
     services: ServiceEvent[]
     openDeleteDialog: boolean
+    scrollToBottom: boolean
 }
 type Action =
     | {type: "SET_MODEL_NAME", payload: string}
@@ -16,6 +17,7 @@ type Action =
     | {type: "SET_COMPONENTS", payload: Component[]}
     | {type: "SET_SERVICES", payload: ServiceEvent[] }
     | {type: "SET_OPEN_DELETE_DIALOG", payload: boolean}
+    | {type: "SET_SCROLL_TO_BOTTOM", payload: boolean}
 
 export default function editBikeFormReducer(state: State, action: Action) {
     switch (action.type) {
@@ -31,6 +33,8 @@ export default function editBikeFormReducer(state: State, action: Action) {
             return {...state, services: action.payload}
         case "SET_OPEN_DELETE_DIALOG":
             return {...state, openDeleteDialog: action.payload}
+        case "SET_SCROLL_TO_BOTTOM":
+            return {...state, scrollToBottom: action.payload}
         default:
             return state
     }

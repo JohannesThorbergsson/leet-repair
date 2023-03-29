@@ -7,20 +7,22 @@ import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import OrderCard from "../../Component/OrderCard/OrderCard";
+import {Workshop} from "../../model/Workshop";
 
 type DashboardProps = {
     orders: ServiceOrder[]
+    workshops: Workshop[]
 }
 export default function Dashboard(props: DashboardProps) {
     const user = useAuth(true)
     const navigate = useNavigate()
-    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm} = useWorkshops()
-    const OrderGallery =
-        (props.orders.length>0?
+    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
+        = useWorkshops({workshops: props.workshops})
+    let OrderGallery =
+        (props.orders.length>0 && props.orders.map ?
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
                 {props.orders.map(order => <OrderCard key={order.id} order={order}/>)}
-                <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2}}>Manage Bikes</Button>
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )
@@ -31,7 +33,7 @@ export default function Dashboard(props: DashboardProps) {
     return (user &&
         <>
             <ResponsiveAppBar/>
-            <Box sx={{
+            <Box component={'form'} onSubmit={searchHandler} sx={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
@@ -43,10 +45,13 @@ export default function Dashboard(props: DashboardProps) {
             }}>
             <TextField placeholder="Search for services" value={searchTerm}
                         onChange={handleSearchTerm} />
-            <Button variant="contained" onClick={searchHandler} disabled={searchTerm.trim().length===0}>Search</Button>
+            <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
             {!search?
-                <Box>{OrderGallery}</Box>
+                <Box>
+                    <Box>{OrderGallery}</Box>
+                    <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2}}>Manage Bikes</Button>
+                </Box>
                 :
                 <Box>
                     <Typography variant="h6" fontWeight={"medium"}>Search results:</Typography>
@@ -55,9 +60,10 @@ export default function Dashboard(props: DashboardProps) {
                             No workshops matching your search term found
                         </Typography> :
                         searchResults.map(
-                            (workshop) => <WorkshopCard key={workshop.id} workshop={workshop}/>)
+                            (workshop) =>
+                                <WorkshopCard key={workshop.id} workshop={workshop} displayMode={false}/>)
                     }
-                    <Button variant="contained" onClick={closeSearch}>Back</Button>
+                    <Button variant="contained" onClick={closeSearch} sx={{width: 92/100}}>Back</Button>
                 </Box>
             }
         </>

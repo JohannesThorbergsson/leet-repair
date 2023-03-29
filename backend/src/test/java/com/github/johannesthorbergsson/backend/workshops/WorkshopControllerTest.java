@@ -1,5 +1,6 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
+import com.github.johannesthorbergsson.backend.bikes.Component;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,8 +26,11 @@ class WorkshopControllerTest {
     MockMvc mockMvc;
     @Autowired
     WorkshopRepository workshopRepository;
-    Workshop workshop1 = new Workshop("1", "workshop42", new ArrayList<>(List.of("tyre", "chain")));
-    Workshop workshop2 = new Workshop("2", "workshop1337", new ArrayList<>(List.of("tyre", "brakes")));
+    Component tyre = new Component("tyre", "Pirelli", 1337);
+    Workshop workshop1 = new Workshop("1", "workshop42",
+            new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
+    Workshop workshop2 = new Workshop("2", "workshop1337",
+            new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
     @DirtiesContext
     @WithMockUser
@@ -43,11 +47,25 @@ class WorkshopControllerTest {
                         {
                             "id": "1",
                             "name": "workshop42",
-                            "services": ["tyre", "chain"]
+                            "services": ["tyre", "chain"],
+                            "inventory": [
+                                {
+                                    "category": "tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                }
+                            ]
                         }, {
                             "id": "2",
                             "name": "workshop1337",
-                            "services": ["tyre", "brakes"]
+                            "services": ["tyre", "brakes"],
+                            "inventory": [
+                                {
+                                    "category": "tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                }
+                            ]
                         }
                         ]
                         """)

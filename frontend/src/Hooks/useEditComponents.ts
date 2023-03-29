@@ -10,7 +10,12 @@ export default function useEditComponents(props: useEditComponentsProps){
     const[newComponentCategory, setNewComponentCategory] =useState<string>("")
     const[newComponentModel, setNewComponentModel] =useState<string>("")
     const[newComponentAge, setNewComponentAge] =useState<number>(0)
-    const[newComponentAgeValue, setNewComponentAgeValue] =useState("")
+    let submitDisabled =
+        props.components.filter(c => c.category === newComponentCategory.trim()) === undefined
+        || Number.isNaN(newComponentAge)
+        || newComponentModel.trim()===""
+        || newComponentCategory.trim()===""
+        || props.components.filter(c => c.category === newComponentCategory.trim()).length!==0
     function handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>){
         setNewComponentCategory(event.target.value)
     }
@@ -18,7 +23,6 @@ export default function useEditComponents(props: useEditComponentsProps){
         setNewComponentModel(event.target.value)
     }
     function handleInputComponentAge(event: ChangeEvent<HTMLInputElement>){
-        setNewComponentAgeValue(event.target.value)
         setNewComponentAge(Number(event.target.value))
     }
     function handleSubmitNewComponent(){
@@ -38,8 +42,8 @@ export default function useEditComponents(props: useEditComponentsProps){
         handleSubmitNewComponent,
         handleDeleteComponent,
         newComponentAge,
-        newComponentAgeValue,
         newComponentCategory,
-        newComponentModel
+        newComponentModel,
+        submitDisabled
     }
 }

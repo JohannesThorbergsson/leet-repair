@@ -15,7 +15,7 @@ public class BikeService {
     private final IdService idService;
 
     public List<Bike> getAllBikes(Principal principal){
-        return bikeRepository.findAll().stream().filter(bike -> bike.ownerName().equals(principal.getName())).toList();
+        return bikeRepository.findBikeByOwnerName(principal.getName());
     }
     public Bike addBike(Principal principal, BikeRequest bikeRequest) {
         Bike newBike = new Bike(
