@@ -113,10 +113,11 @@ class BikeServiceTest {
         //THEN
         assertEquals(expected, actual);
         verify(bikeRepository).findById(testId);
+        verify(bikeRepository).deleteById(testId);
         verify(principal).getName();
     }
     @Test
-    void deleteBike_whenBikeNotFound_thenThrowBikeNotFoundException(){
+    void deleteBike_whenBikeNotFound_thenThrowNoSuchBikeException(){
         //GIVEN
         when(bikeRepository.findById(testId)).thenReturn(Optional.empty());
         Class<NoSuchBikeException> expected = NoSuchBikeException.class;

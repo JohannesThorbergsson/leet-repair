@@ -96,4 +96,38 @@ class OrderServiceTest {
         verify(orderRepository).findById(testId);
         verify(principal).getName();
     }
+    @Test
+    void deleteOrder_whenValidRequest_thenReturnDeletedOrder(){
+        //GIVEN
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(principal.getName()).thenReturn("steven");
+        ServiceOrder expected = testOrder;
+        //WHEN
+        ServiceOrder actual = orderService.deleteOrder(testId, principal);
+        //THEN
+        assertEquals(expected, actual);
+        verify(orderRepository).findById(testId);
+        verify(orderRepository).deleteById(testId);
+        verify(principal).getName();
+    }
+    @Test
+    void deleteOrder_whenOrderNotFound_thenThrowNoSuchOrderException(){
+        //GIVEN
+        when(orderRepository.findById(testId)).thenReturn(Optional.empty());
+        Class<NoSuchOrderException> expected = NoSuchOrderException.class;
+        //THEN
+        assertThrows(expected, ()->orderService.deleteOrder(testId, principal));
+        verify(orderRepository).findById(testId);
+    }
+    @Test
+    void deleteOrder_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
+        //GIVEN
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(principal.getName()).thenReturn("h4xx()r");
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //THEN
+        assertThrows(expected, ()-> orderService.deleteOrder(testId, principal));
+        verify(orderRepository).findById(testId);
+        verify(principal).getName();
+    }
 }
