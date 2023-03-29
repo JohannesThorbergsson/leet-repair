@@ -24,4 +24,8 @@ public class OrderController {
     public ServiceOrder updateOrder(@PathVariable String id, @RequestBody ServiceOrderRequest serviceOrderRequest, Principal principal) {
         return orderService.updateOrder(id, serviceOrderRequest, principal);
     }
+    @DeleteMapping("{id}")
+    public ServiceOrder deleteOrder(@PathVariable String id, Principal principal){
+        return orderService.deleteOrder(id, principal);
+    }
 }
