@@ -65,7 +65,7 @@ class OrderServiceTest {
         when(principal.getName()).thenReturn("steven");
         ServiceOrder expected = testOrder;
         //WHEN
-        ServiceOrder actual = orderService.updateOrder(testId, testOrderRequest, principal);
+        ServiceOrder actual = orderService.updateOrder(testId, updateRequest, principal);
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
