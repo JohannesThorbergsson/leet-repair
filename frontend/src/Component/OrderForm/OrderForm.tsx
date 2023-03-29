@@ -4,6 +4,7 @@ import useOrderForm from "../../Hooks/useOrderForm";
 import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
+import {useNavigate} from "react-router-dom";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -13,6 +14,7 @@ type OrderFormProps = {
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function OrderForm(props: OrderFormProps) {
+    const navigate = useNavigate()
     const {
         selectedBike,
         orderDescription,
@@ -70,12 +72,23 @@ export default function OrderForm(props: OrderFormProps) {
                         />
                     )}
                 />
-                <Button variant = "contained"
-                        sx={{mt: 2}}
-                        type={"submit"}
-                        disabled={orderDescription ==="" || !selectedBike}>
-                    Submit Order
-                </Button>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly'
+                }}>
+                    <Button variant = "contained"
+                            sx={{mt: 2, mr: 1, width: 1/2}}
+                            type={"submit"}
+                            disabled={orderDescription ==="" || !selectedBike}>
+                        {!props.orderToEdit ? "Submit Order": "Submit Changes"}
+                    </Button>
+                    {props.orderToEdit &&
+                        <Button variant="contained" sx={{mt: 2, ml: 1, width: 1/2}} onClick={()=>navigate("/")}>
+                            Cancel
+                        </Button>
+                    }
+                </Box>
             </Box>
         </>
     )

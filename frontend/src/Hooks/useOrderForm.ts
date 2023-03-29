@@ -80,6 +80,7 @@ export default function useOrderForm(props: OrderFormProps){
         }
     }
     return {
+        workshopNewOrder,
         selectedBike,
         orderDescription,
         orderedComponents,
