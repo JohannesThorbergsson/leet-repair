@@ -1,12 +1,25 @@
 import React from "react";
-import {Box, Card, CardContent, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import ComponentTable from "../ComponentTable/ComponentTable";
+import {useNavigate} from "react-router-dom";
 
 type OrderCardProps = {
     order: ServiceOrder
 }
+
 export default function OrderCard(props: OrderCardProps){
+    const navigate = useNavigate()
+    let status:string = ""
+    if(props.order.status === "OPEN") {
+        status = "Open"
+    } else if (props.order.status === "IN_PROGRESS"){
+        status = "In Progress"
+    } else if (props.order.status=== "READY_FOR_PICKUP") {
+        status = "Ready for Pickup"
+    } else if (props.order.status === "DONE"){
+        status = "Done"
+    }
     const card = (
         <React.Fragment>
             <CardContent>
@@ -22,7 +35,7 @@ export default function OrderCard(props: OrderCardProps){
                         Contractor: {props.order.workshop}
                     </Typography>
                     <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                        Status: {props.order.status}
+                        {"Status: " + status}
                     </Typography>
                 </Box>
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
@@ -30,6 +43,20 @@ export default function OrderCard(props: OrderCardProps){
                 </Typography>
                 <ComponentTable components={props.order.componentsToReplace} showAge={false}/>
             </CardContent>
+            <Box sx={{
+                pb: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly'}}>
+                <Button variant={"contained"}
+                        sx={{width: 1/2, mr: 1 , ml: 2}}
+                        onClick={()=> navigate("/orders/" + props.order.id)}>
+                    Edit Order
+                </Button>
+                <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}>
+                    Update Status
+                </Button>
+            </Box>
         </React.Fragment>
     );
     return (

@@ -16,6 +16,7 @@ import useFetchData from "../Hooks/useFetchData";
 import EditBikePage from "../Page/EditBikePage/EditBikePage";
 import AddBikePage from "../Page/AddBikePage/AddBikePage";
 import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
+import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 
 axios.interceptors.request.use(
     function (config) {
@@ -40,9 +41,12 @@ const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
-          <Route path={"/bikes/edit-bike/:bikeId"} element={<EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
+          <Route path={"/bikes/edit-bike/:bikeId"} element={
+              <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/workshops/orders/:workshopId"} element={
               <BookOrderPage workshops={workshops} bikes={bikes} orders={orders} updateOrderList={updateOrderList}/>}/>
+          <Route path={"/orders/:orderId"} element={
+              <EditOrderPage orders={orders} updateOrderList={updateOrderList} bikes={bikes} workshops={workshops}/>}/>
         </Routes>
       </div>
   );

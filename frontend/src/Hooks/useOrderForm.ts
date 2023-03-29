@@ -10,16 +10,21 @@ type OrderFormProps = {
     workshops: Workshop[]
     bikes: Bike[]
     orders: ServiceOrder[]
+    orderToEdit?: ServiceOrder
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function useOrderForm(props: OrderFormProps){
-    const [orderedComponents, setOrderedComponents] = useState<Component[]>([])
-    const [selectedBike, setSelectedBike] = useState<Bike>()
-    const [orderDescription, setOrderDescription] = useState<string>("")
-
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
+
+    const [orderedComponents, setOrderedComponents]
+        = useState<Component[]>(props.orderToEdit? props.orderToEdit.componentsToReplace : [])
+    const [selectedBike, setSelectedBike]
+        = useState<Bike | undefined>(props.orderToEdit? props.bikes.find(bike=>bike.id === props.orderToEdit?.bikeId) : undefined)
+    const [orderDescription, setOrderDescription]
+        = useState<string>(props.orderToEdit? props.orderToEdit.description : "")
+
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
         const selectedComponent = workshop?.inventory.filter(
@@ -50,6 +55,7 @@ export default function useOrderForm(props: OrderFormProps){
         workshop,
         selectedBike,
         orderDescription,
+        orderedComponents,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,
