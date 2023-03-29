@@ -40,6 +40,7 @@ export default function useOrderForm(props: OrderFormProps){
             {bikeId: selectedBike?.id,
                 description: orderDescription,
                 workshop: workshop?.name,
+                status: "OPEN",
                 componentsToReplace: orderedComponents})
             .then(r => props.updateOrderList([...props.orders, r.data]))
             .finally(()=> navigate("/"))

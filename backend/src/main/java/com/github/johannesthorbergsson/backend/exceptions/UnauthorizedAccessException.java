@@ -1,4 +1,4 @@
-package com.github.johannesthorbergsson.backend.bikes;
+package com.github.johannesthorbergsson.backend.exceptions;
 
 import java.util.NoSuchElementException;
 

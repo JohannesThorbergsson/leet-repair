@@ -8,6 +8,7 @@ public record ServiceOrderRequest(
         String bikeId,
         String description,
         String workshop,
+        Status status,
         List<Component> componentsToReplace
 ) {
 }

@@ -1,5 +1,7 @@
 package com.github.johannesthorbergsson.backend.bikes;
 
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchBikeException;
+import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
