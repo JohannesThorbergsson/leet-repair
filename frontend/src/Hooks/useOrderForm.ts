@@ -16,7 +16,12 @@ type OrderFormProps = {
 export default function useOrderForm(props: OrderFormProps){
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
-    const workshop: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
+    const workshopNewOrder: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
+    const orderToEditStatus = props.orderToEdit?.status
+    const componentsInStock = !props.orderToEdit?
+        workshopNewOrder?.inventory.map(component => component.category + " " +component.type) || []:
+        props.workshops.find(workshop => workshop.name===props.orderToEdit?.workshop)
+            ?.inventory.map(component => component.category + " " +component.type) || []
 
     const [orderedComponents, setOrderedComponents]
         = useState<Component[]>(props.orderToEdit? props.orderToEdit.componentsToReplace : [])
@@ -24,13 +29,20 @@ export default function useOrderForm(props: OrderFormProps){
         = useState<Bike | undefined>(props.orderToEdit? props.bikes.find(bike=>bike.id === props.orderToEdit?.bikeId) : undefined)
     const [orderDescription, setOrderDescription]
         = useState<string>(props.orderToEdit? props.orderToEdit.description : "")
-
+    const [orderedComponentsText, setOrderedComponentsText]
+        = useState<string[]>(orderedComponents.map(component => component.category + " " +component.type))
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
-        const selectedComponent = workshop?.inventory.filter(
+        const selectedComponent = workshopNewOrder?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
-        if(workshop && selectedComponent) {
+        const selectedComponentEditMode = props.workshops.find(
+            workshop=>workshop.name===props.orderToEdit?.workshop)
+            ?.inventory.filter(component=> value.includes(component.category + " " + component.type))
+        if(workshopNewOrder && selectedComponent) {
             setOrderedComponents([...selectedComponent])
+            setOrderedComponentsText(orderedComponents.map(component => component.category + " " +component.type))
+        } else if (props.orderToEdit && selectedComponentEditMode) {
+            setOrderedComponents(selectedComponentEditMode)
         }
     }
     function handleInputBike(event: SyntheticEvent<Element, Event>, value: string | null){
@@ -41,21 +53,38 @@ export default function useOrderForm(props: OrderFormProps){
     }
     function handleSubmitOrder(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
-        axios.post("/api/orders/",
-            {bikeId: selectedBike?.id,
-                description: orderDescription,
-                workshop: workshop?.name,
-                status: "OPEN",
-                componentsToReplace: orderedComponents})
-            .then(r => props.updateOrderList([...props.orders, r.data]))
-            .finally(()=> navigate("/"))
-            .catch((error) => console.error(error))
+        if(!props.orderToEdit) {
+            axios.post("/api/orders/",
+                {
+                    bikeId: selectedBike?.id,
+                    description: orderDescription,
+                    workshop: workshopNewOrder?.name,
+                    status: "OPEN",
+                    componentsToReplace: orderedComponents})
+                .then(r => props.updateOrderList([...props.orders, r.data]))
+                .finally(()=> navigate("/"))
+                .catch((error) => console.error(error))
+        } else {
+            axios.put("/api/orders/" + props.orderToEdit.id,
+                {
+                    bikeId: selectedBike?.id,
+                    description: orderDescription,
+                    workshop: props.orderToEdit.workshop,
+                    status: orderToEditStatus,
+                    componentsToReplace: orderedComponents})
+                .then(r => r.data)
+                .then(updatedOrder => props.updateOrderList([...props.orders.filter(
+                    order=>order.id!==updatedOrder.id), updatedOrder]))
+                .finally(()=> navigate("/"))
+                .catch((error) => console.error(error))
+        }
     }
     return {
-        workshop,
         selectedBike,
         orderDescription,
         orderedComponents,
+        orderedComponentsText,
+        componentsInStock,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,

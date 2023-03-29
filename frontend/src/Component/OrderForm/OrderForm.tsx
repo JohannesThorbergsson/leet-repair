@@ -14,10 +14,10 @@ type OrderFormProps = {
 }
 export default function OrderForm(props: OrderFormProps) {
     const {
-        workshop,
         selectedBike,
         orderDescription,
-        orderedComponents,
+        orderedComponentsText,
+        componentsInStock,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,
@@ -58,10 +58,9 @@ export default function OrderForm(props: OrderFormProps) {
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
                     multiple
-                    options={workshop?.inventory.map(
-                        component => component.category + " " +component.type) || []}
+                    options={componentsInStock}
                     onChange={handleInputComponents}
-                    value={orderedComponents.map(component => component.category + " " +component.type)}
+                    defaultValue={orderedComponentsText}
                     id="select-components"
                     renderInput={(params) => (
                         <TextField
