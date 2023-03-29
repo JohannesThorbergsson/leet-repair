@@ -17,7 +17,7 @@ type OrderFormProps = {
 }
 export default function BookOrderPage(props: OrderFormProps){
     const navigate = useNavigate()
-    const {workshopNewOrder} = useOrderForm(props)
+    const {orderFormState} = useOrderForm(props)
 
     return (
         <>
@@ -32,8 +32,8 @@ export default function BookOrderPage(props: OrderFormProps){
                     Selected workshop:
                 </Typography>
             </Box>
-            {workshopNewOrder &&
-                <WorkshopCard workshop={workshopNewOrder} displayMode={true}/>
+            {orderFormState.workshopNewOrder &&
+                <WorkshopCard workshop={orderFormState.workshopNewOrder} displayMode={true}/>
             }
             <Typography variant="h5" component="h6" fontWeight={"medium"} sx={{mt: 1}}>
                 Book Services:

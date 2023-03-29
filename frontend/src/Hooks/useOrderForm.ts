@@ -1,10 +1,10 @@
-import {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
-import {Component} from "../model/Component";
+import {ChangeEvent, FormEvent, SyntheticEvent, useReducer} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
 import {Workshop} from "../model/Workshop";
 import {useNavigate, useParams} from "react-router-dom";
 import {ServiceOrder} from "../model/ServiceOrder";
+import orderFormReducer from "../Reducer/orderFormReducer";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -16,63 +16,68 @@ type OrderFormProps = {
 export default function useOrderForm(props: OrderFormProps){
     const navigate = useNavigate()
     const {workshopId} = useParams<{workshopId: string}>()
-    const workshopNewOrder: Workshop | undefined = props.workshops.find(workshop => workshop.id === workshopId)
-    const orderToEditStatus = props.orderToEdit?.status
-    const componentsInStock = !props.orderToEdit?
-        workshopNewOrder?.inventory.map(component => component.category + " " +component.type) || []:
-        props.workshops.find(workshop => workshop.name===props.orderToEdit?.workshop)
-            ?.inventory.map(component => component.category + " " +component.type) || []
+    const initialFormState = {
+        orderedComponents: props.orderToEdit?.componentsToReplace ?? [],
+        selectedBike: props.bikes.find(bike=>bike.id === props.orderToEdit?.bikeId) ?? undefined,
+        orderDescription: props.orderToEdit?.description ?? "",
+        orderedComponentsText: props.orderToEdit?.componentsToReplace.map(
+            component => component.category + " " +component.type),
+        workshopNewOrder: props.workshops.find(workshop => workshop.id === workshopId),
+        workshopEditOrder: props.workshops.find(workshop => workshop.name===props.orderToEdit?.workshop),
+        orderToEditStatus: props.orderToEdit?.status,
 
-    const [orderedComponents, setOrderedComponents]
-        = useState<Component[]>(props.orderToEdit? props.orderToEdit.componentsToReplace : [])
-    const [selectedBike, setSelectedBike]
-        = useState<Bike | undefined>(props.orderToEdit? props.bikes.find(bike=>bike.id === props.orderToEdit?.bikeId) : undefined)
-    const [orderDescription, setOrderDescription]
-        = useState<string>(props.orderToEdit? props.orderToEdit.description : "")
-    const [orderedComponentsText, setOrderedComponentsText]
-        = useState<string[]>(orderedComponents.map(component => component.category + " " +component.type))
-    const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false)
+        openDeleteDialog: false
+    }
+    const [orderFormState, dispatch] = useReducer(orderFormReducer, initialFormState)
+
+    const componentsInStock = !props.orderToEdit?
+        (orderFormState.workshopNewOrder?.inventory.map(
+            component => component.category + " " +component.type) || []):
+        (orderFormState.workshopEditOrder?.inventory.map(
+            component => component.category + " " +component.type) || [])
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
-        const selectedComponent = workshopNewOrder?.inventory.filter(
+        const selectedComponentNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
         const selectedComponentEditMode = props.workshops.find(
             workshop=>workshop.name===props.orderToEdit?.workshop)
             ?.inventory.filter(component=> value.includes(component.category + " " + component.type))
-        if(workshopNewOrder && selectedComponent) {
-            setOrderedComponents([...selectedComponent])
-            setOrderedComponentsText(orderedComponents.map(component => component.category + " " +component.type))
+
+        if(orderFormState.workshopNewOrder && selectedComponentNewOrder) {
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentNewOrder})
+            dispatch({type: "SET_ORDERED_COMPONENTS_TEXT", payload: orderFormState.orderedComponents.map(
+                component => component.category + " " +component.type)})
         } else if (props.orderToEdit && selectedComponentEditMode) {
-            setOrderedComponents(selectedComponentEditMode)
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentEditMode})
         }
     }
     function handleInputBike(event: SyntheticEvent<Element, Event>, value: string | null){
-        setSelectedBike(props.bikes.find(bike => bike.modelName===value))
+        dispatch({type: "SET_SELECTED_BIKE", payload: props.bikes.find(bike => bike.modelName===value)})
     }
     function handleInputDescription(event: ChangeEvent<HTMLInputElement>) {
-        setOrderDescription(event.target.value)
+        dispatch({type: "SET_ORDER_DESCRIPTION", payload: event.target.value})
     }
     function handleSubmitOrder(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
         if(!props.orderToEdit) {
             axios.post("/api/orders/",
                 {
-                    bikeId: selectedBike?.id,
-                    description: orderDescription,
-                    workshop: workshopNewOrder?.name,
+                    bikeId: orderFormState.selectedBike?.id,
+                    description: orderFormState.orderDescription,
+                    workshop: orderFormState.workshopNewOrder?.name,
                     status: "OPEN",
-                    componentsToReplace: orderedComponents})
+                    componentsToReplace: orderFormState.orderedComponents})
                 .then(r => props.updateOrderList([...props.orders, r.data]))
                 .finally(()=> navigate("/"))
                 .catch((error) => console.error(error))
         } else {
             axios.put("/api/orders/" + props.orderToEdit.id,
                 {
-                    bikeId: selectedBike?.id,
-                    description: orderDescription,
+                    bikeId: orderFormState.selectedBike?.id,
+                    description: orderFormState.orderDescription,
                     workshop: props.orderToEdit.workshop,
-                    status: orderToEditStatus,
-                    componentsToReplace: orderedComponents})
+                    status: orderFormState.orderToEditStatus,
+                    componentsToReplace: orderFormState.orderedComponents})
                 .then(r => r.data)
                 .then(updatedOrder => props.updateOrderList([...props.orders.filter(
                     order=>order.id!==updatedOrder.id), updatedOrder]))
@@ -81,15 +86,10 @@ export default function useOrderForm(props: OrderFormProps){
         }
     }
     function handleClickDeleteOrder(){
-        setOpenDeleteDialog(!openDeleteDialog)
+        dispatch({type: "SET_OPEN_DELETE_DIALOG", payload: !orderFormState.openDeleteDialog})
     }
     return {
-        openDeleteDialog,
-        workshopNewOrder,
-        selectedBike,
-        orderDescription,
-        orderedComponents,
-        orderedComponentsText,
+        orderFormState,
         componentsInStock,
         handleClickDeleteOrder,
         handleInputComponents,

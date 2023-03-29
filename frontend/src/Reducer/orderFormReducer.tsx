@@ -4,23 +4,23 @@ import {Workshop} from "../model/Workshop";
 
 type State = {
     orderedComponents: Component[]
-    selectedBike: Bike
+    selectedBike: Bike | undefined
     orderDescription: string
-    orderedComponentsText: string[]
-    openDeleteDialog: boolean
+    orderedComponentsText: string[] | undefined
     workshopNewOrder: Workshop | undefined
+    workshopEditOrder: Workshop | undefined
     orderToEditStatus: string | undefined
-    componentsInStock: string[]
+    openDeleteDialog: boolean
 }
 
 type Action =
     | {type: "SET_ORDERED_COMPONENTS", payload: Component[]}
-    | {type: "SET_SELECTED_BIKE", payload: Bike}
+    | {type: "SET_SELECTED_BIKE", payload: Bike | undefined}
     | {type: "SET_ORDER_DESCRIPTION", payload: string}
-    | {type: "SET_ORDERED_COMPONENTS_TEXT", payload:string}
+    | {type: "SET_ORDERED_COMPONENTS_TEXT", payload: string[]}
     | {type: "SET_OPEN_DELETE_DIALOG", payload: boolean}
 
-export default function editOrderFormReducer(state: State, action: Action){
+export default function orderFormReducer(state: State, action: Action){
     switch (action.type){
         case "SET_ORDERED_COMPONENTS":
             return {...state, orderedComponents: action.payload}

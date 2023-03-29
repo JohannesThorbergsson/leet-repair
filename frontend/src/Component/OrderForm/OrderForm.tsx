@@ -17,11 +17,8 @@ type OrderFormProps = {
 export default function OrderForm(props: OrderFormProps) {
     const navigate = useNavigate()
     const {
-        selectedBike,
-        orderDescription,
-        orderedComponentsText,
+        orderFormState,
         componentsInStock,
-        openDeleteDialog,
         handleClickDeleteOrder,
         handleInputComponents,
         handleInputBike,
@@ -44,7 +41,7 @@ export default function OrderForm(props: OrderFormProps) {
                     aria-required={true}
                     id="select-bike"
                     onChange={handleInputBike}
-                    value={selectedBike?.modelName}
+                    value={orderFormState.selectedBike?.modelName}
                     options={props.bikes.map(bike => bike.modelName)}
                     sx={{ width: 1 }}
                     renderInput={(params) =>
@@ -54,7 +51,7 @@ export default function OrderForm(props: OrderFormProps) {
                     required
                     multiline
                     onChange={handleInputDescription}
-                    value={orderDescription}
+                    value={orderFormState.orderDescription}
                     id="outlined-required"
                     label="Order Description"
                     fullWidth
@@ -65,7 +62,7 @@ export default function OrderForm(props: OrderFormProps) {
                     multiple
                     options={componentsInStock}
                     onChange={handleInputComponents}
-                    defaultValue={orderedComponentsText}
+                    defaultValue={orderFormState.orderedComponentsText}
                     id="select-components"
                     renderInput={(params) => (
                         <TextField
@@ -83,7 +80,7 @@ export default function OrderForm(props: OrderFormProps) {
                     <Button variant = "contained"
                             sx={{mt: 2, mr: 1, width: 1/2}}
                             type={"submit"}
-                            disabled={orderDescription ==="" || !selectedBike}>
+                            disabled={orderFormState.orderDescription ==="" || !orderFormState.selectedBike}>
                         {!props.orderToEdit ? "Submit Order": "Submit Changes"}
                     </Button>
                     <Button variant={"contained"}
@@ -103,7 +100,7 @@ export default function OrderForm(props: OrderFormProps) {
                 }
             </Box>
             <DeleteOrderDialog handleClickDeleteOrder={handleClickDeleteOrder}
-                               openDeleteDialog={openDeleteDialog}
+                               openDeleteDialog={orderFormState.openDeleteDialog}
                                orderToDeleteId={props.orderToEdit?.id}
                                orders={props.orders}
                                updateOrdersList={props.updateOrderList}/>
