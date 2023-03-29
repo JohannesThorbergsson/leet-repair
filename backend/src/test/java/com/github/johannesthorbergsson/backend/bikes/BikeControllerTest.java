@@ -176,6 +176,7 @@ class BikeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                     {
+                        "id": "1",
                         "modelName": "MegaBike9000",
                         "ownerName": "steven",
                         "mileage": 1337,
@@ -201,8 +202,7 @@ class BikeControllerTest {
                             }
                         ]
                     }
-                """))
-                .andExpect(jsonPath("$.id").isNotEmpty());
+                """));
     }
     @Test
     @DirtiesContext
