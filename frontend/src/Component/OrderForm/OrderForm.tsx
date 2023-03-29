@@ -5,6 +5,7 @@ import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import {useNavigate} from "react-router-dom";
+import DeleteOrderDialog from "../../Dialog/DeleteOrderDialog";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -20,6 +21,8 @@ export default function OrderForm(props: OrderFormProps) {
         orderDescription,
         orderedComponentsText,
         componentsInStock,
+        openDeleteDialog,
+        handleClickDeleteOrder,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,
@@ -88,7 +91,8 @@ export default function OrderForm(props: OrderFormProps) {
                                 width: 1/2,
                                 bgcolor: 'warning.main',
                                 '&:hover': {bgcolor: 'error.main'}
-                    }}>
+                            }}
+                            onClick={handleClickDeleteOrder}>
                         Cancel Order
                     </Button>
                 </Box>
@@ -98,6 +102,11 @@ export default function OrderForm(props: OrderFormProps) {
                     </Button>
                 }
             </Box>
+            <DeleteOrderDialog handleClickDeleteOrder={handleClickDeleteOrder}
+                               openDeleteDialog={openDeleteDialog}
+                               orderToDeleteId={props.orderToEdit?.id}
+                               orders={props.orders}
+                               updateOrdersList={props.updateOrderList}/>
         </>
     )
 }

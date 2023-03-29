@@ -31,6 +31,7 @@ export default function useOrderForm(props: OrderFormProps){
         = useState<string>(props.orderToEdit? props.orderToEdit.description : "")
     const [orderedComponentsText, setOrderedComponentsText]
         = useState<string[]>(orderedComponents.map(component => component.category + " " +component.type))
+    const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false)
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
         const selectedComponent = workshopNewOrder?.inventory.filter(
@@ -79,13 +80,18 @@ export default function useOrderForm(props: OrderFormProps){
                 .catch((error) => console.error(error))
         }
     }
+    function handleClickDeleteOrder(){
+        setOpenDeleteDialog(!openDeleteDialog)
+    }
     return {
+        openDeleteDialog,
         workshopNewOrder,
         selectedBike,
         orderDescription,
         orderedComponents,
         orderedComponentsText,
         componentsInStock,
+        handleClickDeleteOrder,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,
