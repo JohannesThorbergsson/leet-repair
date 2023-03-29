@@ -1,5 +1,6 @@
 package com.github.johannesthorbergsson.backend.orders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.johannesthorbergsson.backend.bikes.Component;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ class OrderControllerTest {
 
     @Autowired
     OrderRepository orderRepository;
+    ObjectMapper mapper = new ObjectMapper();
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42", "steven", Status.OPEN, componentList);
     @Test
@@ -188,6 +190,33 @@ class OrderControllerTest {
                           ]
                      }
                     """)
+                .with(csrf()))
+                .andExpect(status().isForbidden());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void deleteOrder_whenValidRequest_thenReturnDeletedOrder() throws Exception {
+        orderRepository.save(testOrder);
+        String requestJSON = mapper.writeValueAsString(testOrder);
+        mockMvc.perform(delete("/api/orders/1")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(requestJSON));
+    }
+    @Test
+    @WithMockUser(username = "steven")
+    void deleteOrder_whenOrderNotFound_thenThrowNoSuchOrderException() throws Exception{
+        mockMvc.perform(delete("/api/orders/1")
+                .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "h4xx()r")
+    void deleteOrder_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
+        orderRepository.save(testOrder);
+        mockMvc.perform(delete("/api/orders/1")
                 .with(csrf()))
                 .andExpect(status().isForbidden());
     }

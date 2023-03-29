@@ -319,7 +319,7 @@ class BikeControllerTest {
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
-    void deleteBike_whenBikeNotFound_thenThrowBikeNotFoundException() throws Exception {
+    void deleteBike_whenBikeNotFound_thenThrowNoSuchBikeException() throws Exception {
         mockMvc.perform(delete("/api/bikes/1")
                         .with(csrf()))
                 .andExpect(status().isNotFound());
