@@ -48,11 +48,13 @@ export default function OrderCard(props: OrderCardProps){
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly'}}>
-                <Button variant={"contained"}
-                        sx={{width: 1/2, mr: 1 , ml: 2}}
-                        onClick={()=> navigate("/orders/" + props.order.id)}>
-                    Edit Order
-                </Button>
+                {props.order.status==="OPEN" &&
+                    <Button variant={"contained"}
+                            sx={{width: 1/2, mr: 1 , ml: 2}}
+                            onClick={()=> navigate("/orders/" + props.order.id)}>
+                        Edit Order
+                    </Button>
+                }
                 <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}>
                     Update Status
                 </Button>

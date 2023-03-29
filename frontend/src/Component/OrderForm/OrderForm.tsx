@@ -83,12 +83,20 @@ export default function OrderForm(props: OrderFormProps) {
                             disabled={orderDescription ==="" || !selectedBike}>
                         {!props.orderToEdit ? "Submit Order": "Submit Changes"}
                     </Button>
-                    {props.orderToEdit &&
-                        <Button variant="contained" sx={{mt: 2, ml: 1, width: 1/2}} onClick={()=>navigate("/")}>
-                            Cancel
-                        </Button>
-                    }
+                    <Button variant={"contained"}
+                            sx={{mt: 2, ml: 1,
+                                width: 1/2,
+                                bgcolor: 'warning.main',
+                                '&:hover': {bgcolor: 'error.main'}
+                    }}>
+                        Cancel Order
+                    </Button>
                 </Box>
+                {props.orderToEdit &&
+                    <Button variant="contained" sx={{mt: 2, width: 1}} onClick={()=>navigate("/")}>
+                        Cancel Changes
+                    </Button>
+                }
             </Box>
         </>
     )
