@@ -1,4 +1,4 @@
-package com.github.johannesthorbergsson.backend.bikes;
+package com.github.johannesthorbergsson.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchBikeException.class)
     public ResponseEntity<Map<String, Object>> handleNoSuchBikeException(NoSuchBikeException exception) {
+        Map<String, Object> responseBody = new LinkedHashMap<>();
+        responseBody.put(TIMESTAMP, Instant.now());
+        responseBody.put(MESSAGE, exception.getMessage());
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(NoSuchOrderException.class)
+    public ResponseEntity<Map<String, Object>> handleNoSuchOrderException(NoSuchOrderException exception) {
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put(TIMESTAMP, Instant.now());
         responseBody.put(MESSAGE, exception.getMessage());

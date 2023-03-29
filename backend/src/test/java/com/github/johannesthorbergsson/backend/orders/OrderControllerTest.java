@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -99,5 +98,97 @@ class OrderControllerTest {
                         """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
 
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void updateOrder_whenValidRequest_thenReturnUpdatedOrder() throws Exception {
+        orderRepository.save(testOrder);
+        mockMvc.perform(put("/api/orders/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                          {
+                              "bikeId": "bid",
+                              "description": "New Tyre",
+                              "workshop": "Workshop42",
+                              "status": "OPEN",
+                              "componentsToReplace": [
+                                  {
+                                      "category": "Tyre",
+                                      "type": "Pirelli",
+                                      "age": 1337
+                                  }
+                              ]
+                         }
+                    """)
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                          {
+                              "id": "1",
+                              "bikeId": "bid",
+                              "description": "New Tyre",
+                              "workshop": "Workshop42",
+                              "username": "steven",
+                              "status": "OPEN",
+                              "componentsToReplace": [
+                                  {
+                                      "category": "Tyre",
+                                      "type": "Pirelli",
+                                      "age": 1337
+                                  }
+                              ]
+                         }
+                    """));
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException() throws Exception {
+        mockMvc.perform(put("/api/orders/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                          "bikeId": "bid",
+                          "description": "New Tyre",
+                          "workshop": "Workshop42",
+                          "status": "OPEN",
+                          "componentsToReplace": [
+                              {
+                                  "category": "Tyre",
+                                  "type": "Pirelli",
+                                  "age": 1337
+                              }
+                          ]
+                     }
+                    """)
+                .with(csrf()))
+                .andExpect(status().isNotFound());
+
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "h4xx()r")
+    void updateOrder_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
+        orderRepository.save(testOrder);
+        mockMvc.perform(put("/api/orders/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                          "bikeId": "bid",
+                          "description": "New Tyre",
+                          "workshop": "Workshop42",
+                          "status": "OPEN",
+                          "componentsToReplace": [
+                              {
+                                  "category": "Tyre",
+                                  "type": "Pirelli",
+                                  "age": 1337
+                              }
+                          ]
+                     }
+                    """)
+                .with(csrf()))
+                .andExpect(status().isForbidden());
     }
 }

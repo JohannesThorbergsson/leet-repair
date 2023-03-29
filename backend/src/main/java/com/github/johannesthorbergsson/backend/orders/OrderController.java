@@ -20,4 +20,8 @@ public class OrderController {
     public ServiceOrder addOrder(Principal principal, @RequestBody ServiceOrderRequest serviceOrderRequest){
         return orderService.addOrder(principal, serviceOrderRequest);
     }
+    @PutMapping("{id}")
+    public ServiceOrder updateOrder(@PathVariable String id, @RequestBody ServiceOrderRequest serviceOrderRequest, Principal principal) {
+        return orderService.updateOrder(id, serviceOrderRequest, principal);
+    }
 }

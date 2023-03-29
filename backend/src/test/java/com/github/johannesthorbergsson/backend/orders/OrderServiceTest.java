@@ -1,13 +1,17 @@
 package com.github.johannesthorbergsson.backend.orders;
 
 import com.github.johannesthorbergsson.backend.bikes.Component;
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
+import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.Test;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class OrderServiceTest {
@@ -19,8 +23,10 @@ class OrderServiceTest {
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
             "steven", Status.OPEN, componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "New Tyre",
-            "Workshop42", componentList);
+            "Workshop42", Status.OPEN, componentList);
     OrderService orderService = new OrderService(orderRepository, idService);
+    String testId = "1", invalidID = "Invalid";
+
     @Test
     void getAllOrders_whenOrdersMatchPrincipal_thenReturnListOfOrders() {
         //GIVEN
@@ -47,6 +53,47 @@ class OrderServiceTest {
         assertEquals(expected, actual);
         verify(orderRepository).save(testOrder);
         verify(idService).generateId();
+        verify(principal).getName();
+    }
+    @Test
+    void updateOrder_whenValidRequest_thenReturnUpdatedOrder(){
+        //GIVEN
+        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
+                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(orderRepository.save(testOrder)).thenReturn(testOrder);
+        when(principal.getName()).thenReturn("steven");
+        ServiceOrder expected = testOrder;
+        //WHEN
+        ServiceOrder actual = orderService.updateOrder(testId, testOrderRequest, principal);
+        //THEN
+        verify(orderRepository).findById(testId);
+        verify(orderRepository).save(testOrder);
+        verify(principal, times(2)).getName();
+        assertEquals(expected, actual);
+    }
+    @Test
+    void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException(){
+        //GIVEN
+        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
+                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+        when(orderRepository.findById(invalidID)).thenReturn(Optional.empty());
+        Class<NoSuchOrderException> expected = NoSuchOrderException.class;
+        //WHEN + THEN
+        assertThrows(expected, () -> orderService.updateOrder(invalidID, updateRequest, principal));
+        verify(orderRepository).findById(invalidID);
+    }
+    @Test
+    void updateOrder_whenUnauthorizedAccess_thenThrow_UnauthorizedAccessException(){
+        //GIVEN
+        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
+                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(principal.getName()).thenReturn("h4xx()r");
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //WHEN + THEN
+        assertThrows(expected, () -> orderService.updateOrder(testId, updateRequest, principal));
+        verify(orderRepository).findById(testId);
         verify(principal).getName();
     }
 }

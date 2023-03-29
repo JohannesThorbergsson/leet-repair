@@ -1,5 +1,7 @@
 package com.github.johannesthorbergsson.backend.bikes;
 
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchBikeException;
+import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ class BikeServiceTest {
             LocalDate.of(2022, 2, 2));
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
     Bike updatedTestBike = new Bike("1", "MegaBikeUpgrade", "steven", 9000, List.of(tyre), List.of(tyreChange));
-    String testId = "1";
+    String testId = "1", invalidID = "Invalid";
 
     @BeforeEach
     void setUp(){
@@ -77,14 +79,15 @@ class BikeServiceTest {
         assertEquals(expected, actual);
     }
     @Test
-    void updateBike_whenBikeNotFound_thenThrowBikeNotFoundException(){
+    void updateBike_whenBikeNotFound_thenThrowNoSuchBikeException(){
         //GIVEN
         BikeRequest updatedBike = new BikeRequest(updatedTestBike.modelName(),
                 updatedTestBike.mileage(), updatedTestBike.components(), updatedTestBike.services());
+        when(bikeRepository.findById(invalidID)).thenReturn(Optional.empty());
         Class<NoSuchBikeException> expected = NoSuchBikeException.class;
         //THEN
-        assertThrows(expected, ()->bikeService.updateBike(testId, updatedBike, principal));
-
+        assertThrows(expected, ()->bikeService.updateBike(invalidID, updatedBike, principal));
+        verify(bikeRepository).findById(invalidID);
     }
     @Test
     void updateBike_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
