@@ -52,7 +52,9 @@ export default function BikeDetailPage(props: Props) {
                             <ServiceCard key={uuidv4()} service={service} />)}
                     </Box>
                     <Box>
-                        <Button variant={"contained"} onClick={() => navigate("/bikes")}>Back</Button>
+                        <Button variant={"contained"} sx={{width: 1}} onClick={() => navigate("/bikes")}>
+                            Back
+                        </Button>
                     </Box>
                 </Box>:
                 <InvalidId/>
