@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
+import UpdateOrderStatusDialog from "../UpdateOrderStatusDialog/UpdateOrderStatusDialog";
 
 type OrderCardProps = {
     order: ServiceOrder
@@ -10,15 +11,23 @@ type OrderCardProps = {
 
 export default function OrderCard(props: OrderCardProps){
     const navigate = useNavigate()
-    let status:string = ""
-    if(props.order.status === "OPEN") {
-        status = "Open"
-    } else if (props.order.status === "IN_PROGRESS"){
-        status = "In Progress"
-    } else if (props.order.status=== "READY_FOR_PICKUP") {
-        status = "Ready for Pickup"
-    } else if (props.order.status === "DONE"){
-        status = "Done"
+    function getStatusDisplayText() {
+        switch (props.order.status) {
+            case "OPEN":
+                return "Open"
+            case "IN_PROGRESS":
+                return "In Progress"
+            case "READY_FOR_PICKUP":
+                return "Ready for Pickup"
+            case "DONE":
+                return "Done"
+            default:
+                return props.order.status
+        }
+    }
+    const [status, setStatus] = useState(getStatusDisplayText())
+    function handleUpdateStatus(newStatus: string){
+        setStatus(newStatus)
     }
     const card = (
         <React.Fragment>
@@ -67,6 +76,11 @@ export default function OrderCard(props: OrderCardProps){
                 m: 2,
                 boxShadow: 1
             }}>{card}</Card>
+            <UpdateOrderStatusDialog
+                id={"test"} keepMounted
+                open={true}
+                status={status}
+                handleUpdateStatus={handleUpdateStatus}/>
         </div>
     )
 }

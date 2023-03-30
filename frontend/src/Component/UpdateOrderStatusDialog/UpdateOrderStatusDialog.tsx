@@ -14,54 +14,52 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import {ListItemButton} from "@mui/material";
 
 type UpdateOrderStatusDialogProps = {
-    id: string;
-    keepMounted: boolean;
-    value: string;
-    open: boolean;
+    id: string
+    keepMounted: boolean
+    status: string
+    open: boolean
+    handleUpdateStatus(newStatus: string): void
 }
 export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogProps) {
-    const [value, setValue] = useState(props.value);
-    const radioGroupRef = useRef<HTMLElement>(null);
-
-    const [open, setOpen] = useState(false);
+    const radioGroupRef = useRef<HTMLElement>(null)
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         if (!open) {
-            setValue(props.value);
+            props.handleUpdateStatus(props.status)
         }
-    }, [props.value, open]);
+    }, [props, open])
 
-    const handleEntering = () => {
-        if (radioGroupRef.current != null) {
-            radioGroupRef.current.focus();
-        }
-    };
     const options = [
         'Open',
         'In Progress',
         'Ready for Pickup',
         'Done',
-
     ]
+    const handleEntering = () => {
+        if (radioGroupRef.current != null) {
+            radioGroupRef.current.focus();
+        }
+    };
     const handleCancel = () => {
         handleClose();
     };
 
     const handleOk = () => {
-        handleClose(value);
+        handleClose(props.status);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
+        props.handleUpdateStatus((event.target as HTMLInputElement).value);
     };
     const handleClickListItem = () => {
         setOpen(true);
     };
 
     const handleClose = (newValue?: string) => {
-        setOpen(false);
+        setOpen(false)
         if (newValue) {
-            setValue(newValue)
+            props.handleUpdateStatus(newValue)
         }
     }
 
@@ -75,7 +73,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                     aria-label="phone ringtone"
                     onClick={handleClickListItem}
                 >
-                    <ListItemText primary="Phone ringtone" secondary={value} />
+                    <ListItemText primary="Phone ringtone" secondary={props.status} />
                 </ListItemButton>
                 <Dialog
                     sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
@@ -91,7 +89,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                             ref={radioGroupRef}
                             aria-label="ringtone"
                             name="ringtone"
-                            value={value}
+                            value={props.status}
                             onChange={handleChange}
                         >
                             {options.map((option) => (
