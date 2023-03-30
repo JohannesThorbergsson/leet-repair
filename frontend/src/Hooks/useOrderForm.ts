@@ -36,18 +36,18 @@ export default function useOrderForm(props: OrderFormProps){
             component => component.category + " " +component.type) || [])
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
-        const selectedComponentNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
+        const selectedComponentsNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
-        const selectedComponentEditMode = props.workshops.find(
+        const selectedComponentsEditMode = props.workshops.find(
             workshop=>workshop.name===props.orderToEdit?.workshop)
             ?.inventory.filter(component=> value.includes(component.category + " " + component.type))
 
-        if(orderFormState.workshopNewOrder && selectedComponentNewOrder) {
-            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentNewOrder})
+        if(orderFormState.workshopNewOrder && selectedComponentsNewOrder) {
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentsNewOrder})
             dispatch({type: "SET_ORDERED_COMPONENTS_TEXT", payload: orderFormState.orderedComponents.map(
                 component => component.category + " " +component.type)})
-        } else if (props.orderToEdit && selectedComponentEditMode) {
-            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentEditMode})
+        } else if (props.orderToEdit && selectedComponentsEditMode) {
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentsEditMode})
         }
     }
     function handleInputBike(event: SyntheticEvent<Element, Event>, value: string | null){
