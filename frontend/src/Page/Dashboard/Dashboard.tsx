@@ -6,7 +6,7 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
-import OrderCard from "../../Component/OrderCard/OrderCard";
+import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
 import {Workshop} from "../../model/Workshop";
 
 type DashboardProps = {
@@ -20,14 +20,14 @@ export default function Dashboard(props: DashboardProps) {
     const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
         = useWorkshops({workshops: props.workshops})
     let OrderGallery =
-        (props.orders.length>0 && props.orders.map ?
+        (props.orders.length>0 ?
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
-                {props.orders.map(order =>
-                    <OrderCard key={order.id}
-                               order={order}
-                               orders={props.orders}
-                               updateOrderList={props.updateOrderList}/>)}
+                {props.orders.filter(order=> order.status !== "DONE").map(order =>
+                    <OrderCardWithControls key={order.id}
+                                           order={order}
+                                           orders={props.orders}
+                                           updateOrderList={props.updateOrderList}/>)}
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )
@@ -55,7 +55,20 @@ export default function Dashboard(props: DashboardProps) {
             {!search?
                 <Box>
                     <Box>{OrderGallery}</Box>
-                    <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2}}>Manage Bikes</Button>
+                    <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            mr: 2, ml: 2}}>
+                        <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2, mr: 1, width: 1/2}}>
+                            Manage Bikes
+                        </Button>
+                        <Button variant={"contained"}
+                                sx={{mt: 2, ml: 2, width: 1/2}}
+                                onClick={()=>navigate("/orders/archive")}>
+                            Archieved Orders
+                        </Button>
+                    </Box>
                 </Box>
                 :
                 <Box>

@@ -17,6 +17,7 @@ import EditBikePage from "../Page/EditBikePage/EditBikePage";
 import AddBikePage from "../Page/AddBikePage/AddBikePage";
 import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
+import OrderArchive from "../Page/OrderArchieve/OrderArchive";
 
 axios.interceptors.request.use(
     function (config) {
@@ -48,6 +49,7 @@ const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData
               <BookOrderPage workshops={workshops} bikes={bikes} orders={orders} updateOrderList={updateOrderList}/>}/>
           <Route path={"/orders/:orderId"} element={
               <EditOrderPage orders={orders} updateOrderList={updateOrderList} bikes={bikes} workshops={workshops}/>}/>
+          <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
         </Routes>
       </div>
   );
