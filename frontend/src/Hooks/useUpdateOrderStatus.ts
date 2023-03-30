@@ -11,7 +11,7 @@ export default function useUpdateOrderStatus(props: OrderCardProps){
     const [status, setStatus] = useState(getStatusDisplayText())
     const [openUpdateStatusDialog, setOpenUpdateStatusDialog] = useState(false)
     const [saveChanges, setSaveChanges] = useState(false)
-    const [mounted, setMounted] = useState(false);    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const [mounted, setMounted] = useState(false)
 
     useEffect(()=>{
         if(mounted) {
