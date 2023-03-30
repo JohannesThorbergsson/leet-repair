@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +44,14 @@ public class OrderService {
                 serviceOrderRequest.componentsToReplace()
         );
         return orderRepository.save(editedOrder);
+    }
+    public ServiceOrder deleteOrder(String id, Principal principal){
+        Optional<ServiceOrder> orderToDeleteOptional = orderRepository.findById(id);
+        ServiceOrder orderToDelete = orderToDeleteOptional.orElseThrow(NoSuchOrderException::new);
+        if (!orderToDelete.username().equals(principal.getName())) {
+            throw new UnauthorizedAccessException();
+        }
+        orderRepository.deleteById(id);
+        return orderToDelete;
     }
 }

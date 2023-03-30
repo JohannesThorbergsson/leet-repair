@@ -5,6 +5,7 @@ import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import {useNavigate} from "react-router-dom";
+import DeleteOrderDialog from "../../Dialog/DeleteOrderDialog";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -16,10 +17,9 @@ type OrderFormProps = {
 export default function OrderForm(props: OrderFormProps) {
     const navigate = useNavigate()
     const {
-        selectedBike,
-        orderDescription,
-        orderedComponentsText,
+        orderFormState,
         componentsInStock,
+        handleClickDeleteOrder,
         handleInputComponents,
         handleInputBike,
         handleInputDescription,
@@ -41,7 +41,7 @@ export default function OrderForm(props: OrderFormProps) {
                     aria-required={true}
                     id="select-bike"
                     onChange={handleInputBike}
-                    value={selectedBike?.modelName}
+                    value={orderFormState.selectedBike?.modelName}
                     options={props.bikes.map(bike => bike.modelName)}
                     sx={{ width: 1 }}
                     renderInput={(params) =>
@@ -51,7 +51,7 @@ export default function OrderForm(props: OrderFormProps) {
                     required
                     multiline
                     onChange={handleInputDescription}
-                    value={orderDescription}
+                    value={orderFormState.orderDescription}
                     id="outlined-required"
                     label="Order Description"
                     fullWidth
@@ -62,7 +62,7 @@ export default function OrderForm(props: OrderFormProps) {
                     multiple
                     options={componentsInStock}
                     onChange={handleInputComponents}
-                    defaultValue={orderedComponentsText}
+                    defaultValue={orderFormState.orderedComponentsText}
                     id="select-components"
                     renderInput={(params) => (
                         <TextField
@@ -80,16 +80,30 @@ export default function OrderForm(props: OrderFormProps) {
                     <Button variant = "contained"
                             sx={{mt: 2, mr: 1, width: 1/2}}
                             type={"submit"}
-                            disabled={orderDescription ==="" || !selectedBike}>
+                            disabled={orderFormState.orderDescription ==="" || !orderFormState.selectedBike}>
                         {!props.orderToEdit ? "Submit Order": "Submit Changes"}
                     </Button>
-                    {props.orderToEdit &&
-                        <Button variant="contained" sx={{mt: 2, ml: 1, width: 1/2}} onClick={()=>navigate("/")}>
-                            Cancel
-                        </Button>
-                    }
+                    <Button variant={"contained"}
+                            sx={{mt: 2, ml: 1,
+                                width: 1/2,
+                                bgcolor: 'warning.main',
+                                '&:hover': {bgcolor: 'error.main'}
+                            }}
+                            onClick={handleClickDeleteOrder}>
+                        Cancel Order
+                    </Button>
                 </Box>
+                {props.orderToEdit &&
+                    <Button variant="contained" sx={{mt: 2, width: 1}} onClick={()=>navigate("/")}>
+                        Cancel Changes
+                    </Button>
+                }
             </Box>
+            <DeleteOrderDialog handleClickDeleteOrder={handleClickDeleteOrder}
+                               openDeleteDialog={orderFormState.openDeleteDialog}
+                               orderToDeleteId={props.orderToEdit?.id}
+                               orders={props.orders}
+                               updateOrdersList={props.updateOrderList}/>
         </>
     )
 }

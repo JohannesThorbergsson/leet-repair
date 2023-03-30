@@ -288,6 +288,7 @@ class BikeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                     {
+                        "id": "1",
                         "modelName": "MegaBike9000",
                         "ownerName": "steven",
                         "mileage": 1337,
@@ -313,13 +314,12 @@ class BikeControllerTest {
                             }
                         ]
                     }
-                """))
-                .andExpect(jsonPath("$.id").isNotEmpty());
+                """));
     }
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
-    void deleteBike_whenBikeNotFound_thenThrowBikeNotFoundException() throws Exception {
+    void deleteBike_whenBikeNotFound_thenThrowNoSuchBikeException() throws Exception {
         mockMvc.perform(delete("/api/bikes/1")
                         .with(csrf()))
                 .andExpect(status().isNotFound());
