@@ -8,6 +8,7 @@ import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import useOrderForm from "../../Hooks/useOrderForm";
 import OrderForm from "../../Component/OrderForm/OrderForm";
+import useAuth from "../../Hooks/useAuth";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -16,6 +17,7 @@ type OrderFormProps = {
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function BookOrderPage(props: OrderFormProps){
+    useAuth(true)
     const navigate = useNavigate()
     const {orderFormState} = useOrderForm(props)
 
