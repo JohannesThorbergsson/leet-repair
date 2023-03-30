@@ -12,6 +12,7 @@ import {Workshop} from "../../model/Workshop";
 type DashboardProps = {
     orders: ServiceOrder[]
     workshops: Workshop[]
+    updateOrderList(orders: ServiceOrder[]): void
 }
 export default function Dashboard(props: DashboardProps) {
     const user = useAuth(true)
@@ -22,7 +23,11 @@ export default function Dashboard(props: DashboardProps) {
         (props.orders.length>0 && props.orders.map ?
             <Box>
                 <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
-                {props.orders.map(order => <OrderCard key={order.id} order={order}/>)}
+                {props.orders.map(order =>
+                    <OrderCard key={order.id}
+                               order={order}
+                               orders={props.orders}
+                               updateOrderList={props.updateOrderList}/>)}
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )

@@ -3,23 +3,26 @@ import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
+import UpdateOrderStatusDialog from "../../Dialog/UpdateOrderStatusDialog";
+import useUpdateOrderStatus from "../../Hooks/useUpdateOrderStatus";
 
 type OrderCardProps = {
     order: ServiceOrder
+    orders: ServiceOrder[]
+    updateOrderList(orders: ServiceOrder[]): void
 }
 
 export default function OrderCard(props: OrderCardProps){
     const navigate = useNavigate()
-    let status:string = ""
-    if(props.order.status === "OPEN") {
-        status = "Open"
-    } else if (props.order.status === "IN_PROGRESS"){
-        status = "In Progress"
-    } else if (props.order.status=== "READY_FOR_PICKUP") {
-        status = "Ready for Pickup"
-    } else if (props.order.status === "DONE"){
-        status = "Done"
-    }
+    const {
+        status,
+        openUpdateStatusDialog,
+        saveChanges,
+        handleSetStatus,
+        handleSave,
+        handleUpdateStatusDialogSetOpen}
+        = useUpdateOrderStatus(props)
+
     const card = (
         <React.Fragment>
             <CardContent>
@@ -55,10 +58,19 @@ export default function OrderCard(props: OrderCardProps){
                         Edit Order
                     </Button>
                 }
-                <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}>
+                <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}
+                        onClick={handleUpdateStatusDialogSetOpen}>
                     Update Status
                 </Button>
             </Box>
+            <UpdateOrderStatusDialog
+                id={"update-order-status"} keepMounted
+                open={openUpdateStatusDialog}
+                status={status}
+                saveChanges={saveChanges}
+                handleSetStatus={handleSetStatus}
+                handleUpdateStatusDialogSetOpen={handleUpdateStatusDialogSetOpen}
+                handleSave={handleSave}/>
         </React.Fragment>
     );
     return (
