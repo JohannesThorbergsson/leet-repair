@@ -59,7 +59,7 @@ export default function Dashboard(props: DashboardProps) {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            mr: 2, ml: 2}}>
+                            mr: 2, ml: 2, mb: 3}}>
                         <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2, mr: 1, width: 1/2}}>
                             Manage Bikes
                         </Button>
@@ -71,7 +71,7 @@ export default function Dashboard(props: DashboardProps) {
                     </Box>
                 </Box>
                 :
-                <Box>
+                <Box sx={{mb: 3}}>
                     <Typography variant="h6" fontWeight={"medium"}>Search results:</Typography>
                     {searchResults.length === 0 ?
                         <Typography variant="h6" fontWeight={"medium"}>

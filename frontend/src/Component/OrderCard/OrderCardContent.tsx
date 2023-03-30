@@ -2,6 +2,7 @@ import {ServiceOrder} from "../../model/ServiceOrder";
 import {Box, CardContent, Typography} from "@mui/material";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import React from "react";
+import moment from "moment";
 
 type OrderCardContentProps = {
     order: ServiceOrder
@@ -25,23 +26,26 @@ export default function OrderCardContent(props: OrderCardContentProps){
     }
    return (
        <CardContent>
-           <Typography variant="h4" fontWeight={"medium"}>
-               {props.order.description}
-           </Typography>
            <Box sx={{
                display: 'flex',
                flexDirection: 'row',
-               justifyContent: 'space-evenly'
+               justifyContent: 'space-between'
            }}>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   Contractor: {props.order.workshop}
+                   {moment(props.order.date).format('DD.MM.YYYY')}
+               </Typography>
+               <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
+                   {props.order.workshop}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
                    {"Status: " + status}
                </Typography>
            </Box>
+           <Typography variant="h4" fontWeight={"medium"}>
+               {props.order.description}
+           </Typography>
            <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
-               New Components:
+               {props.order.status !=="DONE"? "Ordered Components:": "Installed Components:"}
            </Typography>
            <ComponentTable components={props.order.componentsToReplace} showAge={false}/>
        </CardContent>
