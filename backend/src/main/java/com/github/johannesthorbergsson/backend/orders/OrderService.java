@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class OrderService {
                 serviceOrderRequest.workshop(),
                 principal.getName(),
                 Status.OPEN,
+                LocalDate.now(),
                 serviceOrderRequest.componentsToReplace());
         return orderRepository.save(newOrder);
     }
@@ -41,6 +43,7 @@ public class OrderService {
                 serviceOrderRequest.workshop(),
                 principal.getName(),
                 serviceOrderRequest.status(),
+                serviceOrderRequest.date(),
                 serviceOrderRequest.componentsToReplace()
         );
         return orderRepository.save(editedOrder);
