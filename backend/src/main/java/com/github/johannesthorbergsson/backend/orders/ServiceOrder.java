@@ -4,6 +4,7 @@ import com.github.johannesthorbergsson.backend.bikes.Component;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Document("service_order")
@@ -15,6 +16,7 @@ public record ServiceOrder(
         String workshop,
         String username,
         Status status,
+        LocalDate date,
         List<Component> componentsToReplace
 ) {
 }
