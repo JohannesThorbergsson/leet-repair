@@ -8,11 +8,14 @@ import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
 import {Workshop} from "../../model/Workshop";
+import {Bike} from "../../model/Bike";
 
 type DashboardProps = {
     orders: ServiceOrder[]
     workshops: Workshop[]
+    bikes: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
+    updateBikeList(bikes: Bike[]): void
 }
 export default function Dashboard(props: DashboardProps) {
     const user = useAuth(true)
@@ -27,7 +30,9 @@ export default function Dashboard(props: DashboardProps) {
                     <OrderCardWithControls key={order.id}
                                            order={order}
                                            orders={props.orders}
-                                           updateOrderList={props.updateOrderList}/>)}
+                                           updateOrderList={props.updateOrderList}
+                                           bikes={props.bikes}
+                                           updateBikeList={props.updateBikeList}/>)}
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )
