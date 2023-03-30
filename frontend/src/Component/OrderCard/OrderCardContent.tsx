@@ -41,7 +41,7 @@ export default function OrderCardContent(props: OrderCardContentProps){
                    {"Status: " + status}
                </Typography>
            </Box>
-           <Typography variant="h4" fontWeight={"medium"}>
+           <Typography variant="h4" fontWeight={"medium"} sx={{mt: 1}}>
                {props.order.description}
            </Typography>
            <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
