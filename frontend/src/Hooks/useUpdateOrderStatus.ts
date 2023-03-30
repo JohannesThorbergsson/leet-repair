@@ -77,8 +77,8 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
                                 date: props.order.date
                             }],
                         components:
-                            [...bikeToUpdate.components.filter((component =>
-                                !props.order.componentsToReplace
+                            [...bikeToUpdate.components
+                                .filter((component => !props.order.componentsToReplace
                                     .map(comp=> comp.category.toLowerCase())
                                     .includes(component.category.toLowerCase()))), ...props.order.componentsToReplace]})
                     .then(r => r.data)
