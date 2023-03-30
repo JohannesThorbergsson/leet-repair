@@ -39,7 +39,11 @@ const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={
-              <Dashboard orders={orders} workshops={workshops} updateOrderList={updateOrderList}/>}/>
+              <Dashboard orders={orders}
+                         workshops={workshops}
+                         updateOrderList={updateOrderList}
+                         bikes={bikes}
+                         updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
