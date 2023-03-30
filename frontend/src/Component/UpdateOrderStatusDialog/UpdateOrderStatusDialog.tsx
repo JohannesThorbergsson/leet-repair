@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {useEffect, useRef} from 'react';
+import {ChangeEvent, useEffect, useRef} from 'react';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -34,21 +33,20 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
     ]
     const handleEntering = () => {
         if (radioGroupRef.current != null) {
-            radioGroupRef.current.focus();
+            radioGroupRef.current.focus()
         }
-    };
+    }
     const handleCancel = () => {
-        handleClose();
-    };
+        handleClose()
+    }
 
     const handleOk = () => {
-        handleClose(props.status);
-    };
+        handleClose(props.status)
+    }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.handleUpdateStatus((event.target as HTMLInputElement).value);
-    };
-
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        props.handleUpdateStatus((event.target as HTMLInputElement).value)
+    }
 
     const handleClose = (newValue?: string) => {
         props.handleUpdateStatusDialogSetOpen()
