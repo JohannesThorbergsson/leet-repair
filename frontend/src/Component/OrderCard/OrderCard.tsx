@@ -26,8 +26,12 @@ export default function OrderCard(props: OrderCardProps){
         }
     }
     const [status, setStatus] = useState(getStatusDisplayText())
+    const [openUpdateStatusDialog, setOpenUpdateStatusDialog] = useState(false)
     function handleUpdateStatus(newStatus: string){
         setStatus(newStatus)
+    }
+    function handleUpdateStatusDialogSetOpen(){
+        setOpenUpdateStatusDialog(!openUpdateStatusDialog)
     }
     const card = (
         <React.Fragment>
@@ -64,7 +68,8 @@ export default function OrderCard(props: OrderCardProps){
                         Edit Order
                     </Button>
                 }
-                <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}>
+                <Button variant={"contained"} sx={{width: 1/2, mr: 2 , ml: 1}}
+                        onClick={handleUpdateStatusDialogSetOpen}>
                     Update Status
                 </Button>
             </Box>
@@ -77,10 +82,11 @@ export default function OrderCard(props: OrderCardProps){
                 boxShadow: 1
             }}>{card}</Card>
             <UpdateOrderStatusDialog
-                id={"test"} keepMounted
-                open={true}
+                id={"update-order-status"} keepMounted
+                open={openUpdateStatusDialog}
                 status={status}
-                handleUpdateStatus={handleUpdateStatus}/>
+                handleUpdateStatus={handleUpdateStatus}
+                handleUpdateStatusDialogSetOpen={handleUpdateStatusDialogSetOpen}/>
         </div>
     )
 }

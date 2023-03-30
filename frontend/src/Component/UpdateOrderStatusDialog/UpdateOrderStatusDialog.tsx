@@ -1,9 +1,6 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
-import Box from '@mui/material/Box';
+import {useEffect, useRef} from 'react';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -11,7 +8,6 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import {ListItemButton} from "@mui/material";
 
 type UpdateOrderStatusDialogProps = {
     id: string
@@ -19,16 +15,16 @@ type UpdateOrderStatusDialogProps = {
     status: string
     open: boolean
     handleUpdateStatus(newStatus: string): void
+    handleUpdateStatusDialogSetOpen(): void
 }
 export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogProps) {
     const radioGroupRef = useRef<HTMLElement>(null)
-    const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        if (!open) {
+        if (!props.open) {
             props.handleUpdateStatus(props.status)
         }
-    }, [props, open])
+    }, [props])
 
     const options = [
         'Open',
@@ -52,64 +48,49 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         props.handleUpdateStatus((event.target as HTMLInputElement).value);
     };
-    const handleClickListItem = () => {
-        setOpen(true);
-    };
+
 
     const handleClose = (newValue?: string) => {
-        setOpen(false)
+        props.handleUpdateStatusDialogSetOpen()
         if (newValue) {
             props.handleUpdateStatus(newValue)
         }
     }
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            <List component="div" role="group">
-                <ListItemButton
-                    divider
-                    aria-haspopup="true"
-                    aria-controls="ringtone-menu"
-                    aria-label="phone ringtone"
-                    onClick={handleClickListItem}
+        <Dialog
+            sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
+            maxWidth="xs"
+            TransitionProps={{ onEntering: handleEntering }}
+            open={props.open}
+            id={props.id}
+            keepMounted={props.keepMounted}
+        >
+            <DialogTitle>Update Order Status</DialogTitle>
+            <DialogContent dividers>
+                <RadioGroup
+                    ref={radioGroupRef}
+                    aria-label="Order Status"
+                    name="Order Status"
+                    value={props.status}
+                    onChange={handleChange}
                 >
-                    <ListItemText primary="Phone ringtone" secondary={props.status} />
-                </ListItemButton>
-                <Dialog
-                    sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
-                    maxWidth="xs"
-                    TransitionProps={{ onEntering: handleEntering }}
-                    open={open}
-                    id={props.id}
-                    keepMounted={props.keepMounted}
-                >
-                    <DialogTitle>Phone Ringtone</DialogTitle>
-                    <DialogContent dividers>
-                        <RadioGroup
-                            ref={radioGroupRef}
-                            aria-label="ringtone"
-                            name="ringtone"
-                            value={props.status}
-                            onChange={handleChange}
-                        >
-                            {options.map((option) => (
-                                <FormControlLabel
-                                    value={option}
-                                    key={option}
-                                    control={<Radio />}
-                                    label={option}
-                                />
-                            ))}
-                        </RadioGroup>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button autoFocus onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleOk}>Ok</Button>
-                    </DialogActions>
-                </Dialog>
-            </List>
-        </Box>
+                    {options.map((option) => (
+                        <FormControlLabel
+                            value={option}
+                            key={option}
+                            control={<Radio />}
+                            label={option}
+                        />
+                    ))}
+                </RadioGroup>
+            </DialogContent>
+            <DialogActions>
+                <Button autoFocus onClick={handleCancel}>
+                    Cancel
+                </Button>
+                <Button onClick={handleOk}>Ok</Button>
+            </DialogActions>
+        </Dialog>
     )
 }
