@@ -25,7 +25,6 @@ export default function useOrderForm(props: OrderFormProps){
         workshopNewOrder: props.workshops.find(workshop => workshop.id === workshopId),
         workshopEditOrder: props.workshops.find(workshop => workshop.name===props.orderToEdit?.workshop),
         orderToEditStatus: props.orderToEdit?.status,
-
         openDeleteDialog: false
     }
     const [orderFormState, dispatch] = useReducer(orderFormReducer, initialFormState)
