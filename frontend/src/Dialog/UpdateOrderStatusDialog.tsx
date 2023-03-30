@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useRef} from 'react';
+import {ChangeEvent, useEffect, useRef, useState} from 'react';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,15 +13,18 @@ type UpdateOrderStatusDialogProps = {
     keepMounted: boolean
     status: string
     open: boolean
-    handleUpdateStatus(newStatus: string): void
+    saveChanges: boolean
+    handleSave(): void
+    handleSetStatus(newStatus: string): void
     handleUpdateStatusDialogSetOpen(): void
 }
 export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogProps) {
     const radioGroupRef = useRef<HTMLElement>(null)
+    const [status, setStatus] = useState(props.status)
 
     useEffect(() => {
         if (!props.open) {
-            props.handleUpdateStatus(props.status)
+            setStatus(props.status)
         }
     }, [props])
 
@@ -41,17 +44,18 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
     }
 
     const handleOk = () => {
-        handleClose(props.status)
+        props.handleSave()
+        handleClose(status)
     }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        props.handleUpdateStatus((event.target as HTMLInputElement).value)
+        setStatus((event.target as HTMLInputElement).value)
     }
 
     const handleClose = (newValue?: string) => {
         props.handleUpdateStatusDialogSetOpen()
         if (newValue) {
-            props.handleUpdateStatus(newValue)
+            props.handleSetStatus(newValue)
         }
     }
 
@@ -70,7 +74,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                     ref={radioGroupRef}
                     aria-label="Order Status"
                     name="Order Status"
-                    value={props.status}
+                    value={status}
                     onChange={handleChange}
                 >
                     {options.map((option) => (
