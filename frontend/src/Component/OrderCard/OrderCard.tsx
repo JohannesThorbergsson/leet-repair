@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
 import UpdateOrderStatusDialog from "../../Dialog/UpdateOrderStatusDialog";
-import axios from "axios";
+import useUpdateOrderStatus from "../../Hooks/useUpdateOrderStatus";
 
 type OrderCardProps = {
     order: ServiceOrder
@@ -14,56 +14,15 @@ type OrderCardProps = {
 
 export default function OrderCard(props: OrderCardProps){
     const navigate = useNavigate()
-    const [status, setStatus] = useState(getStatusDisplayText())
-    const [openUpdateStatusDialog, setOpenUpdateStatusDialog] = useState(false)
-    const [saveChanges, setSaveChanges] = useState(false)
-    useEffect(handleUpdateStatus, [saveChanges])
+    const {
+        status,
+        openUpdateStatusDialog,
+        saveChanges,
+        handleSetStatus,
+        handleSave,
+        handleUpdateStatusDialogSetOpen}
+        = useUpdateOrderStatus(props)
 
-    function getStatusDisplayText() {
-        switch (props.order.status) {
-            case "OPEN":
-                return "Open"
-            case "IN_PROGRESS":
-                return "In Progress"
-            case "READY_FOR_PICKUP":
-                return "Ready for Pickup"
-            case "DONE":
-                return "Done"
-            default:
-                return props.order.status
-        }
-    }
-    function getStatusEnumValue() {
-        switch (status) {
-            case "Open":
-                return "OPEN"
-            case "In Progress":
-                return "IN_PROGRESS"
-            case "Ready for Pickup":
-                return "READY_FOR_PICKUP"
-            case "Done":
-                return "DONE"
-            default:
-                return props.order.status
-        }
-    }
-
-    function handleUpdateStatus(){
-        axios.put("/api/orders/" + props.order.id, {...props.order, status: getStatusEnumValue()})
-            .then(r => r.data)
-            .then(updatedOrder => props.updateOrderList([...props.orders.filter(
-                order=>order.id !== props.order.id), updatedOrder]))
-            .catch((error) => console.error(error))
-    }
-    function handleSetStatus(newStatus: string){
-        setStatus(newStatus)
-    }
-    function handleUpdateStatusDialogSetOpen(){
-        setOpenUpdateStatusDialog(!openUpdateStatusDialog)
-    }
-    function handleSave(){
-        setSaveChanges(!saveChanges)
-    }
     const card = (
         <React.Fragment>
             <CardContent>
@@ -104,14 +63,6 @@ export default function OrderCard(props: OrderCardProps){
                     Update Status
                 </Button>
             </Box>
-        </React.Fragment>
-    );
-    return (
-        <div>
-            <Card variant={"outlined"} sx={{
-                m: 2,
-                boxShadow: 1
-            }}>{card}</Card>
             <UpdateOrderStatusDialog
                 id={"update-order-status"} keepMounted
                 open={openUpdateStatusDialog}
@@ -120,6 +71,14 @@ export default function OrderCard(props: OrderCardProps){
                 handleSetStatus={handleSetStatus}
                 handleUpdateStatusDialogSetOpen={handleUpdateStatusDialogSetOpen}
                 handleSave={handleSave}/>
+        </React.Fragment>
+    );
+    return (
+        <div>
+            <Card variant={"outlined"} sx={{
+                m: 2,
+                boxShadow: 1
+            }}>{card}</Card>
         </div>
     )
 }
