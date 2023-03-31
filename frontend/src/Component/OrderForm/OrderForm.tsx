@@ -78,20 +78,22 @@ export default function OrderForm(props: OrderFormProps) {
                     justifyContent: 'space-evenly'
                 }}>
                     <Button variant = "contained"
-                            sx={{mt: 2, mr: 1, width: 1/2}}
+                            sx={props.orderToEdit? {mt: 2, mr: 1, width: 1/2}: {mt: 2, width: 1}}
                             type={"submit"}
                             disabled={orderFormState.orderDescription ==="" || !orderFormState.selectedBike}>
                         {!props.orderToEdit ? "Submit Order": "Submit Changes"}
                     </Button>
-                    <Button variant={"contained"}
-                            sx={{mt: 2, ml: 1,
-                                width: 1/2,
-                                bgcolor: 'warning.main',
-                                '&:hover': {bgcolor: 'error.main'}
-                            }}
-                            onClick={handleClickDeleteOrder}>
-                        Cancel Order
-                    </Button>
+                    {props.orderToEdit &&
+                        <Button variant={"contained"}
+                                sx={{mt: 2, ml: 1,
+                                    width: 1/2,
+                                    bgcolor: 'warning.main',
+                                    '&:hover': {bgcolor: 'error.main'}
+                                }}
+                                onClick={handleClickDeleteOrder}>
+                            Cancel Order
+                        </Button>
+                    }
                 </Box>
                 {props.orderToEdit &&
                     <Button variant="contained" sx={{mt: 2, width: 1}} onClick={()=>navigate("/")}>
