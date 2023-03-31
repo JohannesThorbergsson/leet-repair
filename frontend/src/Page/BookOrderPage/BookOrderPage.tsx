@@ -42,7 +42,11 @@ export default function BookOrderPage(props: OrderFormProps){
             </Typography>
             <OrderForm workshops={props.workshops} bikes={props.bikes} orders={props.orders}
                        updateOrderList={props.updateOrderList}/>
-            <Button sx={{mt: 2, width: 92/100}} variant={"contained"} onClick={()=>navigate("/")}>Back</Button>
+            <Button sx={{mt: 2, width: 92/100}}
+                    variant={"contained"}
+                    onClick={()=>navigate("/")}>
+                Back
+            </Button>
         </>
     )
 }
