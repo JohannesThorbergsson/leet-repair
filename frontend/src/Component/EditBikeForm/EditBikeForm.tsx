@@ -65,7 +65,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        value={Number.isNaN(editBikeFormState.mileage)? 0 : editBikeFormState.mileage}
+                        value={Number.isNaN(editBikeFormState.mileage)? "" : editBikeFormState.mileage}
                         error={!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
@@ -120,8 +120,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         sx={{width: 1}}
                         disabled =
                             {editBikeFormState.modelName===""
-                            || editBikeFormState.mileage===undefined
-                            || !/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())}>
+                            || (!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
+                                    && editBikeFormState.mileageFieldValue!=="")}>
                         {props.editMode? "Save Changes" : "Save"}
                     </Button>
                 </Box>
