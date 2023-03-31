@@ -12,7 +12,7 @@ type AddServiceProps = {
     handleSetInstalledComponents(components: Component[]): void
     components: Component[]
     editMode: boolean
-    scrollToBottom: () => void
+    scrollToBottom?: () => void
 }
 export default function AddService(props: AddServiceProps) {
     const {
@@ -28,7 +28,9 @@ export default function AddService(props: AddServiceProps) {
     } = useEditServices()
 
     function handleSubmitService(){
-        props.scrollToBottom()
+        if(props.scrollToBottom){
+            props.scrollToBottom()
+        }
         props.handleSetServices([...props.services,
             {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
         if (props.editMode) {

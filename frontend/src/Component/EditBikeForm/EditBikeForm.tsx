@@ -4,10 +4,10 @@ import {v4 as uuidv4} from "uuid"
 import useEditBikeForm from "../../Hooks/useEditBikeForm";
 import EditComponents from "../EditComponents/EditComponents";
 import ServiceCard from "../ServiceCard/ServiceCard";
-import AddService from "../AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
 import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
+import ServiceFormDialog from "../../Dialog/ServiceFormDialog";
 
 type EditBikeFormProps = {
     editMode: boolean
@@ -99,12 +99,12 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                                 <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
-                    <AddService handleSetServices={handleSetServices}
-                                services={editBikeFormState.services}
-                                components={editBikeFormState.components}
-                                handleSetInstalledComponents={handleSetInstalledComponents}
-                                editMode={props.editMode}
-                                scrollToBottom={scroll}/>
+                    {/*<AddService handleSetServices={handleSetServices}*/}
+                    {/*            services={editBikeFormState.services}*/}
+                    {/*            components={editBikeFormState.components}*/}
+                    {/*            handleSetInstalledComponents={handleSetInstalledComponents}*/}
+                    {/*            editMode={props.editMode}*/}
+                    {/*            scrollToBottom={scroll}/>*/}
                 </Box>
                 <Box sx={{
                     display: 'flex',
@@ -146,6 +146,11 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             Delete Bike
                         </Button>
                     }
+                    <ServiceFormDialog
+                        handleSetServices={handleSetServices}
+                        handleSetInstalledComponents={handleSetInstalledComponents}
+                        editMode={props.editMode}
+                        editBikeFormState={editBikeFormState}/>
                     <DeleteBikeDialog
                         openDeleteDialog={editBikeFormState.openDeleteDialog}
                         handleClickDeleteBike={handleClickDeleteBike}

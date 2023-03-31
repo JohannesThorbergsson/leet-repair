@@ -43,6 +43,11 @@ export default function Dashboard(props: DashboardProps) {
     return (user &&
         <>
             <ResponsiveAppBar/>
+            <Box sx={{m: 2}}>
+                <Typography variant={"body1"}>
+                    Need services or parts for your bike? <br/> Our workshops got you covered!
+                </Typography>
+            </Box>
             <Box component={'form'} onSubmit={searchHandler} sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -53,9 +58,9 @@ export default function Dashboard(props: DashboardProps) {
                     opacity: [0.9, 0.8, 0.7],
                 },
             }}>
-            <TextField placeholder="Search for services" value={searchTerm}
-                        onChange={handleSearchTerm} />
-            <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
+                <TextField placeholder="Search for workshops" value={searchTerm}
+                            onChange={handleSearchTerm} />
+                <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
             {!search?
                 <Box>
