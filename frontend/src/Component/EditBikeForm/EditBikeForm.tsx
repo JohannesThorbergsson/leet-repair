@@ -87,7 +87,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         Installed Components
                     </Typography>
                     <EditComponents components={editBikeFormState.components}
-                                    handleSetComponents={handleSetInstalledComponents}/>
+                                    handleSetComponents={handleSetInstalledComponents}
+                                    displayAge={true}/>
                 </Box>
                 <Box>
                     {editBikeFormState.services.length>0 &&

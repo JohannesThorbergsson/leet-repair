@@ -38,7 +38,6 @@ export default function ServiceFormDialog(props: ServiceFormDialogProps){
         <Dialog
             sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
             maxWidth="xs"
-            TransitionProps={{ onEntering: handleEntering }}
             open={props.open}
             id={props.id}
             keepMounted={props.keepMounted}
