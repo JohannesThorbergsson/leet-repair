@@ -1,7 +1,7 @@
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Component} from "../model/Component";
 
-type State = {
+export type EditBikeFormState = {
     modelName: string
     mileage: number | undefined
     mileageFieldValue: string
@@ -19,7 +19,7 @@ type Action =
     | {type: "SET_OPEN_DELETE_DIALOG", payload: boolean}
     | {type: "SET_SCROLL_TO_BOTTOM", payload: boolean}
 
-export default function editBikeFormReducer(state: State, action: Action) {
+export default function editBikeFormReducer(state: EditBikeFormState, action: Action) {
     switch (action.type) {
         case "SET_MODEL_NAME":
             return {...state, modelName: action.payload}

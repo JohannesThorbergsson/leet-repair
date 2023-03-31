@@ -1,14 +1,14 @@
-import useAuth from "../../Hooks/useAuth";
 import useWorkshops from "../../Hooks/useWorkshops";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
-import {useNavigate} from "react-router-dom";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
-import {Box, Button, TextField, Typography} from "@mui/material";
+import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
 import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from '@mui/icons-material/Clear';
 
 type DashboardProps = {
     orders: ServiceOrder[]
@@ -18,10 +18,16 @@ type DashboardProps = {
     updateBikeList(bikes: Bike[]): void
 }
 export default function Dashboard(props: DashboardProps) {
-    const user = useAuth(true)
-    const navigate = useNavigate()
-    const {searchHandler, searchResults, search, closeSearch, searchTerm, handleSearchTerm}
-        = useWorkshops({workshops: props.workshops})
+    const {
+        searchHandler,
+        handleSearchTerm,
+        closeSearch,
+        user,
+        searchResults,
+        isSearch,
+        searchTerm,
+        navigate,
+    } = useWorkshops({workshops: props.workshops})
     let OrderGallery =
         (props.orders.length>0 ?
             <Box>
@@ -43,6 +49,11 @@ export default function Dashboard(props: DashboardProps) {
     return (user &&
         <>
             <ResponsiveAppBar/>
+            <Box sx={{m: 2}}>
+                <Typography variant={"body1"}>
+                    Need services or parts for your bike? <br/> Our workshops got you covered!
+                </Typography>
+            </Box>
             <Box component={'form'} onSubmit={searchHandler} sx={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -53,11 +64,23 @@ export default function Dashboard(props: DashboardProps) {
                     opacity: [0.9, 0.8, 0.7],
                 },
             }}>
-            <TextField placeholder="Search for services" value={searchTerm}
-                        onChange={handleSearchTerm} />
-            <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
+                <TextField placeholder="Search for workshops"
+                           value={searchTerm}
+                           onChange={handleSearchTerm}
+                           InputProps={{
+                               endAdornment: (
+                                   <InputAdornment position="end">
+                                       {searchTerm !=="" && (
+                                           <IconButton onClick={closeSearch}>
+                                               <ClearIcon />
+                                           </IconButton>
+                                       )}
+                                   </InputAdornment>
+                               ),
+                           }}/>
+                <Button type={"submit"} variant="contained" disabled={searchTerm.trim().length===0}>Search</Button>
             </Box>
-            {!search?
+            {!isSearch?
                 <Box>
                     <Box>{OrderGallery}</Box>
                     <Box sx={{
@@ -71,7 +94,7 @@ export default function Dashboard(props: DashboardProps) {
                         <Button variant={"contained"}
                                 sx={{mt: 2, ml: 2, width: 1/2}}
                                 onClick={()=>navigate("/orders/archive")}>
-                            Archieved Orders
+                            Archived Orders
                         </Button>
                     </Box>
                 </Box>
@@ -84,7 +107,10 @@ export default function Dashboard(props: DashboardProps) {
                         </Typography> :
                         searchResults.map(
                             (workshop) =>
-                                <WorkshopCard key={workshop.id} workshop={workshop} displayMode={false}/>)
+                                <WorkshopCard key={workshop.id}
+                                              searchTerm={searchTerm}
+                                              workshop={workshop}
+                                              displayMode={false}/>)
                     }
                     <Button variant="contained" onClick={closeSearch} sx={{width: 92/100}}>Back</Button>
                 </Box>

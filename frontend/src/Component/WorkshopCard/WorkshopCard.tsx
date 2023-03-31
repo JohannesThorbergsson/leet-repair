@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 type WorkshopCardProps = {
     workshop: Workshop
     displayMode: boolean
+    searchTerm?: string
 }
 
 export default function WorkshopCard(props: WorkshopCardProps) {
@@ -44,7 +45,8 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                 <ComponentTable components={props.workshop.inventory} showAge={false}/>
                 {!props.displayMode &&
                     <Button variant={"contained"} sx={{mt: 1}}
-                            onClick={() => navigate("/workshops/orders/"+props.workshop.id)}>
+                            onClick={() => navigate("/workshops/orders/"+props.workshop.id,
+                                {state: {searchTerm: props.searchTerm}})}>
                         Book Services
                     </Button>
                 }

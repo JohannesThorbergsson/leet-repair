@@ -1,13 +1,12 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useLayoutEffect, useRef} from "react";
-import {v4 as uuidv4} from "uuid"
+import React, {useLayoutEffect, useRef, useState} from "react";
 import useEditBikeForm from "../../Hooks/useEditBikeForm";
 import EditComponents from "../EditComponents/EditComponents";
 import ServiceCard from "../ServiceCard/ServiceCard";
-import AddService from "../AddService/AddService";
 import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
 import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
+import ServiceFormDialog from "../../Dialog/ServiceFormDialog";
 
 type EditBikeFormProps = {
     editMode: boolean
@@ -36,6 +35,10 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         }
     }, [editBikeFormState.scrollToBottom])
 
+    const[serviceFormOpen, setServiceFormOpen] = useState(false)
+    function handleOpenServiceFormDialog(){
+        setServiceFormOpen(!serviceFormOpen)
+    }
     return(
         <>
             <Box sx={{
@@ -62,7 +65,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         required
                         id="outlined-required"
                         label="Mileage"
-                        value={Number.isNaN(editBikeFormState.mileage)? 0 : editBikeFormState.mileage}
+                        value={Number.isNaN(editBikeFormState.mileage)? "" : editBikeFormState.mileage}
                         error={!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
                             && editBikeFormState.mileageFieldValue!==""}
                         helperText={(!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
@@ -84,7 +87,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         Installed Components
                     </Typography>
                     <EditComponents components={editBikeFormState.components}
-                                    handleSetComponents={handleSetInstalledComponents}/>
+                                    handleSetComponents={handleSetInstalledComponents}
+                                    displayAge={true}/>
                 </Box>
                 <Box>
                     {editBikeFormState.services.length>0 &&
@@ -96,15 +100,15 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                                 Recorded Services
                             </Typography>
                             {editBikeFormState.services.map(service =>
-                                <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
+                                <ServiceCard key={service.id} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
-                    <AddService handleSetServices={handleSetServices}
-                                services={editBikeFormState.services}
-                                components={editBikeFormState.components}
-                                handleSetInstalledComponents={handleSetInstalledComponents}
-                                editMode={props.editMode}
-                                scrollToBottom={scroll}/>
+                    <Button variant={"contained"}
+                            onClick={handleOpenServiceFormDialog}
+                            sx={{width: 1, mt: 1}}
+                    >
+                        Document Service
+                    </Button>
                 </Box>
                 <Box sx={{
                     display: 'flex',
@@ -116,8 +120,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         sx={{width: 1}}
                         disabled =
                             {editBikeFormState.modelName===""
-                            || editBikeFormState.mileage===undefined
-                            || !/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())}>
+                            || (!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
+                                    && editBikeFormState.mileageFieldValue!=="")}>
                         {props.editMode? "Save Changes" : "Save"}
                     </Button>
                 </Box>
@@ -146,6 +150,16 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             Delete Bike
                         </Button>
                     }
+                    <ServiceFormDialog
+                        handleSetServices={handleSetServices}
+                        handleSetInstalledComponents={handleSetInstalledComponents}
+                        editMode={props.editMode}
+                        editBikeFormState={editBikeFormState}
+                        scrollToBottom={scroll}
+                        id={"service-form-dialog"}
+                        keepMounted
+                        open={serviceFormOpen}
+                        handleOpenServiceFormDialog={handleOpenServiceFormDialog}/>
                     <DeleteBikeDialog
                         openDeleteDialog={editBikeFormState.openDeleteDialog}
                         handleClickDeleteBike={handleClickDeleteBike}

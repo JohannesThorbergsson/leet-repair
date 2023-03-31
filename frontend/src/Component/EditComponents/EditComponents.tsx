@@ -7,6 +7,7 @@ import ComponentTable from "../ComponentTable/ComponentTable";
 type EditComponentsProp = {
     components: Component[]
     handleSetComponents(components: Component[]): void
+    displayAge?: boolean
 }
 
 export default function EditComponents(props: EditComponentsProp) {
@@ -33,7 +34,8 @@ export default function EditComponents(props: EditComponentsProp) {
                     flexDirection: 'column',
                 }}>
                     <ComponentTable components={props.components}
-                                    handleDeleteComponent={handleDeleteComponent} showAge={true}/>
+                                    handleDeleteComponent={handleDeleteComponent}
+                                    showAge={props.displayAge ?? false}/>
                     <Box sx={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -56,20 +58,22 @@ export default function EditComponents(props: EditComponentsProp) {
                             label="Model"
                             fullWidth
                             value={newComponentModel}
-                            sx={{mt: 1, mr: 1}}
+                            sx={{mt: 1, mr: (props.displayAge ? 1:0)}}
                             onChange={handleInputComponentModel}
                         />
-                        <TextField
-                            required
-                            id="outlined-required"
-                            label="Age (km)"
-                            value={Number.isNaN(newComponentAge)? "" : newComponentAge}
-                            error={Number.isNaN(newComponentAge)}
-                            helperText={Number.isNaN(newComponentAge) && "NaN"}
-                            sx={{mt: 1}}
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                            onChange={handleInputComponentAge}
-                        />
+                        {props.displayAge &&
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="Age (km)"
+                                value={Number.isNaN(newComponentAge)? "" : newComponentAge}
+                                error={Number.isNaN(newComponentAge)}
+                                helperText={Number.isNaN(newComponentAge) && "NaN"}
+                                sx={{mt: 1}}
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onChange={handleInputComponentAge}
+                            />
+                        }
                     </Box>
                     <Button variant={"contained"}
                             onClick={handleSubmitNewComponent}

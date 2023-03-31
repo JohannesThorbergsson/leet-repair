@@ -6,10 +6,10 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MenuIcon from '@mui/icons-material/Menu';
 import React from "react";
 import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
+import {AccountCircle} from "@mui/icons-material";
 
 export default function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -67,14 +67,14 @@ export default function ResponsiveAppBar() {
                             LeetRepair
                         </Typography>
                         <Box sx={{ flexGrow: 0 }}>
-                            {user? <Tooltip title="Open settings">
+                            {user? <Tooltip title="Open Menu">
                                 <IconButton onClick={handleOpenUserMenu}
                                             size="large"
                                             edge="start"
                                             color="inherit"
                                             aria-label="open drawer"
                                             sx={{ p: 0, ml: 1 }}>
-                                    <MenuIcon/>
+                                    <AccountCircle/>
                                 </IconButton>
                             </Tooltip>:
                                 <></>
@@ -95,9 +95,9 @@ export default function ResponsiveAppBar() {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                    <MenuItem key={"logout"} onClick={handleLogout}>
-                                        <Typography textAlign="center">Logout</Typography>
-                                    </MenuItem>
+                                <MenuItem key={"logout"} onClick={handleLogout}>
+                                    <Typography textAlign="center">Logout</Typography>
+                                </MenuItem>
                             </Menu>
                         </Box>
                     </Toolbar>

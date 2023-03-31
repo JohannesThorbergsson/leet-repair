@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record ServiceEvent (
+    String id,
     String description,
     List<Component> newComponents,
     String workshopName,
