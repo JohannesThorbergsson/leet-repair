@@ -1,5 +1,5 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useLayoutEffect, useRef} from "react";
+import React, {useLayoutEffect, useRef, useState} from "react";
 import {v4 as uuidv4} from "uuid"
 import useEditBikeForm from "../../Hooks/useEditBikeForm";
 import EditComponents from "../EditComponents/EditComponents";
@@ -36,6 +36,10 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         }
     }, [editBikeFormState.scrollToBottom])
 
+    const[serviceFormOpen, setServiceFormOpen] = useState(false)
+    function handleOpenServiceFormDialog(){
+        setServiceFormOpen(!serviceFormOpen)
+    }
     return(
         <>
             <Box sx={{
@@ -99,12 +103,12 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                                 <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
-                    {/*<AddService handleSetServices={handleSetServices}*/}
-                    {/*            services={editBikeFormState.services}*/}
-                    {/*            components={editBikeFormState.components}*/}
-                    {/*            handleSetInstalledComponents={handleSetInstalledComponents}*/}
-                    {/*            editMode={props.editMode}*/}
-                    {/*            scrollToBottom={scroll}/>*/}
+                    <Button variant={"contained"}
+                            onClick={handleOpenServiceFormDialog}
+                            sx={{width: 1, mt: 1}}
+                    >
+                        Document Service
+                    </Button>
                 </Box>
                 <Box sx={{
                     display: 'flex',
@@ -151,7 +155,11 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         handleSetInstalledComponents={handleSetInstalledComponents}
                         editMode={props.editMode}
                         editBikeFormState={editBikeFormState}
-                        handleSubmitService={handleSub}/>
+                        scrollToBottom={scroll}
+                        id={"service-form-dialog"}
+                        keepMounted
+                        open={serviceFormOpen}
+                        handleOpenServiceFormDialog={handleOpenServiceFormDialog}/>
                     <DeleteBikeDialog
                         openDeleteDialog={editBikeFormState.openDeleteDialog}
                         handleClickDeleteBike={handleClickDeleteBike}

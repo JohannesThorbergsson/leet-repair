@@ -15,12 +15,12 @@ type ServiceFormDialogProps = {
     handleSetServices(services: ServiceEvent[]): void
     editBikeFormState: EditBikeFormState
     handleSetInstalledComponents(components: Component[]): void
-    handleSubmitService(): void
+    handleOpenServiceFormDialog(): void
     editMode: boolean
     open: boolean
     keepMounted: boolean
     id: string
-    scrollToBottom?: () => void
+    scrollToBottom? (): void
 }
 export default function ServiceFormDialog(props: ServiceFormDialogProps){
     const {
@@ -41,62 +41,62 @@ export default function ServiceFormDialog(props: ServiceFormDialogProps){
         }
     }
     const handleCancel = () => {
-        handleClose()
+        props.handleOpenServiceFormDialog()
     }
 
-    const handleSave = () => {
-        props.handleSave()
-        handleClose(status)
-    }
-    const handleClose = (newValue?: string) => {
-        // props.handleUpdateStatusDialogSetOpen()
-        if (newValue) {
-            props.handleSetStatus(newValue)
-        }
-    }
     function handleSubmitService(){
         if(props.scrollToBottom){
             props.scrollToBottom()
         }
-        props.handleSetServices([...props.services,
-            {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
+        props.handleSetServices([...props.editBikeFormState.services,
+            {
+                description: description,
+                newComponents: newBikeComponents,
+                workshopName:workshopName,
+                date: date,
+                id: uuidv4()}])
         if (props.editMode) {
-            const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
-            props.handleSetInstalledComponents([...props.components.filter(
-                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
+            const newComponentCategories = new Set(newBikeComponents
+                .map(component => component.category.trim().toLowerCase()))
+
+            props.handleSetInstalledComponents([...props.editBikeFormState.components.filter(
+                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())),
+                ...newBikeComponents])
         }
         clearInputFields()
+        props.handleOpenServiceFormDialog()
     }
     return (
         <Dialog
             sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
             maxWidth="xs"
             TransitionProps={{ onEntering: handleEntering }}
-            open={false}
+            open={props.open}
             id={props.id}
             keepMounted={props.keepMounted}
         >
             <DialogTitle>Document a Service</DialogTitle>
             <DialogContent dividers>
-                <AddService handleSetServices={props.handleSetServices}
-                            services={props.editBikeFormState.services}
-                            newBikeComponents={props.editBikeFormState.components}
-                            handleSetInstalledComponents={props.handleSetInstalledComponents}
-                            editMode={props.editMode}
+                <AddService services={props.editBikeFormState.services}
+                            newBikeComponents={newBikeComponents}
                             date={date}
                             description={description}
                             workshopName={workshopName}
+                            handleSetServices={props.handleSetServices}
+                            handleSetNewComponents={handleSetNewComponents}
                             handleInputDate={handleInputDate}
                             handleInputDescription={handleInputDescription}
                             handleInputWorkshopName={handleInputWorkshopName}
-                            handleSetNewComponents={handleSetNewComponents}
-                />
+                            handleSubmitService={handleSubmitService}/>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleCancel}>
                     Cancel
                 </Button>
-                <Button onClick={handleSave}>Save</Button>
+                <Button onClick={handleSubmitService}
+                        disabled={description==="" || workshopName==="" || date ===""}>
+                            Save
+                </Button>
             </DialogActions>
         </Dialog>
     )
