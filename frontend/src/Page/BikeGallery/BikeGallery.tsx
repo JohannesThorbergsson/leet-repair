@@ -28,7 +28,9 @@ export default function BikeGallery(props: Props) {
             <div>
                 {props.bikes.map(b => <BikeCard key={b.id} bike={b}/>)}
             </div>
-            <Button variant={"contained"} onClick={()=>navigate("/")}>Dashboard</Button>
+            <Button variant={"contained"} sx={{mb: 3, width: 92/100}} onClick={()=>navigate("/")}>
+                Dashboard
+            </Button>
         </>
     )
 }

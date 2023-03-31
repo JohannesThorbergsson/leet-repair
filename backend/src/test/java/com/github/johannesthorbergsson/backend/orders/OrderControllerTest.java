@@ -1,6 +1,8 @@
 package com.github.johannesthorbergsson.backend.orders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.johannesthorbergsson.backend.bikes.Component;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -23,12 +26,12 @@ class OrderControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
     @Autowired
     OrderRepository orderRepository;
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).setDateFormat(new StdDateFormat());
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42", "steven", Status.OPEN, componentList);
+    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
+            "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
@@ -48,6 +51,7 @@ class OrderControllerTest {
                             "workshop": "Workshop42",
                             "username": "steven",
                             "status": "OPEN",
+                            "date": "2022-02-01",
                             "componentsToReplace": [
                                 {
                                     "category": "Tyre",
@@ -98,7 +102,8 @@ class OrderControllerTest {
                             ]
                          }
                         """))
-                .andExpect(jsonPath("$.id").isNotEmpty());
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.date").isNotEmpty());
 
     }
     @Test
@@ -114,6 +119,7 @@ class OrderControllerTest {
                               "description": "New Tyre",
                               "workshop": "Workshop42",
                               "status": "OPEN",
+                              "date": "2022-02-02",
                               "componentsToReplace": [
                                   {
                                       "category": "Tyre",
@@ -133,6 +139,7 @@ class OrderControllerTest {
                               "workshop": "Workshop42",
                               "username": "steven",
                               "status": "OPEN",
+                              "date": "2022-02-02",
                               "componentsToReplace": [
                                   {
                                       "category": "Tyre",
@@ -155,6 +162,7 @@ class OrderControllerTest {
                           "description": "New Tyre",
                           "workshop": "Workshop42",
                           "status": "OPEN",
+                          "date": "2022-02-02",
                           "componentsToReplace": [
                               {
                                   "category": "Tyre",
@@ -181,6 +189,7 @@ class OrderControllerTest {
                           "description": "New Tyre",
                           "workshop": "Workshop42",
                           "status": "OPEN",
+                          "date": "2022-02-02",
                           "componentsToReplace": [
                               {
                                   "category": "Tyre",

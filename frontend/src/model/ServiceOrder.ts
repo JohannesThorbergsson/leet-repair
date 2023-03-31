@@ -6,5 +6,6 @@ export type ServiceOrder = {
     description: string
     workshop: string
     status: string
+    date: string
     componentsToReplace: Component[]
 }

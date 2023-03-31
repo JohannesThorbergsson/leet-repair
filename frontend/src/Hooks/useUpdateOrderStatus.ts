@@ -1,13 +1,17 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {ServiceOrder} from "../model/ServiceOrder";
+import {LocalDate} from "js-joda";
+import {Bike} from "../model/Bike";
 
-type OrderCardProps = {
+type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
+    bikes: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
+    updateBikeList(bikes: Bike[]): void
 }
-export default function useUpdateOrderStatus(props: OrderCardProps){
+export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
     const [status, setStatus] = useState(getStatusDisplayText())
     const [openUpdateStatusDialog, setOpenUpdateStatusDialog] = useState(false)
     const [saveChanges, setSaveChanges] = useState(false)
@@ -52,11 +56,35 @@ export default function useUpdateOrderStatus(props: OrderCardProps){
     }
 
     function handleUpdateStatus(){
-        axios.put("/api/orders/" + props.order.id, {...props.order, status: getStatusEnumValue()})
+        axios.put("/api/orders/" + props.order.id,
+            {...props.order, date: LocalDate.now(), status: getStatusEnumValue()})
             .then(r => r.data)
             .then(updatedOrder => props.updateOrderList([...props.orders.filter(
                 order=>order.id !== props.order.id), updatedOrder]))
             .catch((error) => console.error(error))
+        const bikeToUpdate = props.bikes.find(bike=> bike.id === props.order.bikeId)
+        if(status==="Done" && bikeToUpdate){
+            axios.put("/api/bikes/" + props.order.bikeId,
+                {
+                    ...bikeToUpdate,
+                    services: [
+                        ...bikeToUpdate.services,
+                        {
+                            description: props.order.description,
+                            newComponents: props.order.componentsToReplace,
+                            workshopName: props.order.workshop,
+                            date: props.order.date
+                        }],
+                    components:
+                        [...bikeToUpdate.components
+                            .filter((component => !props.order.componentsToReplace
+                                .map(comp=> comp.category.toLowerCase())
+                                .includes(component.category.toLowerCase()))), ...props.order.componentsToReplace]})
+                .then(r => r.data)
+                .then(updatedBike => props.updateBikeList(
+                    [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
+                .catch((error) => console.error(error))
+        }
     }
     function handleSetStatus(newStatus: string){
         setStatus(newStatus)

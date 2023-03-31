@@ -5,11 +5,14 @@ import {useNavigate} from "react-router-dom";
 import UpdateOrderStatusDialog from "../../Dialog/UpdateOrderStatusDialog";
 import useUpdateOrderStatus from "../../Hooks/useUpdateOrderStatus";
 import OrderCardContent from "./OrderCardContent";
+import {Bike} from "../../model/Bike";
 
 type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
+    bikes: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
+    updateBikeList(bikes: Bike[]): void
 }
 
 export default function OrderCardWithControls(props: OrderCardWithControlsProps){

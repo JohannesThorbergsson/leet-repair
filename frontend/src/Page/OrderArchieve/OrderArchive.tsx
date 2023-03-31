@@ -29,7 +29,7 @@ export default function OrderArchive(props: OrderArchiveProps){
                     No Completed Orders
                 </Typography>
                 }
-            <Button variant={"contained"} sx={{width: 9/10}} onClick={()=> navigate("/")}>
+            <Button variant={"contained"} sx={{width: 9/10, mb: 3}} onClick={()=> navigate("/")}>
                 Back to Dashboard
             </Button>
         </>

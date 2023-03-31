@@ -5,8 +5,10 @@ import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +23,9 @@ class OrderServiceTest {
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
-            "steven", Status.OPEN, componentList);
+            "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "New Tyre",
-            "Workshop42", Status.OPEN, componentList);
+            "Workshop42", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     OrderService orderService = new OrderService(orderRepository, idService);
     String testId = "1", invalidID = "Invalid";
 
@@ -42,24 +44,28 @@ class OrderServiceTest {
     }
     @Test
     void addOrder_whenOrderRequest_thenReturnSavedOrder(){
-        //GIVEN
-        when(idService.generateId()).thenReturn("1");
-        when(principal.getName()).thenReturn("steven");
-        when(orderRepository.save(testOrder)).thenReturn(testOrder);
-        //WHEN
-        ServiceOrder actual = orderService.addOrder(principal, testOrderRequest);
-        ServiceOrder expected = testOrder;
-        //THEN
-        assertEquals(expected, actual);
-        verify(orderRepository).save(testOrder);
-        verify(idService).generateId();
-        verify(principal).getName();
+        LocalDate testDate = LocalDate.of(2022, 2, 1);
+        try(MockedStatic<LocalDate> mockedStatic = mockStatic(LocalDate.class)) {
+            //GIVEN
+            mockedStatic.when(LocalDate::now).thenReturn(testDate);
+            when(idService.generateId()).thenReturn("1");
+            when(principal.getName()).thenReturn("steven");
+            when(orderRepository.save(testOrder)).thenReturn(testOrder);
+            //WHEN
+            ServiceOrder actual = orderService.addOrder(principal, testOrderRequest);
+            ServiceOrder expected = testOrder;
+            //THEN
+            verify(orderRepository).save(testOrder);
+            verify(idService).generateId();
+            verify(principal).getName();
+            assertEquals(expected, actual);
+        }
     }
     @Test
     void updateOrder_whenValidRequest_thenReturnUpdatedOrder(){
         //GIVEN
         ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+                testOrder.workshop(), testOrder.status(), testOrder.date(), testOrder.componentsToReplace());
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
         when(principal.getName()).thenReturn("steven");
@@ -76,7 +82,7 @@ class OrderServiceTest {
     void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException(){
         //GIVEN
         ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+                testOrder.workshop(), testOrder.status(), testOrder.date(), testOrder.componentsToReplace());
         when(orderRepository.findById(invalidID)).thenReturn(Optional.empty());
         Class<NoSuchOrderException> expected = NoSuchOrderException.class;
         //WHEN + THEN
@@ -87,7 +93,7 @@ class OrderServiceTest {
     void updateOrder_whenUnauthorizedAccess_thenThrow_UnauthorizedAccessException(){
         //GIVEN
         ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder.componentsToReplace());
+                testOrder.workshop(), testOrder.status(), testOrder. date(), testOrder.componentsToReplace());
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
