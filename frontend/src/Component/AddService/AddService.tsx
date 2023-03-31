@@ -1,8 +1,6 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
-import React from "react";
-import {v4 as uuidv4} from "uuid"
+import React, {ChangeEvent} from "react";
 import EditComponents from "../EditComponents/EditComponents";
-import useEditServices from "../../Hooks/useEditServices";
 import {ServiceEvent} from "../../model/ServiceEvent";
 import {Component} from "../../model/Component";
 
@@ -10,36 +8,45 @@ type AddServiceProps = {
     handleSetServices(services: ServiceEvent[]): void
     services: ServiceEvent[]
     handleSetInstalledComponents(components: Component[]): void
+    handleInputDescription(event: ChangeEvent<HTMLInputElement>): void
+    handleInputWorkshopName(event: ChangeEvent<HTMLInputElement>): void
+    handleInputDate(event: ChangeEvent<HTMLInputElement>): void
+    handleSetNewComponents(components: Component[]): void
+    description: string
+    workshopName: string
+    date: string
+    newBikeComponents: Component[]
     components: Component[]
     editMode: boolean
     scrollToBottom?: () => void
+
 }
 export default function AddService(props: AddServiceProps) {
-    const {
-        handleInputWorkshopName,
-        handleInputDescription,
-        handleInputDate,
-        handleSetNewComponents,
-        clearInputFields,
-        newBikeComponents,
-        description,
-        workshopName,
-        date
-    } = useEditServices()
-
-    function handleSubmitService(){
-        if(props.scrollToBottom){
-            props.scrollToBottom()
-        }
-        props.handleSetServices([...props.services,
-            {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
-        if (props.editMode) {
-            const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
-            props.handleSetInstalledComponents([...props.components.filter(
-                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
-        }
-        clearInputFields()
-    }
+    // const {
+    //     handleInputWorkshopName,
+    //     handleInputDescription,
+    //     handleInputDate,
+    //     handleSetNewComponents,
+    //     clearInputFields,
+    //     newBikeComponents,
+    //     description,
+    //     workshopName,
+    //     date
+    // } = useEditServices()
+    //
+    // function handleSubmitService(){
+    //     if(props.scrollToBottom){
+    //         props.scrollToBottom()
+    //     }
+    //     props.handleSetServices([...props.services,
+    //         {description: description, newComponents: newBikeComponents, workshopName:workshopName, date: date, id: uuidv4()}])
+    //     if (props.editMode) {
+    //         const newComponentCategories = new Set(newBikeComponents.map(component => component.category.trim().toLowerCase()))
+    //         props.handleSetInstalledComponents([...props.components.filter(
+    //             oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())), ...newBikeComponents])
+    //     }
+    //     clearInputFields()
+    // }
 
     return(
         <>
@@ -70,8 +77,8 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Description"
                             fullWidth
-                            value={description}
-                            onChange={handleInputDescription}
+                            value={props.description}
+                            onChange={props.handleInputDescription}
                             sx={{mt: 1}}
                         />
                         <TextField
@@ -79,8 +86,8 @@ export default function AddService(props: AddServiceProps) {
                             id="outlined-required"
                             label="Workshop name"
                             fullWidth
-                            value={workshopName}
-                            onChange={handleInputWorkshopName}
+                            value={props.workshopName}
+                            onChange={props.handleInputWorkshopName}
                             sx={{mt: 1}}
                         />
                         <TextField
@@ -88,8 +95,8 @@ export default function AddService(props: AddServiceProps) {
                             id="date-input"
                             type={"date"}
                             label="Date"
-                            value={date}
-                            onChange={handleInputDate}
+                            value={props.date}
+                            onChange={props.handleInputDate}
                             inputProps={{
                                 pattern: '\\d{4}-\\d{2}-\\d{2}',
                                 placeholder: 'YYYY-MM-DD'
@@ -100,7 +107,7 @@ export default function AddService(props: AddServiceProps) {
                             sx={{mt: 1}}
                         />
                         <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>
-                        <EditComponents handleSetComponents={handleSetNewComponents} components={newBikeComponents}/>
+                        <EditComponents handleSetComponents={props.handleSetNewComponents} components={props.components}/>
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'row',

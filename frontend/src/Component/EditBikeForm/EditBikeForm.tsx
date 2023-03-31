@@ -150,7 +150,8 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                         handleSetServices={handleSetServices}
                         handleSetInstalledComponents={handleSetInstalledComponents}
                         editMode={props.editMode}
-                        editBikeFormState={editBikeFormState}/>
+                        editBikeFormState={editBikeFormState}
+                        handleSubmitService={handleSub}/>
                     <DeleteBikeDialog
                         openDeleteDialog={editBikeFormState.openDeleteDialog}
                         handleClickDeleteBike={handleClickDeleteBike}
