@@ -62,30 +62,28 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
             .then(updatedOrder => props.updateOrderList([...props.orders.filter(
                 order=>order.id !== props.order.id), updatedOrder]))
             .catch((error) => console.error(error))
-        if(status==="Done"){
-            const bikeToUpdate = props.bikes.find(bike=> bike.id === props.order.bikeId)
-            if(bikeToUpdate) {
-                axios.put("/api/bikes/" + props.order.bikeId,
-                    {
-                        ...bikeToUpdate,
-                        services: [
-                            ...bikeToUpdate.services,
-                            {
-                                description: props.order.description,
-                                newComponents: props.order.componentsToReplace,
-                                workshopName: props.order.workshop,
-                                date: props.order.date
-                            }],
-                        components:
-                            [...bikeToUpdate.components
-                                .filter((component => !props.order.componentsToReplace
-                                    .map(comp=> comp.category.toLowerCase())
-                                    .includes(component.category.toLowerCase()))), ...props.order.componentsToReplace]})
-                    .then(r => r.data)
-                    .then(updatedBike => props.updateBikeList(
-                        [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
-                    .catch((error) => console.error(error))
-            }
+        const bikeToUpdate = props.bikes.find(bike=> bike.id === props.order.bikeId)
+        if(status==="Done" && bikeToUpdate){
+            axios.put("/api/bikes/" + props.order.bikeId,
+                {
+                    ...bikeToUpdate,
+                    services: [
+                        ...bikeToUpdate.services,
+                        {
+                            description: props.order.description,
+                            newComponents: props.order.componentsToReplace,
+                            workshopName: props.order.workshop,
+                            date: props.order.date
+                        }],
+                    components:
+                        [...bikeToUpdate.components
+                            .filter((component => !props.order.componentsToReplace
+                                .map(comp=> comp.category.toLowerCase())
+                                .includes(component.category.toLowerCase()))), ...props.order.componentsToReplace]})
+                .then(r => r.data)
+                .then(updatedBike => props.updateBikeList(
+                    [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
+                .catch((error) => console.error(error))
         }
     }
     function handleSetStatus(newStatus: string){
