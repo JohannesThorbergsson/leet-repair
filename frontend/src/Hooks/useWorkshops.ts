@@ -13,8 +13,12 @@ export default function useWorkshops(props: UseWorkshopsProps) {
         event.preventDefault()
         if(searchTerm !== "") {
             setSearch(true)
-            setSearchResults(props.workshops.filter(
-                w => w.services.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase())).length>0))
+            setSearchResults(props.workshops
+                .filter(workshop =>
+                    (workshop.services.filter(service =>
+                        service.toLowerCase().includes(searchTerm.toLowerCase())).length>0) ||
+                    (workshop.inventory.filter(component =>
+                        component.category.toLowerCase().includes(searchTerm.toLowerCase())).length>0)))
         }
     }
     function handleSearchTerm(event: ChangeEvent<HTMLInputElement>) {
