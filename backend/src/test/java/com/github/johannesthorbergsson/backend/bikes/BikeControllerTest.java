@@ -26,7 +26,7 @@ class BikeControllerTest {
     @Autowired
     BikeRepository bikeRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    ServiceEvent tyreChange = new ServiceEvent("Tyre change", List.of(tyre), "Workshop 42",
+    ServiceEvent tyreChange = new ServiceEvent("1", "Tyre change", List.of(tyre), "Workshop 42",
             LocalDate.of(2022, 12, 1));
     Bike testBike = new Bike("1", "MegaBike9000", "steven", 1337, List.of(tyre), List.of(tyreChange));
 
@@ -56,6 +56,7 @@ class BikeControllerTest {
                             ],
                             "services": [
                                 {
+                                    "id": "1",
                                     "description": "Tyre change",
                                     "newComponents": [
                                         {
@@ -92,6 +93,7 @@ class BikeControllerTest {
                                 ],
                                 "services": [
                                     {
+                                        "id": "1",
                                         "description": "Tyre change",
                                         "newComponents": [
                                             {
@@ -122,6 +124,7 @@ class BikeControllerTest {
                             ],
                             "services": [
                                 {
+                                    "id": "1",
                                     "description": "Tyre change",
                                     "newComponents": [
                                         {
@@ -158,6 +161,7 @@ class BikeControllerTest {
                                 ],
                                 "services": [
                                     {
+                                        "id": "1",
                                         "description": "Tyre change",
                                         "newComponents": [
                                             {
@@ -189,6 +193,7 @@ class BikeControllerTest {
                         ],
                         "services": [
                             {
+                                "id": "1",
                                 "description": "Tyre change",
                                 "newComponents": [
                                     {
@@ -224,6 +229,7 @@ class BikeControllerTest {
                                 ],
                                 "services": [
                                     {
+                                        "id": "1",
                                         "description": "Tyre change",
                                         "newComponents": [
                                             {
@@ -261,6 +267,7 @@ class BikeControllerTest {
                                 ],
                                 "services": [
                                     {
+                                        "id": "1",
                                         "description": "Tyre change",
                                         "newComponents": [
                                             {
@@ -301,6 +308,7 @@ class BikeControllerTest {
                         ],
                         "services": [
                             {
+                                "id": "1",
                                 "description": "Tyre change",
                                 "newComponents": [
                                     {

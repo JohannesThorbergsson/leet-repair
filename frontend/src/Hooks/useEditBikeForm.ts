@@ -61,10 +61,7 @@ export default function useEditBikeForm(props: UseEditBikeProps){
                     mileage: editBikeFormState.mileage,
                     components: editBikeFormState.components,
                     services: editBikeFormState.services.map((service) => ({
-                        description: service.description,
-                        newComponents: service.newComponents,
-                        workshopName: service.workshopName,
-                        date: LocalDate.parse(service.date)}))})
+                        ...service, date: LocalDate.parse(service.date)}))})
                 .then((r) => props.updateBikeList([...props.bikes, r.data]))
                 .then(() => navigate("/bikes"))
                 .catch((error) => console.error(error))
@@ -75,10 +72,7 @@ export default function useEditBikeForm(props: UseEditBikeProps){
                     mileage: editBikeFormState.mileage,
                     components: editBikeFormState.components,
                     services: editBikeFormState.services.map((service) => ({
-                        description: service.description,
-                        newComponents: service.newComponents,
-                        workshopName: service.workshopName,
-                        date: LocalDate.parse(service.date)}))})
+                        ...service, date: LocalDate.parse(service.date)}))})
                 .then(r => r.data)
                 .then(updatedBike => props.updateBikeList(
                     [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))

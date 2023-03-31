@@ -1,6 +1,5 @@
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import React, {useLayoutEffect, useRef, useState} from "react";
-import {v4 as uuidv4} from "uuid"
 import useEditBikeForm from "../../Hooks/useEditBikeForm";
 import EditComponents from "../EditComponents/EditComponents";
 import ServiceCard from "../ServiceCard/ServiceCard";
@@ -100,7 +99,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                                 Recorded Services
                             </Typography>
                             {editBikeFormState.services.map(service =>
-                                <ServiceCard key={uuidv4()} service={service} deleteService={deleteService}/>)}
+                                <ServiceCard key={service.id} service={service} deleteService={deleteService}/>)}
                         </Box>
                     }
                     <Button variant={"contained"}
