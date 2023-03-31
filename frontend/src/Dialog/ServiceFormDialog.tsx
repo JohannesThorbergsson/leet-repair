@@ -3,15 +3,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import React, {useRef} from "react";
+import React from "react";
 import AddService from "../Component/AddService/AddService";
 import {ServiceEvent} from "../model/ServiceEvent";
 import {EditBikeFormState} from "../Reducer/editBikeFormReducer";
 import {Component} from "../model/Component";
-import {v4 as uuidv4} from "uuid";
 import useEditServices from "../Hooks/useEditServices";
 
-type ServiceFormDialogProps = {
+export type ServiceFormDialogProps = {
     handleSetServices(services: ServiceEvent[]): void
     editBikeFormState: EditBikeFormState
     handleSetInstalledComponents(components: Component[]): void
@@ -28,44 +27,13 @@ export default function ServiceFormDialog(props: ServiceFormDialogProps){
         handleInputDescription,
         handleInputDate,
         handleSetNewComponents,
-        clearInputFields,
+        handleSubmitService,
         newBikeComponents,
         description,
         workshopName,
         date
-    } = useEditServices()
-    const radioGroupRef = useRef<HTMLElement>(null)
-    const handleEntering = () => {
-        if (radioGroupRef.current != null) {
-            radioGroupRef.current.focus()
-        }
-    }
-    const handleCancel = () => {
-        props.handleOpenServiceFormDialog()
-    }
+    } = useEditServices(props)
 
-    function handleSubmitService(){
-        if(props.scrollToBottom){
-            props.scrollToBottom()
-        }
-        props.handleSetServices([...props.editBikeFormState.services,
-            {
-                description: description,
-                newComponents: newBikeComponents,
-                workshopName:workshopName,
-                date: date,
-                id: uuidv4()}])
-        if (props.editMode) {
-            const newComponentCategories = new Set(newBikeComponents
-                .map(component => component.category.trim().toLowerCase()))
-
-            props.handleSetInstalledComponents([...props.editBikeFormState.components.filter(
-                oldComponents => !newComponentCategories.has(oldComponents.category.trim().toLowerCase())),
-                ...newBikeComponents])
-        }
-        clearInputFields()
-        props.handleOpenServiceFormDialog()
-    }
     return (
         <Dialog
             sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
@@ -90,7 +58,7 @@ export default function ServiceFormDialog(props: ServiceFormDialogProps){
                             handleSubmitService={handleSubmitService}/>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleCancel}>
+                <Button autoFocus onClick={props.handleOpenServiceFormDialog}>
                     Cancel
                 </Button>
                 <Button onClick={handleSubmitService}
