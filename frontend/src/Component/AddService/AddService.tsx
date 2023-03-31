@@ -54,7 +54,9 @@ export default function AddService(props: AddServiceProps) {
                 }}
                 sx={{mt: 1}}
             />
-            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Replaced Components</Typography>
+            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1, textAlign: 'center'}}>
+                Replaced Components
+            </Typography>
             <EditComponents handleSetComponents={props.handleSetNewComponents} components={props.newBikeComponents}/>
         </Box>
     )

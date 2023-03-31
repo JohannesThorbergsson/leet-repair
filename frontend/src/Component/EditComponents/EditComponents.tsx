@@ -34,7 +34,8 @@ export default function EditComponents(props: EditComponentsProp) {
                     flexDirection: 'column',
                 }}>
                     <ComponentTable components={props.components}
-                                    handleDeleteComponent={handleDeleteComponent} showAge={props.displayAge ?? false}/>
+                                    handleDeleteComponent={handleDeleteComponent}
+                                    showAge={props.displayAge ?? false}/>
                     <Box sx={{
                         display: 'flex',
                         flexDirection: 'row',

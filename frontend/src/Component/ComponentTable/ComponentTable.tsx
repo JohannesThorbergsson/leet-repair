@@ -57,7 +57,9 @@ export default function ComponentTable(props: ComponentTableProps) {
                         ))}
                     </TableBody>
                 </Table>:
-            <Typography variant={"subtitle2"} fontWeight={"small"} sx={{mt: 1}}>No Components</Typography>
+            <Typography variant={"subtitle2"} fontWeight={"small"} sx={{mt: 1, textAlign: 'center'}}>
+                No Components
+            </Typography>
             }
         </TableContainer>
     )

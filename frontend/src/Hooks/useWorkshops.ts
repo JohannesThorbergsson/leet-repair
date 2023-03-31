@@ -14,7 +14,7 @@ export default function useWorkshops(props: UseWorkshopsProps) {
         = useState<string>(location.state?.searchTerm ?? "")
     const [searchResults, setSearchResults] = useState<Workshop[]>([])
     const [isSearch, setIsSearch] = useState(false)
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(search, [])
     function searchHandler(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
