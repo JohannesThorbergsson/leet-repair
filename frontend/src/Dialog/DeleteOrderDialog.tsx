@@ -41,9 +41,9 @@ export default function DeleteOrderDialog(props: DeleteOrderDialogProps){
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleCancel}>Back</Button>
                 <Button autoFocus sx={{color: 'error.main'}} onClick={handleDelete}>
-                    Delete
+                    Cancel Order
                 </Button>
             </DialogActions>
         </Dialog>
