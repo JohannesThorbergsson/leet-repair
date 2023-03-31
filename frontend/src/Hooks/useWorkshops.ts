@@ -1,18 +1,28 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {Workshop} from "../model/Workshop";
+import {useLocation, useNavigate} from "react-router-dom";
+import useAuth from "./useAuth";
 
 type UseWorkshopsProps = {
     workshops: Workshop[]
 }
 export default function useWorkshops(props: UseWorkshopsProps) {
-    const [searchTerm, setSearchTerm] = useState<string>("")
+    const user = useAuth(true)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [searchTerm, setSearchTerm]
+        = useState<string>(location.state?.searchTerm ?? "")
     const [searchResults, setSearchResults] = useState<Workshop[]>([])
-    const [search, setSearch] = useState(false)
+    const [isSearch, setIsSearch] = useState(false)
 
+    useEffect(search, [])
     function searchHandler(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        search()
+    }
+    function search(){
         if(searchTerm !== "") {
-            setSearch(true)
+            setIsSearch(true)
             setSearchResults(props.workshops
                 .filter(workshop =>
                     (workshop.services.filter(service =>
@@ -25,8 +35,8 @@ export default function useWorkshops(props: UseWorkshopsProps) {
         setSearchTerm(event.target.value)
     }
     function closeSearch() {
-        setSearch(false)
+        setIsSearch(false)
         setSearchTerm("")
     }
-    return {searchHandler, search, searchResults, closeSearch, searchTerm, handleSearchTerm}
+    return {searchHandler, isSearch, searchResults, closeSearch, searchTerm, handleSearchTerm, navigate, location, user}
 }

@@ -1,5 +1,5 @@
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Workshop} from "../../model/Workshop";
 import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
 import {Box, Button, Typography} from "@mui/material";
@@ -18,6 +18,7 @@ type OrderFormProps = {
 }
 export default function BookOrderPage(props: OrderFormProps){
     useAuth(true)
+    const location = useLocation()
     const navigate = useNavigate()
     const {orderFormState} = useOrderForm(props)
 
@@ -44,7 +45,7 @@ export default function BookOrderPage(props: OrderFormProps){
                        updateOrderList={props.updateOrderList}/>
             <Button sx={{mt: 2, width: 92/100}}
                     variant={"contained"}
-                    onClick={()=>navigate("/")}>
+                    onClick={()=>navigate("/", {state: {searchTerm: location.state.searchTerm}})}>
                 Back
             </Button>
         </>
