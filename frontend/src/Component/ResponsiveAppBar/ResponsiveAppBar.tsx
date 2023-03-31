@@ -67,7 +67,7 @@ export default function ResponsiveAppBar() {
                             LeetRepair
                         </Typography>
                         <Box sx={{ flexGrow: 0 }}>
-                            {user? <Tooltip title="Open settings">
+                            {user? <Tooltip title="Open Menu">
                                 <IconButton onClick={handleOpenUserMenu}
                                             size="large"
                                             edge="start"
