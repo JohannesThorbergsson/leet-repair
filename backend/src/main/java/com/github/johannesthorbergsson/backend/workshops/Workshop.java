@@ -11,6 +11,7 @@ public record Workshop(
         @Id
         String id,
         String name,
+        Coordinates coordinates,
         List<String> services,
         List<Component> inventory
 ) {

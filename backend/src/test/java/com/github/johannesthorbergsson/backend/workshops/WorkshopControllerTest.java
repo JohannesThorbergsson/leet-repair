@@ -27,9 +27,10 @@ class WorkshopControllerTest {
     @Autowired
     WorkshopRepository workshopRepository;
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Workshop workshop1 = new Workshop("1", "workshop42",
+    Coordinates testCoordinates = new Coordinates(-33.8599358, 151.2090295);
+    Workshop workshop1 = new Workshop("1", "workshop42", testCoordinates,
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
-    Workshop workshop2 = new Workshop("2", "workshop1337",
+    Workshop workshop2 = new Workshop("2", "workshop1337", testCoordinates,
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
     @DirtiesContext
@@ -47,6 +48,10 @@ class WorkshopControllerTest {
                         {
                             "id": "1",
                             "name": "workshop42",
+                            "coordinates": {
+                                "lat": -33.8599358,
+                                "lng": 151.2090295
+                            },
                             "services": ["tyre", "chain"],
                             "inventory": [
                                 {
