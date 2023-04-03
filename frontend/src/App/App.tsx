@@ -18,6 +18,7 @@ import AddBikePage from "../Page/AddBikePage/AddBikePage";
 import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 axios.interceptors.request.use(
     function (config) {

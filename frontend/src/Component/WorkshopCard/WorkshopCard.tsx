@@ -3,7 +3,8 @@ import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import React from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
-import {GoogleMap, LoadScript, Marker} from "@react-google-maps/api";
+import Map, {Marker} from 'react-map-gl';
+
 
 type WorkshopCardProps = {
     workshop: Workshop
@@ -13,34 +14,34 @@ type WorkshopCardProps = {
 
 export default function WorkshopCard(props: WorkshopCardProps) {
     const navigate = useNavigate()
-    const mapContainerStyle = {
-        width: '100%',
-        height: '200px'
-    };
-    const options = {
-        center: props.workshop.coordinates,
-        zoom: 12,
-        mapTypeId: 'roadmap',
-        disableDefaultUI: true
-    };
+
     const card = (
         <React.Fragment>
             <CardContent>
                 <Typography variant="h6" fontWeight={"medium"}>
                     {props.workshop.name}
                 </Typography>
-                <LoadScript  googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY || ""}>
-                    <GoogleMap
-                        mapContainerStyle={mapContainerStyle}
-                        mapContainerClassName="map-container"
-                        center={props.workshop.coordinates}
-                        options={options}
-                        zoom={10}
-                    >
-                            <Marker position={props.workshop.coordinates}
-                                    />
-                    </GoogleMap>
-                </LoadScript>
+                <Box>
+                    <Map
+                        id={"workshop-location"}
+                        initialViewState={{
+                        longitude: props.workshop.coordinates.lng,
+                        latitude: props.workshop.coordinates.lat,
+                        zoom: 12.5
+                    }}
+                        maxZoom={15.5}
+                        style={{width: "100%", height: '100%'}}
+                        mapStyle="mapbox://styles/mapbox/streets-v12"
+                        mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
+                        >
+                        <Marker
+                            key={props.workshop.id}
+                            longitude={props.workshop.coordinates.lng}
+                            latitude={props.workshop.coordinates.lat}
+                            anchor={"bottom"}
+                        />
+                    </Map>
+                </Box>
                 <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
                     Services offered:
                 </Typography>
