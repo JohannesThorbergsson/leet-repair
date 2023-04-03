@@ -1,10 +1,11 @@
 import {Workshop} from "../../model/Workshop";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
 import Map, {Marker} from 'react-map-gl';
-
+import mapboxgl from 'mapbox-gl';
+import ReactMapGLGeocoder from 'react-map-gl-geocoder'
 
 type WorkshopCardProps = {
     workshop: Workshop
@@ -14,7 +15,21 @@ type WorkshopCardProps = {
 
 export default function WorkshopCard(props: WorkshopCardProps) {
     const navigate = useNavigate()
+    const [address, setAddress] = useState('');
 
+    useEffect(() => {
+        // Use the Mapbox Geocoding API to reverse geocode the coordinates and save the address in state
+        const geocoder = new ReactMapGLGeocoder ({
+            accessToken: process.env.REACT_APP_MAP_KEY || '',
+            mapboxgl: mapboxgl,
+        });
+        geocoder.reverseGeocode({ coordinates: props.workshop.coordinates }, (error: any, result: any) => {
+            if (error) return;
+            const address = result.features[0].place_name;
+            setAddress(address);
+        });
+    }, []);
+    console.log(address)
     const card = (
         <React.Fragment>
             <CardContent>
@@ -30,7 +45,7 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                         zoom: 12.5
                     }}
                         maxZoom={15.5}
-                        style={{width: "100%", height: '100%'}}
+                        style={{width: "100%", height: '200px'}}
                         mapStyle="mapbox://styles/mapbox/streets-v12"
                         mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
                         >
