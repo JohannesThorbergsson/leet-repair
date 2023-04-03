@@ -9,6 +9,7 @@ import Link from "@mui/material/Link";
 export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [passwordConfirm, setPasswordConfirm] = useState("")
     const navigate = useNavigate()
 
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
@@ -16,6 +17,9 @@ export default function Login() {
     }
     function handlePasswordChange(event: ChangeEvent<HTMLInputElement>){
         setPassword(event.target.value)
+    }
+    function handlePasswordConfirmChange(event: ChangeEvent<HTMLInputElement>){
+        setPasswordConfirm(event.target.value)
     }
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -46,6 +50,8 @@ export default function Login() {
                                margin ="normal" onChange={handleUsernameChange} />
                     <TextField placeholder="Password" type= {"password"} value={password}
                                margin ="normal" fullWidth onChange={handlePasswordChange} />
+                    <TextField placeholder="Confirm Password" type= {"password"} value={password}
+                               margin ="normal" fullWidth onChange={handlePasswordConfirmChange} />
                     <Button variant="contained" type={"submit"} sx={{
                         m: 1
                     }}>Sign up</Button>
