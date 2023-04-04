@@ -1,6 +1,6 @@
 import {Box, TextField} from "@mui/material";
 import React, {ChangeEvent} from "react";
-import {Component} from "../model/Component";
+import {Component} from "../../model/Component";
 
 type AddComponentInputProps = {
     components: Component[]

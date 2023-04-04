@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import React from "react";
 import {Component} from "../model/Component";
 import useEditComponents from "../Hooks/useEditComponents";
-import AddComponentInput from "../Component/AddComponentInput";
+import AddComponentInput from "../Component/AddComponentInput/AddComponentInput";
 
 type ComponentFormDialogProps = {
     components: Component[]
@@ -51,7 +51,7 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
                     Cancel
                 </Button>
                 <Button onClick={submit}
-                        disabled={newComponentModel==="" || newComponentCategory==""}>
+                        disabled={newComponentModel==="" || newComponentCategory===""}>
                     Save
                 </Button>
             </DialogActions>

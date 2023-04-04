@@ -3,6 +3,7 @@ import React from "react";
 import {Component} from "../../model/Component";
 import ComponentFormDialog from "../../Dialog/ComponentFormDialog";
 import ComponentTable from "../ComponentTable/ComponentTable";
+import useEditComponents from "../../Hooks/useEditComponents";
 
 type EditWorkshopFormProps = {
     username: string
@@ -12,6 +13,8 @@ type EditWorkshopFormProps = {
     handleSetOpenAddComponentsDialog(): void
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
+    const {handleDeleteComponent}
+        = useEditComponents({components: props.components, handleSetComponents: props.handleSetComponents})
     return (
         <>
             <Box sx={{mt: 1, mb: 1}}>
@@ -42,7 +45,9 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mb: 1}}>
                         Components on Offer
                     </Typography>
-                    <ComponentTable components={props.components} showAge={false}/>
+                    <ComponentTable components={props.components}
+                                    handleDeleteComponent={handleDeleteComponent}
+                                    showAge={false}/>
                         <Button variant={"contained"} sx={{mt: 2}} onClick={()=>props.handleSetOpenAddComponentsDialog()}>
                             Add Item to Inventory
                         </Button>
