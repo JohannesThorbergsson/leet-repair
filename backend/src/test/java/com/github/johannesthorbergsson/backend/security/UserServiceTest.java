@@ -28,7 +28,7 @@ class UserServiceTest {
     Principal principal = mock(Principal.class);
     MongoUser mongoUser = new MongoUser("1", "name", "11", "BASIC");
     UserResponse userResponse = new UserResponse(mongoUser.id(), mongoUser.username(), mongoUser.role());
-    UserRequest userRequest = new UserRequest(mongoUser.username(), mongoUser.password());
+    UserRequest userRequest = new UserRequest(mongoUser.username(), mongoUser.password(), mongoUser.role());
     IdService idService = mock(IdService.class);
     PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
@@ -113,7 +113,7 @@ class UserServiceTest {
     @Test
     void createUser_whenUsernameEmpty_thenThrowResponseStatusException() {
         //GIVEN
-        UserRequest noUsername = new UserRequest("", "1");
+        UserRequest noUsername = new UserRequest("", "1", "BASIC");
         HttpStatus expected = HttpStatus.BAD_REQUEST;
         //WHEN
         ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noUsername));
@@ -123,7 +123,7 @@ class UserServiceTest {
     @Test
     void createUser_whenUsernameNull_thenThrowResponseStatusException() {
         //GIVEN
-        UserRequest noUsername = new UserRequest(null, "1");
+        UserRequest noUsername = new UserRequest(null, "1", "BASIC");
         HttpStatus expected = HttpStatus.BAD_REQUEST;
         //WHEN
         ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noUsername));
@@ -133,7 +133,7 @@ class UserServiceTest {
     @Test
     void createUser_whenPasswordEmpty_thenThrowResponseStatusException() {
         //GIVEN
-        UserRequest noPassword = new UserRequest("1", "");
+        UserRequest noPassword = new UserRequest("1", "", "BASIC");
         HttpStatus expected = HttpStatus.BAD_REQUEST;
         //WHEN
         ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noPassword));
@@ -143,7 +143,7 @@ class UserServiceTest {
     @Test
     void createUser_whenPasswordNull_thenThrowResponseStatusException() {
         //GIVEN
-        UserRequest noPassword = new UserRequest("1", null);
+        UserRequest noPassword = new UserRequest("1", null, "BASIC");
         HttpStatus expected = HttpStatus.BAD_REQUEST;
         //WHEN
         ResponseStatusException actual = assertThrows(ResponseStatusException.class, () -> userService.createUser(noPassword));

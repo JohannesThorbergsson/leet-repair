@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
         }
         MongoUser newUser = new MongoUser(idService.generateId(), user.username(),
-                passwordEncoder.encode(user.password()), "BASIC");
+                passwordEncoder.encode(user.password()), user.role());
         MongoUser savedUser = repository.save(newUser);
         return new UserResponse(savedUser.id(), savedUser.username(), savedUser.role());
     }

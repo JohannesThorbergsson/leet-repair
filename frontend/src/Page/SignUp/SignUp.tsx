@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
+import toast from "react-hot-toast";
 
 
 export default function Login() {
@@ -30,11 +31,15 @@ export default function Login() {
     }
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        passwordConfirm===password?
         axios
-            .post("/api/users/", {username, password})
+            .post("/api/users/", {username, password, role})
             .then(() => navigate("/login"))
-            .catch(error => console.log(error))
+            .catch(error => console.log(error)):
+            toast.error("Passwords don't match")
     }
+
+    console.log(role)
     return (
         <>
             <ResponsiveAppBar/>
@@ -53,16 +58,17 @@ export default function Login() {
                     <Typography variant="h2" component="h5" fontWeight={"regular"}>
                         Sign up
                     </Typography>
-                    <TextField required id="outlined-required"
-                               placeholder="Username"
+                    <TextField required
+                               label="Username"
                                value={username}
                                fullWidth
                                margin ="normal" onChange={handleUsernameChange} />
                     <TextField required
-                               placeholder="Password"
+                               label="Password"
                                type= {"password"} value={password}
                                margin ="normal" fullWidth onChange={handlePasswordChange} />
-                    <TextField placeholder="Confirm Password" type= {"password"} value={password}
+                    <TextField required
+                               label="Confirm Password" type= {"password"} value={passwordConfirm}
                                margin ="normal" fullWidth onChange={handlePasswordConfirmChange} />
                     <FormControl sx={{mt: 1}}>
                         <FormLabel id="demo-row-radio-buttons-group-label">How will you be using this App?</FormLabel>
@@ -77,7 +83,9 @@ export default function Login() {
                             <FormControlLabel value="WORKSHOP" control={<Radio />} label="Workshop Owner" />
                         </RadioGroup>
                     </FormControl>
-                    <Button variant="contained" type={"submit"} sx={{
+                    <Button
+                        disabled={username.trim()==="" || password.trim()==="" || password.trim()==="" || role===undefined}
+                        variant="contained" type={"submit"} sx={{
                         m: 1
                     }}>Sign up</Button>
                 </Box>
