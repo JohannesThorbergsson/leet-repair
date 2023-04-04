@@ -1,7 +1,6 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
 import com.github.johannesthorbergsson.backend.bikes.Component;
-import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 class WorkshopServiceTest {
     WorkshopService workshopService;
-    IdService idService = mock(IdService.class);
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
