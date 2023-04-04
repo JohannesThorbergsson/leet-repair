@@ -24,6 +24,9 @@ export default function useFetchData(){
     function updateOrderList(orders: ServiceOrder[]){
         setOrders(orders)
     }
+    function updateWorkshopList(workshops: Workshop[]){
+        setWorkshops(workshops)
+    }
     function fetchData(){
         axios.get("/api/bikes/")
             .then(r => setBikes(r.data))
@@ -34,5 +37,5 @@ export default function useFetchData(){
         axios.get("/api/workshops/")
             .then(r => setWorkshops(r.data))
     }
-    return {bikes, orders, workshops, updateBikeList, updateOrderList}
+    return {bikes, orders, workshops, updateBikeList, updateOrderList, updateWorkshopList}
 }

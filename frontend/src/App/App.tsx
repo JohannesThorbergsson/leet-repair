@@ -21,6 +21,7 @@ import OrderArchive from "../Page/OrderArchieve/OrderArchive";
 import {Toaster} from 'react-hot-toast';
 import useAuth from "../Hooks/useAuth";
 import WorkshopDashboard from "../Page/WorkshopDashboard/WorkshopDashboard";
+import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
 
 axios.interceptors.request.use(
     function (config) {
@@ -35,7 +36,8 @@ axios.interceptors.request.use(
 )
 
 function App() {
-    const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
+    const {bikes, orders, workshops, updateBikeList, updateOrderList, updateWorkshopList}
+        = useFetchData()
     const user = useAuth(false)
   return (
       <div className="App">
@@ -44,7 +46,7 @@ function App() {
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={ user?.role==="WORKSHOP"?
-              <WorkshopDashboard/>:
+              <WorkshopDashboard workshops={workshops}/>:
               <Dashboard orders={orders}
                          workshops={workshops}
                          updateOrderList={updateOrderList}
@@ -60,6 +62,8 @@ function App() {
           <Route path={"/orders/:orderId"} element={
               <EditOrderPage orders={orders} updateOrderList={updateOrderList} bikes={bikes} workshops={workshops}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
+          <Route path={"/workshops/setup"} element={
+              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
         </Routes>
       </div>
   );
