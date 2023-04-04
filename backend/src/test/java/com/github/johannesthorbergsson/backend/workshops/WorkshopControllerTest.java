@@ -32,8 +32,7 @@ class WorkshopControllerTest {
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
-    WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
+
     Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
