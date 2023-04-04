@@ -33,7 +33,7 @@ class WorkshopControllerTest {
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
 
-    Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
+    Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
     @DirtiesContext
