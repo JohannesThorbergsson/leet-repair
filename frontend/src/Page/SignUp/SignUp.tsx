@@ -8,8 +8,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import toast from "react-hot-toast";
-import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm";
-import useEditWorkshop from "../../Hooks/useEditWorkshop";
 
 
 export default function Login() {
@@ -17,15 +15,6 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [role, setRole] = useState<string>()
-    const {
-        components,
-        services,
-        workshopName,
-        addComponentDialogOpen,
-        handleSetOpenAddComponentsDialog,
-        handleServicesChange,
-        handleWorkshopNameChange,
-        handleSetComponents} = useEditWorkshop({username: username})
 
     const navigate = useNavigate()
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
@@ -97,15 +86,6 @@ export default function Login() {
                             <FormControlLabel value="WORKSHOP" control={<Radio />} label="Workshop Owner" />
                         </RadioGroup>
                     </FormControl>
-                    {role==="WORKSHOP" &&
-                        <EditWorkshopForm username={username}
-                                          components={components}
-                                          handleSetComponents={handleSetComponents}
-                                          handleSetOpenAddComponentsDialog={handleSetOpenAddComponentsDialog}
-                                          addComponentDialogOpen={addComponentDialogOpen}
-                                          handleServicesChange={handleServicesChange}
-                                          handleWorkshopNameChange={handleWorkshopNameChange}/>
-                    }
                     <Button
                         disabled={username.trim()==="" || password.trim()==="" || password.trim()==="" || role===undefined}
                         variant="contained" type={"submit"} sx={{
