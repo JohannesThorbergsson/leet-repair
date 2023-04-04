@@ -8,6 +8,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import toast from "react-hot-toast";
+import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm";
+import {Component} from "../../model/Component";
 
 
 export default function Login() {
@@ -15,6 +17,8 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [role, setRole] = useState<string>()
+    const [components, setComponents] = useState<Component[]>([])
+    const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
     const navigate = useNavigate()
 
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
@@ -29,6 +33,12 @@ export default function Login() {
     function handleRoleChange(event: ChangeEvent<HTMLInputElement>){
         setRole(event.target.value)
     }
+    function handleSetComponents(components: Component[]){
+        setComponents(components)
+    }
+    function handleSetOpenAddComponentsDialog(){
+        setAddComponentDialogOpen(!addComponentDialogOpen)
+    }
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         passwordConfirm===password?
@@ -39,7 +49,6 @@ export default function Login() {
             toast.error("Passwords don't match")
     }
 
-    console.log(role)
     return (
         <>
             <ResponsiveAppBar/>
@@ -65,7 +74,8 @@ export default function Login() {
                                margin ="normal" onChange={handleUsernameChange} />
                     <TextField required
                                label="Password"
-                               type= {"password"} value={password}
+                               type= {"password"}
+                               value={password}
                                margin ="normal" fullWidth onChange={handlePasswordChange} />
                     <TextField required
                                label="Confirm Password" type= {"password"} value={passwordConfirm}
@@ -83,6 +93,13 @@ export default function Login() {
                             <FormControlLabel value="WORKSHOP" control={<Radio />} label="Workshop Owner" />
                         </RadioGroup>
                     </FormControl>
+                    {role==="WORKSHOP" &&
+                        <EditWorkshopForm username={username}
+                                          components={components}
+                                          handleSetComponents={handleSetComponents}
+                                          handleSetOpenAddComponentsDialog={handleSetOpenAddComponentsDialog}
+                                          addComponentDialogOpen={addComponentDialogOpen}/>
+                    }
                     <Button
                         disabled={username.trim()==="" || password.trim()==="" || password.trim()==="" || role===undefined}
                         variant="contained" type={"submit"} sx={{
@@ -92,6 +109,7 @@ export default function Login() {
                     <Link component={RouterLink} to={"/login"} sx ={{
                         margin: 2
                     }}>To Login</Link>
+
             </Container>
         </>
     )

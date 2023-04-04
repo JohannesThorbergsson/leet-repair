@@ -8,6 +8,7 @@ type EditComponentsProp = {
     components: Component[]
     handleSetComponents(components: Component[]): void
     displayAge?: boolean
+    dialogMode?: boolean
 }
 
 export default function EditComponents(props: EditComponentsProp) {
@@ -33,12 +34,14 @@ export default function EditComponents(props: EditComponentsProp) {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
-                    <ComponentTable components={props.components}
-                                    handleDeleteComponent={handleDeleteComponent}
-                                    showAge={props.displayAge ?? false}/>
+                    {!props.dialogMode &&
+                        <ComponentTable components={props.components}
+                                        handleDeleteComponent={handleDeleteComponent}
+                                        showAge={props.displayAge ?? false}/>
+                    }
                     <Box sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: props.dialogMode? 'column' : 'row',
                         mt: 1}}>
                         <TextField
                             required
@@ -75,12 +78,14 @@ export default function EditComponents(props: EditComponentsProp) {
                             />
                         }
                     </Box>
-                    <Button variant={"contained"}
-                            onClick={handleSubmitNewComponent}
-                            sx={{mt: 1}}
-                            disabled={submitDisabled}>
-                        Add Component
-                    </Button>
+                    {!props.dialogMode &&
+                        <Button variant={"contained"}
+                                onClick={handleSubmitNewComponent}
+                                sx={{mt: 1}}
+                                disabled={submitDisabled}>
+                            Add Component
+                        </Button>
+                    }
                 </Box>
             </Box>
         </>
