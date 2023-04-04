@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import axios from 'axios'
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
@@ -9,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import toast from "react-hot-toast";
 import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm";
-import {Component} from "../../model/Component";
+import useEditWorkshop from "../../Hooks/useEditWorkshop";
 
 
 export default function Login() {
@@ -17,10 +17,16 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [role, setRole] = useState<string>()
-    const [components, setComponents] = useState<Component[]>([])
-    const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
-    const [services, setServices] = useState<string[]>([])
-    const [workshopName, setWorkshopName] = useState(username || "")
+    const {
+        components,
+        services,
+        workshopName,
+        addComponentDialogOpen,
+        handleSetOpenAddComponentsDialog,
+        handleServicesChange,
+        handleWorkshopNameChange,
+        handleSetComponents} = useEditWorkshop({username: username})
+
     const navigate = useNavigate()
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
@@ -34,26 +40,17 @@ export default function Login() {
     function handleRoleChange(event: ChangeEvent<HTMLInputElement>){
         setRole(event.target.value)
     }
-    function handleServicesChange(event: SyntheticEvent, value: string[]) {
-        setServices(value)
-    }
-    function handleWorkshopNameChange(event: ChangeEvent<HTMLInputElement>) {
-        setWorkshopName(event.target.value)
-    }
-    function handleSetComponents(components: Component[]){
-        setComponents(components)
-    }
-    function handleSetOpenAddComponentsDialog(){
-        setAddComponentDialogOpen(!addComponentDialogOpen)
-    }
+
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        passwordConfirm===password?
-        axios
-            .post("/api/users/", {username, password, role})
-            .then(() => navigate("/login"))
-            .catch(error => console.log(error)):
+        if(passwordConfirm===password) {
+            axios.post("/api/users/", {username, password, role})
+                    .then(() => navigate("/login"))
+                    .catch(error => console.log(error))
+            //axios to workshops here
+        }else{
             toast.error("Passwords don't match")
+        }
     }
 
     return (
