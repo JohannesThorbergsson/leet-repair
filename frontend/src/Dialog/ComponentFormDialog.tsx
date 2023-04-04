@@ -22,8 +22,13 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
         newComponentAge,
         handleInputComponentModel,
         handleInputComponentCategory,
-        handleInputComponentAge}
-        = useEditComponents({components: props.components, handleSetComponents: props.handleSetComponents})
+        handleInputComponentAge,
+        handleSubmitNewComponent
+    } = useEditComponents({components: props.components, handleSetComponents: props.handleSetComponents})
+    function submit(){
+        handleSubmitNewComponent()
+        props.handleSetOpenAddComponentsDialog()
+    }
     return (
         <Dialog
             sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
@@ -45,10 +50,10 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
                 <Button autoFocus onClick={props.handleSetOpenAddComponentsDialog}>
                     Cancel
                 </Button>
-                {/*<Button onClick={handleSubmitService}*/}
-                {/*        disabled={}>*/}
-                {/*    Save*/}
-                {/*</Button>*/}
+                <Button onClick={submit}
+                        disabled={newComponentModel==="" || newComponentCategory==""}>
+                    Save
+                </Button>
             </DialogActions>
         </Dialog>
     )

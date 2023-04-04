@@ -39,10 +39,9 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     )}
                 />
                 <Box sx={{mt: 2, p: 1}} component={Paper}>
-
-                        <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mb: 1}}>
-                            Components on Offer
-                        </Typography>
+                    <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mb: 1}}>
+                        Components on Offer
+                    </Typography>
                     <ComponentTable components={props.components} showAge={false}/>
                         <Button variant={"contained"} sx={{mt: 2}} onClick={()=>props.handleSetOpenAddComponentsDialog()}>
                             Add Item to Inventory
