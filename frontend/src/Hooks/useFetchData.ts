@@ -31,7 +31,7 @@ export default function useFetchData(){
         await axios.get("/api/bikes/")
             .then(r => setBikes(r.data))
             .catch((error) => console.error(error))
-        await axios.get("api/orders/")
+        await axios.get("/api/orders/")
             .then(r => setOrders(r.data))
             .catch((error) => console.error(error))
         await axios.get("/api/workshops/")
