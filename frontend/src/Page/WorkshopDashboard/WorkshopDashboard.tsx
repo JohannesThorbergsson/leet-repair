@@ -30,6 +30,5 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                 <ResponsiveAppBar/>
                 Workshop Dashboard
             </>
-
     )
 }
