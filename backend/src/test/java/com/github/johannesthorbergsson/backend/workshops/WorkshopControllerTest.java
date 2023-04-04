@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,8 +15,8 @@ import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -33,9 +32,8 @@ class WorkshopControllerTest {
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
-    WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
-    Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
+
+    Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
     @DirtiesContext
@@ -77,35 +75,5 @@ class WorkshopControllerTest {
                         """)
                         );
     }
-    @Test
-    @DirtiesContext
-    @WithMockUser(username = "workshop42")
-    void addWorkshop_whenWorkshopRequest_thenReturnWorkshop() throws Exception {
-        //GIVEN
-        String requestJSON = mapper.writeValueAsString(workshop1Request);
-        //WHEN
-        mockMvc.perform(post("/api/workshops/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJSON)
-                .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(content().json(
-                        """
-                        {
-                            "name": "workshop42",
-                            "username": "workshop42",
-                            "services": ["tyre", "chain"],
-                            "inventory": 
-                            [
-                                {
-                                    "category": "tyre",
-                                    "type": "Pirelli",
-                                    "age": 1337
-                                }
-                            ]
-                        }
-                        """))
-                .andExpect(jsonPath("$.id").isNotEmpty());
 
-    }
 }

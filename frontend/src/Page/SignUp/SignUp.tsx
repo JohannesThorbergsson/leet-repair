@@ -16,7 +16,6 @@ export default function Login() {
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [role, setRole] = useState<string>()
 
-
     const navigate = useNavigate()
     function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
         setUsername(event.target.value)
