@@ -19,6 +19,8 @@ import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
 import {Toaster} from 'react-hot-toast';
+import useAuth from "../Hooks/useAuth";
+import WorkshopDashboard from "../Page/WorkshopDashboard/WorkshopDashboard";
 
 axios.interceptors.request.use(
     function (config) {
@@ -33,14 +35,16 @@ axios.interceptors.request.use(
 )
 
 function App() {
-const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
+    const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
+    const user = useAuth(false)
   return (
       <div className="App">
         <Toaster/>
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
-          <Route path={"/"} element={
+          <Route path={"/"} element={ user?.role==="WORKSHOP"?
+              <WorkshopDashboard/>:
               <Dashboard orders={orders}
                          workshops={workshops}
                          updateOrderList={updateOrderList}
