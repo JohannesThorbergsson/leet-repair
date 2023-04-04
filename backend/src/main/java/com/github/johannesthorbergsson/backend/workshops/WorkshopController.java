@@ -17,4 +17,5 @@ public class WorkshopController {
     public List<Workshop> getAllWorkshops() {
         return workshopService.getAllWorkshops();
     }
+
 }

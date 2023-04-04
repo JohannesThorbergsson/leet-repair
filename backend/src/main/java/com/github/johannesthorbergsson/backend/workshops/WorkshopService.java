@@ -9,6 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkshopService {
     private final WorkshopRepository workshopRepository;
+
     public List<Workshop> getAllWorkshops() {
         return workshopRepository.findAll();
     }

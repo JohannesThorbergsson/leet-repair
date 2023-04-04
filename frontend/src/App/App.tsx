@@ -18,6 +18,7 @@ import AddBikePage from "../Page/AddBikePage/AddBikePage";
 import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
+import {Toaster} from 'react-hot-toast';
 
 axios.interceptors.request.use(
     function (config) {
@@ -35,6 +36,7 @@ function App() {
 const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
   return (
       <div className="App">
+        <Toaster/>
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>

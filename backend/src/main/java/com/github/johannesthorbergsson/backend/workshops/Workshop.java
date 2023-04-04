@@ -11,6 +11,7 @@ public record Workshop(
         @Id
         String id,
         String name,
+        String username,
         List<String> services,
         List<Component> inventory
 ) {

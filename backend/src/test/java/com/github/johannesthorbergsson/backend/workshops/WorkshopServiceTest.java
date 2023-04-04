@@ -15,9 +15,10 @@ class WorkshopServiceTest {
     WorkshopService workshopService;
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Workshop workshop1 = new Workshop("1", "workshop42",
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
-    Workshop workshop2 = new Workshop("1", "workshop1337",
+
+    Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     List<Workshop> expected = new ArrayList<>(List.of(workshop1, workshop2));
 
@@ -35,4 +36,5 @@ class WorkshopServiceTest {
         //THEN
         assertEquals(expected, actual);
     }
+
 }

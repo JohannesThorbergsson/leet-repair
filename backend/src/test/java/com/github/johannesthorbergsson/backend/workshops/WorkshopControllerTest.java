@@ -1,5 +1,6 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.johannesthorbergsson.backend.bikes.Component;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,13 @@ class WorkshopControllerTest {
     MockMvc mockMvc;
     @Autowired
     WorkshopRepository workshopRepository;
+    @Autowired
+    ObjectMapper mapper = new ObjectMapper();
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Workshop workshop1 = new Workshop("1", "workshop42",
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
-    Workshop workshop2 = new Workshop("2", "workshop1337",
+
+    Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
     @DirtiesContext
@@ -71,4 +75,5 @@ class WorkshopControllerTest {
                         """)
                         );
     }
+
 }
