@@ -22,6 +22,7 @@ import {Toaster} from 'react-hot-toast';
 import useAuth from "../Hooks/useAuth";
 import WorkshopDashboard from "../Page/WorkshopDashboard/WorkshopDashboard";
 import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
+import EditWorkshopPage from "../Page/EditWorkshopPage/EditWorkshopPage";
 
 axios.interceptors.request.use(
     function (config) {
@@ -64,6 +65,8 @@ function App() {
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
           <Route path={"/workshops/setup"} element={
               <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
+          <Route path={"/workshops/edit/:workshopId"} element={
+              <EditWorkshopPage updateWorkshopList={updateWorkshopList} user={user} workshops={workshops}/>}/>
         </Routes>
       </div>
   );

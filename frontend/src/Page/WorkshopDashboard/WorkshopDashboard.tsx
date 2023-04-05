@@ -3,6 +3,7 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Workshop} from "../../model/Workshop";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Button} from "@mui/material";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
@@ -28,7 +29,9 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
     return(
             <>
                 <ResponsiveAppBar/>
-                Workshop Dashboard
+                <Button variant={"contained"} onClick={()=> navigate("/workshops/edit/"+workshop?.id)}>
+                    Manage Workshop
+                </Button>
             </>
     )
 }
