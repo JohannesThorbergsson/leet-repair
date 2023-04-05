@@ -21,4 +21,8 @@ public class WorkshopController {
     public Workshop addWorkshop(@RequestBody WorkshopRequest workshopRequest, Principal principal){
         return workshopService.addWorkshop(principal, workshopRequest);
     }
+    @PutMapping("{id}")
+    public WorkshopResponse updateWorkshop(@PathVariable String id, @RequestBody WorkshopRequest workshopRequest, Principal principal){
+        return workshopService.updateWorkshop(id, workshopRequest, principal);
+    }
 }

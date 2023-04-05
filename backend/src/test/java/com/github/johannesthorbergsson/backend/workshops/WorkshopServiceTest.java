@@ -1,6 +1,7 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
 import com.github.johannesthorbergsson.backend.bikes.Component;
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +87,15 @@ class WorkshopServiceTest {
         assertThrows(expected, ()-> workshopService.updateWorkshop(testId, workshop1Request, principal));
         verify(workshopRepository).findById(testId);
         verify(principal).getName();
+    }
+    @Test
+    void updateWorkshop_whenWorkshopNotFound_thenThrowNoSuchWorkshopException(){
+        //GIVEN
+        when(workshopRepository.findById(testId)).thenReturn(Optional.empty());
+        Class<NoSuchWorkshopException> expected = NoSuchWorkshopException.class;
+        //WHEN + THEN
+        assertThrows(expected, ()-> workshopService.updateWorkshop(testId, workshop1Request, principal));
+        verify(workshopRepository).findById(testId);
     }
 
 }

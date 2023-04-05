@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -35,6 +34,8 @@ class WorkshopControllerTest {
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
             new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
+    WorkshopResponse workshop1Response =
+            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     @Test
@@ -107,5 +108,47 @@ class WorkshopControllerTest {
                         """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
 
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "workshop42")
+    void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        String requestJSON = mapper.writeValueAsString(workshop1Request);
+        String responseJSON = mapper.writeValueAsString(workshop1Response);
+        //WHEN
+        mockMvc.perform(put("/api/workshops/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJSON)
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON));
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "h4xx()r")
+    void updateWorkshop_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        String requestJSON = mapper.writeValueAsString(workshop1Request);
+        //WHEN
+        mockMvc.perform(put("/api/workshops/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJSON)
+                .with(csrf()))
+                .andExpect(status().isForbidden());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "workshop42")
+    void updateWorkshop_whenWorkshopNotFound_thenThrowNoSuchWorkshopException() throws Exception {
+        String requestJSON = mapper.writeValueAsString(workshop1Request);
+        //WHEN
+        mockMvc.perform(put("/api/workshops/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJSON)
+                .with(csrf()))
+                .andExpect(status().isNotFound());
     }
 }
