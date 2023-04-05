@@ -1,6 +1,7 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
 import com.github.johannesthorbergsson.backend.bikes.Component;
+import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,10 +9,11 @@ import org.junit.jupiter.api.Test;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 class WorkshopServiceTest {
     WorkshopService workshopService;
@@ -23,8 +25,11 @@ class WorkshopServiceTest {
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
             new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
+    WorkshopResponse workshop1Response =
+            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
+    String testId = "1";
     List<Workshop> expected = new ArrayList<>(List.of(workshop1, workshop2));
 
     @BeforeEach
@@ -47,11 +52,40 @@ class WorkshopServiceTest {
         when(idService.generateId()).thenReturn("1");
         when(principal.getName()).thenReturn("workshop42");
         when(workshopRepository.save(workshop1)).thenReturn(workshop1);
-        //WHEN
         Workshop expected = workshop1;
+        //WHEN
         Workshop actual = workshopService.addWorkshop(principal, workshop1Request);
         //THEN
         assertEquals(expected, actual);
-
+        verify(idService).generateId();
+        verify(principal).getName();
+        verify(workshopRepository).save(workshop1);
     }
+    @Test
+    void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse(){
+        //GIVEN
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(workshopRepository.save(workshop1)).thenReturn(workshop1);
+        when(principal.getName()).thenReturn(workshop1.name());
+        WorkshopResponse expected = workshop1Response;
+        //WHEN
+        WorkshopResponse actual = workshopService.updateWorkshop(testId, workshop1Request, principal);
+        //THEN
+        assertEquals(expected, actual);
+        verify(workshopRepository).findById(testId);
+        verify(workshopRepository).save(workshop1);
+        verify(principal, times(2)).getName();
+    }
+    @Test
+    void updateWorkshop_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException(){
+        //GIVEN
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(principal.getName()).thenReturn("h4xx()r");
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //WHEN + THEN
+        assertThrows(expected, ()-> workshopService.updateWorkshop(testId, workshop1Request, principal));
+        verify(workshopRepository).findById(testId);
+        verify(principal).getName();
+    }
+
 }
