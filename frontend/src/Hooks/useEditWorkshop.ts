@@ -1,14 +1,21 @@
-import {ChangeEvent, SyntheticEvent, useState} from "react";
+import {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
 import {Component} from "../model/Component";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {User} from "./useAuth";
+import {Workshop} from "../model/Workshop";
 
-type UseEditWorkshopProps = {
-    username: string
+type EditWorkshopFormProps = {
+    user: User | null
+    workshops: Workshop[]
+    updateWorkshopList(workshops: Workshop[]): void
 }
-export default function useEditWorkshop(props: UseEditWorkshopProps){
+export default function useEditWorkshop(props: EditWorkshopFormProps){
+    const navigate = useNavigate()
     const [components, setComponents] = useState<Component[]>([])
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
     const [services, setServices] = useState<string[]>([])
-    const [workshopName, setWorkshopName] = useState(props.username || "")
+    const [workshopName, setWorkshopName] = useState(props.user?.username || "")
 
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
@@ -22,11 +29,20 @@ export default function useEditWorkshop(props: UseEditWorkshopProps){
     function handleSetOpenAddComponentsDialog(){
         setAddComponentDialogOpen(!addComponentDialogOpen)
     }
+    function handleSubmit(event: FormEvent<HTMLFormElement>){
+        event.preventDefault()
+        axios.post("/api/workshops/", {name: workshopName, services: services, inventory: components})
+            .then(r=> r.data)
+            .then((newWorkshop)=>props.updateWorkshopList([...props.workshops, newWorkshop]))
+            .then(()=> navigate("/"))
+            .catch((error) => console.error(error))
+    }
     return {
         components,
         services,
         workshopName,
         addComponentDialogOpen,
+        handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
         handleWorkshopNameChange,
