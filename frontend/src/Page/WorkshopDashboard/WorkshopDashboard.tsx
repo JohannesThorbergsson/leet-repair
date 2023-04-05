@@ -1,7 +1,7 @@
 import useAuth from "../../Hooks/useAuth";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Workshop} from "../../model/Workshop";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Box, Button} from "@mui/material";
 import OrderCard from "../../Component/OrderCard/OrderCard";
@@ -12,6 +12,7 @@ type WorkshopDashboardProps = {
     orders: ServiceOrder[]
 }
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
+    const location = useLocation()
     const user = useAuth(true)
     const navigate = useNavigate()
     const [workshop, setWorkshop]
@@ -19,11 +20,11 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
 
     useEffect(()=> {
         if(user!==null) {
-            setWorkshop(props.workshops.find(workshop=>workshop.username=== user.username))
+            setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
         }
         //eslint-disable-next-line
-    }, [props.workshops, navigate, user])
-
+    }, [props.workshops, location, user])
+    console.log(props.orders)
     return(
             <>
                 <ResponsiveAppBar/>

@@ -3,7 +3,7 @@ import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm"
 import useAuth, {User} from "../../Hooks/useAuth";
 import {Workshop} from "../../model/Workshop";
 import {useParams} from "react-router-dom";
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 type EditWorkshopPageProps = {
     user: User | null
@@ -18,6 +18,7 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
         <>
             <ResponsiveAppBar/>
             <Box sx={{m:2, p: 1 }}>
+                <Typography variant={"h4"} fontWeight={"medium"} sx={{}}>Your Workshop</Typography>
                 <EditWorkshopForm user={props.user}
                                   workshops={props.workshops}
                                   workshopToEdit={workshop}
