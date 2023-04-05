@@ -4,12 +4,12 @@ import useAuth, {User} from "../../Hooks/useAuth";
 import {Workshop} from "../../model/Workshop";
 import {useParams} from "react-router-dom";
 
-type EditWorkshopPage = {
+type EditWorkshopPageProps = {
     user: User | null
     workshops: Workshop[]
     updateWorkshopList(workshops: Workshop[]): void
 }
-export default function EditWorkshopPage(props: EditWorkshopPage){
+export default function EditWorkshopPage(props: EditWorkshopPageProps){
     useAuth(true)
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop = props.workshops.find(workshop=> workshop.id===workshopId)

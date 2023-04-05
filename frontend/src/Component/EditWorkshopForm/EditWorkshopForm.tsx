@@ -10,6 +10,7 @@ import {Workshop} from "../../model/Workshop";
 type EditWorkshopFormProps = {
     user: User | null
     workshops: Workshop[]
+    workshopToEdit?: Workshop
     updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
@@ -36,6 +37,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     fullWidth
                     margin={"normal"}
                     onChange={handleWorkshopNameChange}
+                    value={workshopName}
                     defaultValue={workshopName}
                 />
                 <Autocomplete
@@ -44,6 +46,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     freeSolo
                     aria-required={true}
                     options={[]}
+                    value={services}
                     onChange={handleServicesChange}
                     id="select-components"
                     renderInput={(params) => (

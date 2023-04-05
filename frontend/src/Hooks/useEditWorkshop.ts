@@ -8,14 +8,18 @@ import {Workshop} from "../model/Workshop";
 type EditWorkshopFormProps = {
     user: User | null
     workshops: Workshop[]
+    workshopToEdit?: Workshop
     updateWorkshopList(workshops: Workshop[]): void
 }
 export default function useEditWorkshop(props: EditWorkshopFormProps){
     const navigate = useNavigate()
-    const [components, setComponents] = useState<Component[]>([])
+    const [components, setComponents]
+        = useState<Component[]>(props.workshopToEdit?.inventory ?? [])
+    const [services, setServices]
+        = useState<string[]>(props.workshopToEdit?.services ?? [])
+    const [workshopName, setWorkshopName]
+        = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
-    const [services, setServices] = useState<string[]>([])
-    const [workshopName, setWorkshopName] = useState(props.user?.username || "")
 
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
