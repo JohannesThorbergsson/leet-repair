@@ -11,8 +11,10 @@ type WorkshopDashboardProps = {
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
     const user = useAuth(true)
     const navigate = useNavigate()
-    const [workshop, setWorkshop] = useState<Workshop>()
+    const [workshop, setWorkshop]
+        = useState(props.workshops.find(workshop=>workshop.username=== user?.username))
     const [workshopLoaded, setWorkshopLoaded] = useState(false)
+    console.log(user)
     useEffect(()=> {
         if(user!==null) {
             setWorkshop(props.workshops.find(workshop=>workshop.username=== user.username))
@@ -20,6 +22,12 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
         }
         //eslint-disable-next-line
     }, [props.workshops])
+    useEffect(()=> {
+        if(user!==null) {
+            setWorkshop(props.workshops.find(workshop=>workshop.username=== user.username))
+        }
+        //eslint-disable-next-line
+    }, [props.workshops, navigate, user])
     useEffect(()=>{
         if(user && workshopLoaded && !workshop) {
             navigate("/workshops/setup")

@@ -15,6 +15,7 @@ type EditWorkshopFormProps = {
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
     const {
+        navigate,
         components,
         services,
         workshopName,
@@ -38,7 +39,6 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     margin={"normal"}
                     onChange={handleWorkshopNameChange}
                     value={workshopName}
-                    defaultValue={workshopName}
                 />
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
@@ -77,8 +77,14 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                         variant={"contained"}
                         sx={{mt:2, width: 1}}
                         disabled={workshopName==="" || services.length<1}>
-                    Register your Workshop
+                    {!props.workshopToEdit? "Register your Workshop": "Update Profile"}
                 </Button>
+                {props.workshopToEdit &&
+                    <Button variant={"contained"} sx={{mt: 1, width: 1}} onClick={()=>navigate("/")}>
+                        Cancel
+                    </Button>
+
+                }
             </Box>
         </>
     )

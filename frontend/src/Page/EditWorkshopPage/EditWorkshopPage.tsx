@@ -3,6 +3,7 @@ import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm"
 import useAuth, {User} from "../../Hooks/useAuth";
 import {Workshop} from "../../model/Workshop";
 import {useParams} from "react-router-dom";
+import {Box} from "@mui/material";
 
 type EditWorkshopPageProps = {
     user: User | null
@@ -16,10 +17,12 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
     return (
         <>
             <ResponsiveAppBar/>
-            <EditWorkshopForm user={props.user}
-                              workshops={props.workshops}
-                              workshopToEdit={workshop}
-                              updateWorkshopList={props.updateWorkshopList}/>
+            <Box sx={{m:2, p: 1 }}>
+                <EditWorkshopForm user={props.user}
+                                  workshops={props.workshops}
+                                  workshopToEdit={workshop}
+                                  updateWorkshopList={props.updateWorkshopList}/>
+            </Box>
         </>
     )
 }

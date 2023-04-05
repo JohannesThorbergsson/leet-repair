@@ -97,5 +97,4 @@ class WorkshopServiceTest {
         assertThrows(expected, ()-> workshopService.updateWorkshop(testId, workshop1Request, principal));
         verify(workshopRepository).findById(testId);
     }
-
 }

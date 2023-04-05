@@ -53,6 +53,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         }
     }
     return {
+        navigate,
         components,
         services,
         workshopName,
