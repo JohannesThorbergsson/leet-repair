@@ -18,6 +18,7 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
             <ResponsiveAppBar/>
             <EditWorkshopForm user={props.user}
                               workshops={props.workshops}
+                              workshopToEdit={workshop}
                               updateWorkshopList={props.updateWorkshopList}/>
         </>
     )
