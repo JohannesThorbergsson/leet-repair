@@ -20,6 +20,9 @@ public class OrderService {
     public List<ServiceOrder> getAllOrders(Principal principal){
         return orderRepository.findServiceOrderByUsername(principal.getName());
     }
+    public List<ServiceOrder> getOrdersByWorkshopId(String id){
+        return orderRepository.findServiceOrderByWorkshopId(id);
+    }
     public ServiceOrder addOrder(Principal principal, ServiceOrderRequest serviceOrderRequest){
         ServiceOrder newOrder = new ServiceOrder(
                 idService.generateId(),

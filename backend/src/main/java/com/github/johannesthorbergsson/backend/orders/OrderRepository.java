@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends MongoRepository<ServiceOrder, String> {
     List<ServiceOrder> findServiceOrderByUsername(String username);
+    List<ServiceOrder> findServiceOrderByWorkshopId(String workshopId);
 }

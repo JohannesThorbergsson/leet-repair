@@ -23,9 +23,9 @@ class OrderServiceTest {
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
-            "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
+            "1", "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "New Tyre",
-            "Workshop42", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
+            "Workshop42", "1", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     OrderService orderService = new OrderService(orderRepository, idService);
     String testId = "1", invalidID = "Invalid";
 
@@ -64,14 +64,12 @@ class OrderServiceTest {
     @Test
     void updateOrder_whenValidRequest_thenReturnUpdatedOrder(){
         //GIVEN
-        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder.date(), testOrder.componentsToReplace());
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
         when(principal.getName()).thenReturn("steven");
         ServiceOrder expected = testOrder;
         //WHEN
-        ServiceOrder actual = orderService.updateOrder(testId, updateRequest, principal);
+        ServiceOrder actual = orderService.updateOrder(testId, testOrderRequest, principal);
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);

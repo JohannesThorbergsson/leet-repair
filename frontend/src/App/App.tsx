@@ -47,7 +47,7 @@ function App() {
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={ user?.role==="WORKSHOP"?
-              <WorkshopDashboard workshops={workshops}/>:
+              <WorkshopDashboard workshops={workshops} orders={orders}/>:
               <Dashboard orders={orders}
                          workshops={workshops}
                          updateOrderList={updateOrderList}

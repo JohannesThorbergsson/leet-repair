@@ -4,9 +4,12 @@ import {Workshop} from "../../model/Workshop";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Box, Button} from "@mui/material";
+import OrderCard from "../../Component/OrderCard/OrderCard";
+import {ServiceOrder} from "../../model/ServiceOrder";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
+    orders: ServiceOrder[]
 }
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
     const user = useAuth(true)
@@ -26,6 +29,11 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                 <ResponsiveAppBar/>
                 {workshop?
                     <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2}}>
+                        <Box>
+                            {props.orders.filter(order=> order.status !== "DONE").map(order =>
+                                <OrderCard order={order}/>)
+                            }
+                        </Box>
                         <Button variant={"contained"} onClick={()=> navigate("/workshops/edit/"+workshop?.id)}>
                             Manage Workshop
                         </Button>

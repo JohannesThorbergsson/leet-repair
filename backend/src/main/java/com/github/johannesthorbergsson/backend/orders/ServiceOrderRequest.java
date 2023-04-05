@@ -9,6 +9,7 @@ public record ServiceOrderRequest(
         String bikeId,
         String description,
         String workshop,
+        String workshopId,
         Status status,
         LocalDate date,
         List<Component> componentsToReplace

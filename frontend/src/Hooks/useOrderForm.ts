@@ -64,6 +64,7 @@ export default function useOrderForm(props: OrderFormProps){
                     bikeId: orderFormState.selectedBike?.id,
                     description: orderFormState.orderDescription,
                     workshop: orderFormState.workshopNewOrder?.name,
+                    workshopId: orderFormState.workshopNewOrder?.id,
                     status: "OPEN",
                     componentsToReplace: orderFormState.orderedComponents})
                 .then(r => props.updateOrderList([...props.orders, r.data]))
@@ -75,6 +76,7 @@ export default function useOrderForm(props: OrderFormProps){
                     bikeId: orderFormState.selectedBike?.id,
                     description: orderFormState.orderDescription,
                     workshop: props.orderToEdit.workshop,
+                    workshopId: props.orderToEdit.workshopId,
                     status: orderFormState.orderToEditStatus,
                     componentsToReplace: orderFormState.orderedComponents})
                 .then(r => r.data)
