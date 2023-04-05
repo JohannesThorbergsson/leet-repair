@@ -31,7 +31,7 @@ class OrderControllerTest {
     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).setDateFormat(new StdDateFormat());
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
-            "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
+            "1", "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
@@ -49,6 +49,7 @@ class OrderControllerTest {
                             "bikeId": "bid",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
+                            "workshopId": "1",
                             "username": "steven",
                             "status": "OPEN",
                             "date": "2022-02-01",
@@ -75,6 +76,7 @@ class OrderControllerTest {
                             "bikeId": "bid",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
+                            "workshopId": "1",
                             "componentsToReplace": [
                                 {
                                     "category": "Tyre",
@@ -90,7 +92,8 @@ class OrderControllerTest {
                          {
                             "bikeId": "bid",
                             "description": "New Tyre",
-                            "workshop": "Workshop42",
+                            "workshop": "Workshop42",                            
+                            "workshopId": "1",
                             "username": "steven",
                             "status": "OPEN",
                             "componentsToReplace": [
@@ -118,6 +121,7 @@ class OrderControllerTest {
                               "bikeId": "bid",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
+                              "workshopId": "1",
                               "status": "OPEN",
                               "date": "2022-02-02",
                               "componentsToReplace": [
@@ -137,6 +141,7 @@ class OrderControllerTest {
                               "bikeId": "bid",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
+                              "workshopId": "1",
                               "username": "steven",
                               "status": "OPEN",
                               "date": "2022-02-02",
@@ -161,6 +166,7 @@ class OrderControllerTest {
                           "bikeId": "bid",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
+                          "workshopId": "1",
                           "status": "OPEN",
                           "date": "2022-02-02",
                           "componentsToReplace": [
@@ -188,6 +194,7 @@ class OrderControllerTest {
                           "bikeId": "bid",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
+                          "workshopId": "1",
                           "status": "OPEN",
                           "date": "2022-02-02",
                           "componentsToReplace": [

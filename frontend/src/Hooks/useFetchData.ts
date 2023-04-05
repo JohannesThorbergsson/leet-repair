@@ -17,6 +17,7 @@ export default function useFetchData(){
             fetchData()
         }
         prevUser.current = user
+        //eslint-disable-next-line
     }, [user])
     function updateBikeList(bikes: Bike[]){
         setBikes(bikes)
@@ -28,18 +29,18 @@ export default function useFetchData(){
         setWorkshops(workshops)
     }
     async function fetchData() {
-        await axios.get("/api/bikes/")
-            .then(r => setBikes(r.data))
-            .catch((error) => console.error(error))
         if(user?.role==="BASIC"){
             await axios.get("/api/orders/")
                 .then(r => setOrders(r.data))
                 .catch((error) => console.error(error))
         } else {
-            await axios.get("/api/orders/")
+            await axios.get("/api/orders/"+ user?.id)
                 .then(r => setOrders(r.data))
                 .catch((error) => console.error(error))
         }
+        await axios.get("/api/bikes/")
+            .then(r => setBikes(r.data))
+            .catch((error) => console.error(error))
         await axios.get("/api/workshops/")
             .then(r => setWorkshops(r.data))
     }

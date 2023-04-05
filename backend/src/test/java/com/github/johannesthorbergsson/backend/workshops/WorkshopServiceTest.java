@@ -25,7 +25,7 @@ class WorkshopServiceTest {
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
+            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     WorkshopResponse workshop1Response =
             new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337",
@@ -50,7 +50,6 @@ class WorkshopServiceTest {
     @Test
     void addWorkshop_whenValidWorkshop_thenReturnSavedWorkshop(){
         //GIVEN
-        when(idService.generateId()).thenReturn("1");
         when(principal.getName()).thenReturn("workshop42");
         when(workshopRepository.save(workshop1)).thenReturn(workshop1);
         Workshop expected = workshop1;
@@ -58,7 +57,6 @@ class WorkshopServiceTest {
         Workshop actual = workshopService.addWorkshop(principal, workshop1Request);
         //THEN
         assertEquals(expected, actual);
-        verify(idService).generateId();
         verify(principal).getName();
         verify(workshopRepository).save(workshop1);
     }

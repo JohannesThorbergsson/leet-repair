@@ -79,24 +79,20 @@ class OrderServiceTest {
     @Test
     void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException(){
         //GIVEN
-        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder.date(), testOrder.componentsToReplace());
         when(orderRepository.findById(invalidID)).thenReturn(Optional.empty());
         Class<NoSuchOrderException> expected = NoSuchOrderException.class;
         //WHEN + THEN
-        assertThrows(expected, () -> orderService.updateOrder(invalidID, updateRequest, principal));
+        assertThrows(expected, () -> orderService.updateOrder(invalidID, testOrderRequest, principal));
         verify(orderRepository).findById(invalidID);
     }
     @Test
     void updateOrder_whenUnauthorizedAccess_thenThrow_UnauthorizedAccessException(){
         //GIVEN
-        ServiceOrderRequest updateRequest = new ServiceOrderRequest(testOrder.bikeId(), testOrder.description(),
-                testOrder.workshop(), testOrder.status(), testOrder. date(), testOrder.componentsToReplace());
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //WHEN + THEN
-        assertThrows(expected, () -> orderService.updateOrder(testId, updateRequest, principal));
+        assertThrows(expected, () -> orderService.updateOrder(testId, testOrderRequest, principal));
         verify(orderRepository).findById(testId);
         verify(principal).getName();
     }

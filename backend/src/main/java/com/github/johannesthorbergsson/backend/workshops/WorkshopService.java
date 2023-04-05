@@ -20,7 +20,7 @@ public class WorkshopService {
     }
     public Workshop addWorkshop(Principal principal, WorkshopRequest workshopRequest){
         Workshop newWorkshop = new Workshop(
-                idService.generateId(),
+                workshopRequest.id(),
                 workshopRequest.name(),
                 principal.getName(),
                 workshopRequest.services(),

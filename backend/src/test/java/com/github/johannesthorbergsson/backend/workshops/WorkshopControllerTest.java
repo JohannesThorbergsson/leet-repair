@@ -16,7 +16,8 @@ import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -33,7 +34,7 @@ class WorkshopControllerTest {
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.name(), workshop1.services(), workshop1.inventory());
+            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     WorkshopResponse workshop1Response =
             new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337",
@@ -93,6 +94,7 @@ class WorkshopControllerTest {
                 .andExpect(content().json(
                         """
                         {
+                            "id": "1",
                             "name": "workshop42",
                             "username": "workshop42",
                             "services": ["tyre", "chain"],
@@ -105,9 +107,7 @@ class WorkshopControllerTest {
                                 }
                             ]
                         }
-                        """))
-                .andExpect(jsonPath("$.id").isNotEmpty());
-
+                        """));
     }
     @Test
     @DirtiesContext
