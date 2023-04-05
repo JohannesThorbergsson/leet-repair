@@ -28,8 +28,8 @@ export default function useSignUp(){
         if(passwordConfirm===password) {
             axios.post("/api/users/", {username, password, role})
                 .then(() => navigate("/login"))
+                .then(()=>toast.success("Successfully signed up"))
                 .catch(error => console.log(error))
-            //axios to workshops here
         }else{
             toast.error("Passwords don't match")
         }
@@ -39,7 +39,9 @@ export default function useSignUp(){
         password,
         passwordConfirm,
         role,
-        navigate,
         handleUsernameChange,
-        handlePasswordChange, handlePasswordConfirmChange, handleRoleChange, handleSubmit}
+        handlePasswordChange,
+        handlePasswordConfirmChange,
+        handleRoleChange,
+        handleSubmit}
 }

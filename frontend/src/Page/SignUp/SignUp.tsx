@@ -15,7 +15,6 @@ export default function Login() {
         password,
         passwordConfirm,
         role,
-        navigate,
         handleUsernameChange,
         handlePasswordChange,
         handlePasswordConfirmChange,
