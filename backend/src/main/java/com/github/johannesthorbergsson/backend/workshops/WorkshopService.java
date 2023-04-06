@@ -1,5 +1,7 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
+import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,21 @@ public class WorkshopService {
                 workshopRequest.services(),
                 workshopRequest.inventory());
         return workshopRepository.save(newWorkshop);
+    }
+    public WorkshopResponse updateWorkshop(String id, WorkshopRequest workshopRequest, Principal principal){
+        if(!workshopRepository.findById(id).orElseThrow(NoSuchWorkshopException::new).username().equals(principal.getName())){
+            throw new UnauthorizedAccessException();
+        }
+        Workshop updatedWorkshop = workshopRepository.save(new Workshop(
+                id,
+                workshopRequest.name(),
+                principal.getName(),
+                workshopRequest.services(),
+                workshopRequest.inventory()));
+        return new WorkshopResponse(
+                updatedWorkshop.id(),
+                updatedWorkshop.name(),
+                updatedWorkshop.services(),
+                updatedWorkshop.inventory());
     }
 }

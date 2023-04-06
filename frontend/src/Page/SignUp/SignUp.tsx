@@ -1,46 +1,26 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
-import axios from 'axios'
-import {Link as RouterLink, useNavigate} from "react-router-dom";
+import React from "react";
+import {Link as RouterLink} from "react-router-dom";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Box, Button, Container, FormControl, FormLabel, TextField, Typography} from "@mui/material";
 import Link from "@mui/material/Link";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
-import toast from "react-hot-toast";
+import useSignUp from "../../Hooks/useSignUp";
 
 
 export default function Login() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordConfirm, setPasswordConfirm] = useState("")
-    const [role, setRole] = useState<string>()
-
-    const navigate = useNavigate()
-    function handleUsernameChange(event: ChangeEvent<HTMLInputElement>){
-        setUsername(event.target.value)
-    }
-    function handlePasswordChange(event: ChangeEvent<HTMLInputElement>){
-        setPassword(event.target.value)
-    }
-    function handlePasswordConfirmChange(event: ChangeEvent<HTMLInputElement>){
-        setPasswordConfirm(event.target.value)
-    }
-    function handleRoleChange(event: ChangeEvent<HTMLInputElement>){
-        setRole(event.target.value)
-    }
-
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        if(passwordConfirm===password) {
-            axios.post("/api/users/", {username, password, role})
-                    .then(() => navigate("/login"))
-                    .catch(error => console.log(error))
-            //axios to workshops here
-        }else{
-            toast.error("Passwords don't match")
-        }
-    }
+    const {
+        username,
+        password,
+        passwordConfirm,
+        role,
+        handleUsernameChange,
+        handlePasswordChange,
+        handlePasswordConfirmChange,
+        handleRoleChange,
+        handleSubmit
+    } = useSignUp()
 
     return (
         <>

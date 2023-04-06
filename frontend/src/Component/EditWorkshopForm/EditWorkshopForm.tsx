@@ -1,42 +1,34 @@
 import {Autocomplete, Box, Button, Paper, TextField, Typography} from "@mui/material";
-import React, {FormEvent} from "react";
+import React from "react";
 import ComponentFormDialog from "../../Dialog/ComponentFormDialog";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import useEditComponents from "../../Hooks/useEditComponents";
-import axios from "axios";
 import useEditWorkshop from "../../Hooks/useEditWorkshop";
 import {User} from "../../Hooks/useAuth";
 import {Workshop} from "../../model/Workshop";
-import {useNavigate} from "react-router-dom";
 
 type EditWorkshopFormProps = {
     user: User | null
     workshops: Workshop[]
+    workshopToEdit?: Workshop
     updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
-    const navigate = useNavigate()
     const {
+        navigate,
         components,
         services,
         workshopName,
         addComponentDialogOpen,
+        handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
         handleWorkshopNameChange,
         handleSetComponents}
-        = useEditWorkshop({username: props.user?.username || ""})
+        = useEditWorkshop(props)
     const {handleDeleteComponent}
         = useEditComponents({components: components, handleSetComponents: handleSetComponents})
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
-        axios.post("/api/workshops/", {name: workshopName, services: services, inventory: components})
-            .then(r=> r.data)
-            .then((newWorkshop)=>props.updateWorkshopList([...props.workshops, newWorkshop]))
-            .then(()=> navigate("/"))
-            .catch((error) => console.error(error))
-    }
     return (
         <>
             <Box sx={{mt: 1, mb: 1}} component="form" onSubmit={handleSubmit}>
@@ -46,7 +38,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     fullWidth
                     margin={"normal"}
                     onChange={handleWorkshopNameChange}
-                    defaultValue={workshopName}
+                    value={workshopName}
                 />
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
@@ -54,6 +46,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     freeSolo
                     aria-required={true}
                     options={[]}
+                    value={services}
                     onChange={handleServicesChange}
                     id="select-components"
                     renderInput={(params) => (
@@ -84,8 +77,14 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                         variant={"contained"}
                         sx={{mt:2, width: 1}}
                         disabled={workshopName==="" || services.length<1}>
-                    Register your Workshop
+                    {!props.workshopToEdit? "Register your Workshop": "Update Profile"}
                 </Button>
+                {props.workshopToEdit &&
+                    <Button variant={"contained"} sx={{mt: 1, width: 1}} onClick={()=>navigate("/")}>
+                        Cancel
+                    </Button>
+
+                }
             </Box>
         </>
     )
