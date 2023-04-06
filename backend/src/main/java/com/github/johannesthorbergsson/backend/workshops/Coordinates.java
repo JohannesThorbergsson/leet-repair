@@ -1,7 +1,9 @@
 package com.github.johannesthorbergsson.backend.workshops;
 
+import java.math.BigDecimal;
+
 public record Coordinates(
-        Double lat,
-        Double lng
+        BigDecimal lat,
+        BigDecimal lng
 ) {
 }
