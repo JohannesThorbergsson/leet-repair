@@ -53,7 +53,6 @@ class OrderServiceTest {
         //THEN
         assertEquals(expected, actual);
         verify(orderRepository).findServiceOrderByWorkshopId(testId);
-
     }
     @Test
     void addOrder_whenOrderRequest_thenReturnSavedOrder(){

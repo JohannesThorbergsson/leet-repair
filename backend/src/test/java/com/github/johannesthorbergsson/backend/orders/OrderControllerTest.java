@@ -67,6 +67,37 @@ class OrderControllerTest {
     }
     @Test
     @DirtiesContext
+    @WithMockUser
+    void getOrdersByWorkshop_whenOrders_thenReturnArrayOfOrders() throws Exception {
+        orderRepository.save(testOrder);
+        mockMvc.perform(get("/api/orders/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                            {
+                            "id": "1",
+                            "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
+                            "description": "New Tyre",
+                            "workshop": "Workshop42",
+                            "workshopId": "1",
+                            "username": "steven",
+                            "status": "OPEN",
+                            "date": "2022-02-01",
+                            "componentsToReplace": [
+                                {
+                                    "category": "Tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                }
+                            ]
+                            }
+                        ]
+                        """));
+    }
+    @Test
+    @DirtiesContext
     @WithMockUser(username = "steven")
     void addOrder_whenOrderRequest_thenReturnOrder() throws Exception {
         mockMvc.perform(post("/api/orders/")
