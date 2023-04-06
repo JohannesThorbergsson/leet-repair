@@ -17,13 +17,7 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
     useAuth(true)
     const {workshopId} = useParams<{workshopId: string}>()
     const workshop = props.workshops.find(workshop=> workshop.id===workshopId)
-    const [loadComponent, setLoadComponent] = useState(false)
-    useEffect(()=>{
-        if(props.isFetching) {
-            setLoadComponent(true)
-        }}, [props.isFetching]
-    )
-    console.log(props.isFetching)
+
     return (
         <>
             {!props.isFetching && workshop ?
