@@ -1,9 +1,9 @@
 import useAuth from "../../Hooks/useAuth";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
 import {Workshop} from "../../model/Workshop";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Box, Button} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import OrderCard from "../../Component/OrderCard/OrderCard";
 import {ServiceOrder} from "../../model/ServiceOrder";
 
@@ -12,36 +12,50 @@ type WorkshopDashboardProps = {
     orders: ServiceOrder[]
 }
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
-    const location = useLocation()
     const user = useAuth(true)
     const navigate = useNavigate()
+    const [workshopLoaded, setWorkshopLoaded] = useState(false)
     const [workshop, setWorkshop]
         = useState(props.workshops.find(workshop=>workshop.username=== user?.username))
 
     useEffect(()=> {
         if(user!==null) {
             setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
+            setWorkshopLoaded(true)
         }
         //eslint-disable-next-line
-    }, [props.workshops, location, user])
-    console.log(props.orders)
+    }, [props.workshops])
+    useEffect(()=> {
+        if(user!==null) {
+            setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
+        }
+        //eslint-disable-next-line
+    }, [props.workshops, navigate, user])
+    useEffect(()=>{
+        if(user && workshopLoaded && !workshop) {
+            navigate("/workshops/setup")
+        }
+    }, [user, workshop, navigate, workshopLoaded])
+
     return(
             <>
                 <ResponsiveAppBar/>
-                {workshop?
+                {workshop &&
                     <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2}}>
-                        <Box>
-                            {props.orders.filter(order=> order.status !== "DONE").map(order =>
-                                <OrderCard order={order}/>)
-                            }
-                        </Box>
-                        <Button variant={"contained"} onClick={()=> navigate("/workshops/edit/"+workshop?.id)}>
+                        {props.orders.length>0?
+                            <Box>
+                                <Typography variant={"h4"} fontWeight={"medium"} sx={{}}>Active Orders</Typography>
+                                <Box>
+                                    {props.orders.filter(order=> order.status !== "DONE").map(order =>
+                                        <OrderCard key={order.id} order={order}/>)}
+                                </Box>
+                            </Box>:
+                            <Typography variant={"h4"} fontWeight={"medium"} sx={{mt: 4}}>No Active Orders</Typography>
+                        }
+                        <Button variant={"contained"}
+                                onClick={()=> navigate("/workshops/edit/"+workshop?.id)}
+                                sx={{mt: 2}}>
                             Manage Workshop
-                        </Button>
-                    </Box>:
-                    <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m: 2}}>
-                        <Button variant={"contained"} onClick={()=>navigate("/workshops/setup")}>
-                            Create Profile
                         </Button>
                     </Box>
                 }
