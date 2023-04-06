@@ -29,7 +29,12 @@ export default function useSignUp(){
             axios.post("/api/users/", {username, password, role})
                 .then(() => navigate("/login"))
                 .then(()=>toast.success("Successfully signed up"))
-                .catch(error => console.log(error))
+                .catch(error => {
+                    if(error.response.status===409){
+                        toast.error("Username already exists!")
+                    }
+
+                })
         }else{
             toast.error("Passwords don't match")
         }

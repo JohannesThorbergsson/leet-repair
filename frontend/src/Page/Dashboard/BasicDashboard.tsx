@@ -10,14 +10,14 @@ import {Bike} from "../../model/Bike";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
 
-type DashboardProps = {
+type BasicDashboardProps = {
     orders: ServiceOrder[]
     workshops: Workshop[]
     bikes: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
     updateBikeList(bikes: Bike[]): void
 }
-export default function Dashboard(props: DashboardProps) {
+export default function BasicDashboard(props: BasicDashboardProps) {
     const {
         searchHandler,
         handleSearchTerm,

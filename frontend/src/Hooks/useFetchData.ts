@@ -9,6 +9,7 @@ export default function useFetchData(){
     const [bikes, setBikes] = useState<Bike[]>([])
     const [orders, setOrders] = useState<ServiceOrder[]>([])
     const [workshops, setWorkshops] = useState<Workshop[]>([])
+    const [isFetching, setIsFetching] = useState(false)
 
     const user = useAuth(false)
     const prevUser = useRef(user);
@@ -29,6 +30,7 @@ export default function useFetchData(){
         setWorkshops(workshops)
     }
     async function fetchData() {
+        setIsFetching(true)
         if(user?.role==="BASIC"){
             await axios.get("/api/orders/")
                 .then(r => setOrders(r.data))
@@ -43,6 +45,8 @@ export default function useFetchData(){
             .catch((error) => console.error(error))
         await axios.get("/api/workshops/")
             .then(r => setWorkshops(r.data))
+            .catch((error) => console.error(error))
+        setIsFetching(false)
     }
-    return {bikes, orders, workshops, updateBikeList, updateOrderList, updateWorkshopList}
+    return {bikes, orders, workshops, isFetching, updateBikeList, updateOrderList, updateWorkshopList}
 }
