@@ -27,6 +27,7 @@ public class OrderService {
         ServiceOrder newOrder = new ServiceOrder(
                 idService.generateId(),
                 serviceOrderRequest.bikeId(),
+                serviceOrderRequest.bikeName(),
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
                 serviceOrderRequest.workshopId(),
@@ -43,6 +44,7 @@ public class OrderService {
         ServiceOrder editedOrder = new ServiceOrder(
                 id,
                 serviceOrderRequest.bikeId(),
+                serviceOrderRequest.bikeName(),
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
                 serviceOrderRequest.workshopId(),

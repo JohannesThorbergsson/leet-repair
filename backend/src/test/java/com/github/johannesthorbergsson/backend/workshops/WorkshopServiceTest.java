@@ -35,7 +35,7 @@ class WorkshopServiceTest {
 
     @BeforeEach
     void setUp (){
-        workshopService = new WorkshopService(workshopRepository, idService);
+        workshopService = new WorkshopService(workshopRepository);
     }
 
     @Test

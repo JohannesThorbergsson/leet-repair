@@ -30,7 +30,7 @@ class OrderControllerTest {
     OrderRepository orderRepository;
     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).setDateFormat(new StdDateFormat());
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
+    ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike","New Tyre", "Workshop42",
             "1", "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     @Test
     @DirtiesContext
@@ -47,6 +47,7 @@ class OrderControllerTest {
                             {
                             "id": "1",
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
                             "workshopId": "1",
@@ -63,7 +64,6 @@ class OrderControllerTest {
                             }
                         ]
                         """));
-
     }
     @Test
     @DirtiesContext
@@ -74,6 +74,7 @@ class OrderControllerTest {
                 .content("""
                         {
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
                             "workshopId": "1",
@@ -91,6 +92,7 @@ class OrderControllerTest {
                 .andExpect(content().json("""
                          {
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",                            
                             "workshopId": "1",
@@ -119,6 +121,7 @@ class OrderControllerTest {
                 .content("""
                           {
                               "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
                               "workshopId": "1",
@@ -139,6 +142,7 @@ class OrderControllerTest {
                           {
                               "id": "1",
                               "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
                               "workshopId": "1",
@@ -164,6 +168,7 @@ class OrderControllerTest {
                 .content("""
                     {
                           "bikeId": "bid",
+                          "bikeName": "Amazing Bike",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
                           "workshopId": "1",
@@ -192,6 +197,7 @@ class OrderControllerTest {
                 .content("""
                     {
                           "bikeId": "bid",
+                          "bikeName": "Amazing Bike",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
                           "workshopId": "1",
