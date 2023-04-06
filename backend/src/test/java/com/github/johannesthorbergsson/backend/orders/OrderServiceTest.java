@@ -35,13 +35,25 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findServiceOrderByUsername("steven")).thenReturn(List.of(testOrder));
         when(principal.getName()).thenReturn("steven");
+        List<ServiceOrder> expected = List.of(testOrder);
         //WHEN
         List<ServiceOrder> actual = orderService.getAllOrders(principal);
-        List<ServiceOrder> expected = List.of(testOrder);
         //THEN
         assertEquals(expected, actual);
         verify(orderRepository).findServiceOrderByUsername("steven");
         verify(principal).getName();
+    }
+    @Test
+    void getOrdersByWorkshopId_whenOrders_thenReturnListOfOrders(){
+        //GIVEN
+        when(orderRepository.findServiceOrderByWorkshopId(testId)).thenReturn(List.of(testOrder));
+        List<ServiceOrder> expected = List.of(testOrder);
+        //WHEN
+        List<ServiceOrder> actual = orderService.getOrdersByWorkshopId(testId);
+        //THEN
+        assertEquals(expected, actual);
+        verify(orderRepository).findServiceOrderByWorkshopId(testId);
+
     }
     @Test
     void addOrder_whenOrderRequest_thenReturnSavedOrder(){
