@@ -3,7 +3,7 @@ import {Component} from "./Component";
 export type ServiceOrder = {
     id: string
     bikeId: string
-    workshopName: string
+    bikeName: string
     description: string
     workshop: string
     workshopId: string
