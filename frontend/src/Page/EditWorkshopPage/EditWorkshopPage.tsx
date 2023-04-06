@@ -23,9 +23,10 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
             setLoadComponent(true)
         }}, [props.isFetching]
     )
+    console.log(props.isFetching)
     return (
         <>
-            {!props.isFetching && loadComponent ?
+            {!props.isFetching && workshop ?
                 <>
                     <ResponsiveAppBar/>
                     <Box sx={{m:2, p: 1 }}>

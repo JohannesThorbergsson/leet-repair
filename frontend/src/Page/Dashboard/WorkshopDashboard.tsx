@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
 import OrderCard from "../../Component/OrderCard/OrderCard";
 import {ServiceOrder} from "../../model/ServiceOrder";
+import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
@@ -22,7 +23,6 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
         if(user!==null) {
             setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
             setWorkshopLoaded(true)
-            console.log(workshop)
         }
     }, [props.workshops, user, workshop])
     useEffect(()=>{
@@ -32,9 +32,10 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
     }, [user, workshop, navigate, workshopLoaded])
 
     return(
-            <>
+        <>
+            {workshop ?
+                <>
                 <ResponsiveAppBar/>
-                {workshop &&
                     <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2}}>
                         {props.orders.length>0?
                             <Box>
@@ -52,7 +53,9 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                             Manage Workshop
                         </Button>
                     </Box>
-                }
-            </>
+                </>:
+                <LoadingScreen/>
+            }
+        </>
     )
 }

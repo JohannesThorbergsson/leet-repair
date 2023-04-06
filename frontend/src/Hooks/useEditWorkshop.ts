@@ -20,7 +20,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     const [workshopName, setWorkshopName]
         = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
-
+    console.log(props.user)
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
     }
