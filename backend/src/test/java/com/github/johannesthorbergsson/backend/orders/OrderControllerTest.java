@@ -94,7 +94,7 @@ class OrderControllerTest {
                             "bikeId": "bid",
                             "bikeName": "Amazing Bike",
                             "description": "New Tyre",
-                            "workshop": "Workshop42",                            
+                            "workshop": "Workshop42",
                             "workshopId": "1",
                             "username": "steven",
                             "status": "OPEN",

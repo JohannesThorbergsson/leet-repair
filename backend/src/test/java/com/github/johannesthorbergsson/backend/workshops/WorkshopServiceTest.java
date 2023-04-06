@@ -3,7 +3,6 @@ package com.github.johannesthorbergsson.backend.workshops;
 import com.github.johannesthorbergsson.backend.bikes.Component;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
-import com.github.johannesthorbergsson.backend.id.IdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.*;
 
 class WorkshopServiceTest {
     WorkshopService workshopService;
-    IdService idService = mock(IdService.class);
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
