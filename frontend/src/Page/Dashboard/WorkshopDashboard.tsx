@@ -22,15 +22,9 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
         if(user!==null) {
             setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
             setWorkshopLoaded(true)
+            console.log(workshop)
         }
-        //eslint-disable-next-line
-    }, [props.workshops])
-    useEffect(()=> {
-        if(user!==null) {
-            setWorkshop(props.workshops.find(workshop=>workshop.id=== user.id))
-        }
-        //eslint-disable-next-line
-    }, [props.workshops, navigate, user])
+    }, [props.workshops, user, workshop])
     useEffect(()=>{
         if(user && workshopLoaded && !workshop) {
             navigate("/workshops/setup")

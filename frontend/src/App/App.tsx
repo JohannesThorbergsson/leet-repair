@@ -72,7 +72,8 @@ function App() {
           <Route path={"/workshops/setup"} element={
               <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
-              <EditWorkshopPage updateWorkshopList={updateWorkshopList} user={user} workshops={workshops}/>}/>
+              <EditWorkshopPage updateWorkshopList={updateWorkshopList}
+                                user={user} workshops={workshops} isFetching={isFetching}/>}/>
         </Routes>
       </div>
   );
