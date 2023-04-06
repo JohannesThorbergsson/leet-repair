@@ -5,6 +5,7 @@ import WorkshopDashboard from "./WorkshopDashboard";
 import BasicDashboard from "./BasicDashboard";
 import React from "react";
 import useAuth from "../../Hooks/useAuth";
+import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 
 type DashboardProps = {
     orders: ServiceOrder[]
@@ -25,9 +26,9 @@ export default function Dashboard(props: DashboardProps){
                         updateBikeList={props.updateBikeList}/>
     return (
         <>
-            {props.isFetching && user ?
+            {!props.isFetching && user ?
                 dashboard :
-                <>Loading</>
+                <LoadingScreen/>
             }
         </>
     )
