@@ -20,6 +20,7 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
         newComponentModel,
         newComponentCategory,
         newComponentAge,
+        submitDisabled,
         handleInputComponentModel,
         handleInputComponentCategory,
         handleInputComponentAge,
@@ -51,7 +52,7 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
                     Cancel
                 </Button>
                 <Button onClick={submit}
-                        disabled={newComponentModel==="" || newComponentCategory===""}>
+                        disabled={submitDisabled}>
                     Save
                 </Button>
             </DialogActions>
