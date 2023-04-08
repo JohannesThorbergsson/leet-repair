@@ -11,13 +11,18 @@
 }
 
 .spinner {
-    width: 4rem;
-    height: 4rem;
-    border: 0.3rem solid #FFFFFF;
-    border-bottom-color: transparent;
-    border-radius: 50%;
+    width: 12rem;
+    height: 12rem;
     display: inline-block;
-    animation: rotation 1s linear infinite;
+    animation: rotation 2s linear infinite;
+}
+
+.img-container {
+    opacity: 0;
+    animation-name: fade-in;
+    animation-duration: 0.01s;
+    animation-delay: 0.1s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes rotation {
@@ -27,4 +32,9 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
