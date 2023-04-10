@@ -5,7 +5,6 @@ import {Workshop} from "../../model/Workshop";
 import {useParams} from "react-router-dom";
 import {Box, Typography} from "@mui/material";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
-import {useEffect, useState} from "react";
 
 type EditWorkshopPageProps = {
     user: User | null
