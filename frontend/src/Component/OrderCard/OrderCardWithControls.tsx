@@ -6,11 +6,13 @@ import UpdateOrderStatusDialog from "../../Dialog/UpdateOrderStatusDialog";
 import useUpdateOrderStatus from "../../Hooks/useUpdateOrderStatus";
 import OrderCardContent from "./OrderCardContent";
 import {Bike} from "../../model/Bike";
+import {User} from "../../Hooks/useAuth";
 
 type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
     bikes: Bike[]
+    user: User | null
     updateOrderList(orders: ServiceOrder[]): void
     updateBikeList(bikes: Bike[]): void
 }
@@ -28,13 +30,13 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
 
     const card = (
         <React.Fragment>
-            <OrderCardContent order={props.order}/>
+            <OrderCardContent order={props.order} user={props.user}/>
             <Box sx={{
                 pb: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly'}}>
-                {props.order.status==="OPEN" &&
+                {(props.order.status==="OPEN" && props.user?.role === "BASIC") &&
                     <Button variant={"contained"}
                             sx={{width: 1/2, mr: 1 , ml: 2}}
                             onClick={()=> navigate("/orders/" + props.order.id)}>

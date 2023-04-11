@@ -38,7 +38,8 @@ export default function BasicDashboard(props: BasicDashboardProps) {
                                            orders={props.orders}
                                            updateOrderList={props.updateOrderList}
                                            bikes={props.bikes}
-                                           updateBikeList={props.updateBikeList}/>)}
+                                           updateBikeList={props.updateBikeList}
+                                           user={user}/>)}
             </Box>:
             <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
         )

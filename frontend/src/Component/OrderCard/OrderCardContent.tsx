@@ -3,9 +3,11 @@ import {Box, CardContent, Typography} from "@mui/material";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import React from "react";
 import moment from "moment";
+import {User} from "../../Hooks/useAuth";
 
 type OrderCardContentProps = {
     order: ServiceOrder
+    user: User | null
 }
 
 export default function OrderCardContent(props: OrderCardContentProps){
@@ -35,7 +37,8 @@ export default function OrderCardContent(props: OrderCardContentProps){
                    {moment(props.order.date).format('DD.MM.YYYY')}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   {props.order.bikeName}
+                   {props.order.bikeName} <br/>
+                   {props.user?.role==="BASIC" &&  props.order.workshop}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
                    {"Status: " + status}

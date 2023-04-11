@@ -4,13 +4,17 @@ import {Workshop} from "../../model/Workshop";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Box, Button, Typography} from "@mui/material";
-import OrderCard from "../../Component/OrderCard/OrderCard";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
+import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
+import {Bike} from "../../model/Bike";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
     orders: ServiceOrder[]
+    bikes: Bike[]
+    updateOrderList(orders: ServiceOrder[]): void
+    updateBikeList(bikes: Bike[]): void
 }
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
     const user = useAuth(true)
@@ -42,7 +46,13 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                                 <Typography variant={"h4"} fontWeight={"medium"} sx={{}}>Active Orders</Typography>
                                 <Box>
                                     {props.orders.filter(order=> order.status !== "DONE").map(order =>
-                                        <OrderCard key={order.id} order={order}/>)}
+                                        <OrderCardWithControls key={order.id}
+                                                               order={order}
+                                                               user={user}
+                                                               bikes={props.bikes}
+                                                               orders={props.orders}
+                                                               updateBikeList={props.updateBikeList}
+                                                               updateOrderList={props.updateOrderList}/>)}
                                 </Box>
                             </Box>:
                             <Typography variant={"h4"} fontWeight={"medium"} sx={{mt: 4}}>No Active Orders</Typography>
