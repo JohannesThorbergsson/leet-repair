@@ -44,6 +44,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     sx={{mt: 2, width: 1}}
                     multiple
                     freeSolo
+                    autoSelect
                     aria-required={true}
                     options={[]}
                     value={services}

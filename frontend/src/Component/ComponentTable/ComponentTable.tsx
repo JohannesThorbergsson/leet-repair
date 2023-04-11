@@ -30,7 +30,7 @@ export default function ComponentTable(props: ComponentTableProps) {
                     <TableBody>
                         {props.components.map((component) => (
                             <TableRow
-                                key={component.category}
+                                key={component.category+component.type}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">

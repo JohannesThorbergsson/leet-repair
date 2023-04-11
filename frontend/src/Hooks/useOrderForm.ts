@@ -62,8 +62,10 @@ export default function useOrderForm(props: OrderFormProps){
             axios.post("/api/orders/",
                 {
                     bikeId: orderFormState.selectedBike?.id,
+                    bikeName: orderFormState.selectedBike?.modelName,
                     description: orderFormState.orderDescription,
                     workshop: orderFormState.workshopNewOrder?.name,
+                    workshopId: orderFormState.workshopNewOrder?.id,
                     status: "OPEN",
                     componentsToReplace: orderFormState.orderedComponents})
                 .then(r => props.updateOrderList([...props.orders, r.data]))
@@ -73,8 +75,10 @@ export default function useOrderForm(props: OrderFormProps){
             axios.put("/api/orders/" + props.orderToEdit.id,
                 {
                     bikeId: orderFormState.selectedBike?.id,
+                    bikeName: orderFormState.selectedBike?.modelName,
                     description: orderFormState.orderDescription,
                     workshop: props.orderToEdit.workshop,
+                    workshopId: props.orderToEdit.workshopId,
                     status: orderFormState.orderToEditStatus,
                     componentsToReplace: orderFormState.orderedComponents})
                 .then(r => r.data)

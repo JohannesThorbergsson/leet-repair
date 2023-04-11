@@ -12,8 +12,10 @@ public record ServiceOrder(
         @Id
         String id,
         String bikeId,
+        String bikeName,
         String description,
         String workshop,
+        String workshopId,
         String username,
         Status status,
         LocalDate date,

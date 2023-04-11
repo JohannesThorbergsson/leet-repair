@@ -16,13 +16,14 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     const [components, setComponents]
         = useState<Component[]>(props.workshopToEdit?.inventory ?? [])
     const [services, setServices]
-        = useState<string[]>(props.workshopToEdit?.services ?? [])
+        = useState<string[]>(props.workshopToEdit?.services ?? ["Repairs"])
     const [workshopName, setWorkshopName]
         = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
 
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
+        console.log(event.target)
     }
     function handleWorkshopNameChange(event: ChangeEvent<HTMLInputElement>) {
         setWorkshopName(event.target.value)
@@ -36,14 +37,15 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     function handleSubmit(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
         if(!props.workshopToEdit) {
-            axios.post("/api/workshops/", {name: workshopName, services: services, inventory: components})
+            axios.post("/api/workshops/",
+                {id: props.user?.id, name: workshopName, services: services, inventory: components})
                 .then(r=> r.data)
                 .then((newWorkshop)=>props.updateWorkshopList([...props.workshops, newWorkshop]))
                 .then(()=> navigate("/"))
                 .catch((error) => console.error(error))
         } else {
             axios.put("/api/workshops/"+ props.workshopToEdit.id,
-                {name: workshopName, services: services, inventory: components})
+                {id: props.user?.id, name: workshopName, services: services, inventory: components})
                 .then(r=> r.data)
                 .then(updatedWorkshop=> props.updateWorkshopList(
                     [...props.workshops.filter(workshop => workshop.id!==updatedWorkshop.id),

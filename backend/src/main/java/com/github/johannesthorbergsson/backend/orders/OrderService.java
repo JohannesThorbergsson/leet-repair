@@ -20,12 +20,17 @@ public class OrderService {
     public List<ServiceOrder> getAllOrders(Principal principal){
         return orderRepository.findServiceOrderByUsername(principal.getName());
     }
+    public List<ServiceOrder> getOrdersByWorkshopId(String id){
+        return orderRepository.findServiceOrderByWorkshopId(id);
+    }
     public ServiceOrder addOrder(Principal principal, ServiceOrderRequest serviceOrderRequest){
         ServiceOrder newOrder = new ServiceOrder(
                 idService.generateId(),
                 serviceOrderRequest.bikeId(),
+                serviceOrderRequest.bikeName(),
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
+                serviceOrderRequest.workshopId(),
                 principal.getName(),
                 Status.OPEN,
                 LocalDate.now(),
@@ -39,8 +44,10 @@ public class OrderService {
         ServiceOrder editedOrder = new ServiceOrder(
                 id,
                 serviceOrderRequest.bikeId(),
+                serviceOrderRequest.bikeName(),
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
+                serviceOrderRequest.workshopId(),
                 principal.getName(),
                 serviceOrderRequest.status(),
                 serviceOrderRequest.date(),

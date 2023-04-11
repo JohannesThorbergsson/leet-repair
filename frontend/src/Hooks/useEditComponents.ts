@@ -15,7 +15,8 @@ export default function useEditComponents(props: useEditComponentsProps){
         || Number.isNaN(newComponentAge)
         || newComponentModel.trim()===""
         || newComponentCategory.trim()===""
-        || props.components.filter(c => c.category === newComponentCategory.trim()).length!==0
+        || props.components.filter(c =>
+            c.category+c.type === newComponentCategory.trim()+newComponentModel.trim()).length!==0
     function handleInputComponentCategory(event: ChangeEvent<HTMLInputElement>){
         setNewComponentCategory(event.target.value)
     }
@@ -33,7 +34,8 @@ export default function useEditComponents(props: useEditComponentsProps){
         setNewComponentCategory("")
     }
     function handleDeleteComponent(component: Component) {
-        props.handleSetComponents(props.components.filter((c => c.type !== component.type)))
+        props.handleSetComponents(props.components.filter((c =>
+            c.type+c.category !== component.type+component.category)))
     }
     return {
         handleInputComponentAge,

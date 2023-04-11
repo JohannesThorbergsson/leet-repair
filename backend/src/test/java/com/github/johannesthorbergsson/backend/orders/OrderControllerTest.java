@@ -30,8 +30,8 @@ class OrderControllerTest {
     OrderRepository orderRepository;
     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).setDateFormat(new StdDateFormat());
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    ServiceOrder testOrder = new ServiceOrder("1", "bid", "New Tyre", "Workshop42",
-            "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
+    ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike","New Tyre", "Workshop42",
+            "1", "steven", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     @Test
     @DirtiesContext
     @WithMockUser(username = "steven")
@@ -47,8 +47,10 @@ class OrderControllerTest {
                             {
                             "id": "1",
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
+                            "workshopId": "1",
                             "username": "steven",
                             "status": "OPEN",
                             "date": "2022-02-01",
@@ -62,7 +64,37 @@ class OrderControllerTest {
                             }
                         ]
                         """));
-
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void getOrdersByWorkshop_whenOrders_thenReturnArrayOfOrders() throws Exception {
+        orderRepository.save(testOrder);
+        mockMvc.perform(get("/api/orders/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                            {
+                            "id": "1",
+                            "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
+                            "description": "New Tyre",
+                            "workshop": "Workshop42",
+                            "workshopId": "1",
+                            "username": "steven",
+                            "status": "OPEN",
+                            "date": "2022-02-01",
+                            "componentsToReplace": [
+                                {
+                                    "category": "Tyre",
+                                    "type": "Pirelli",
+                                    "age": 1337
+                                }
+                            ]
+                            }
+                        ]
+                        """));
     }
     @Test
     @DirtiesContext
@@ -73,8 +105,10 @@ class OrderControllerTest {
                 .content("""
                         {
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
+                            "workshopId": "1",
                             "componentsToReplace": [
                                 {
                                     "category": "Tyre",
@@ -89,8 +123,10 @@ class OrderControllerTest {
                 .andExpect(content().json("""
                          {
                             "bikeId": "bid",
+                            "bikeName": "Amazing Bike",
                             "description": "New Tyre",
                             "workshop": "Workshop42",
+                            "workshopId": "1",
                             "username": "steven",
                             "status": "OPEN",
                             "componentsToReplace": [
@@ -116,8 +152,10 @@ class OrderControllerTest {
                 .content("""
                           {
                               "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
+                              "workshopId": "1",
                               "status": "OPEN",
                               "date": "2022-02-02",
                               "componentsToReplace": [
@@ -135,8 +173,10 @@ class OrderControllerTest {
                           {
                               "id": "1",
                               "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
                               "description": "New Tyre",
                               "workshop": "Workshop42",
+                              "workshopId": "1",
                               "username": "steven",
                               "status": "OPEN",
                               "date": "2022-02-02",
@@ -159,8 +199,10 @@ class OrderControllerTest {
                 .content("""
                     {
                           "bikeId": "bid",
+                          "bikeName": "Amazing Bike",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
+                          "workshopId": "1",
                           "status": "OPEN",
                           "date": "2022-02-02",
                           "componentsToReplace": [
@@ -186,8 +228,10 @@ class OrderControllerTest {
                 .content("""
                     {
                           "bikeId": "bid",
+                          "bikeName": "Amazing Bike",
                           "description": "New Tyre",
                           "workshop": "Workshop42",
+                          "workshopId": "1",
                           "status": "OPEN",
                           "date": "2022-02-02",
                           "componentsToReplace": [

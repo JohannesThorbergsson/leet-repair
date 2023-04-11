@@ -16,7 +16,6 @@ public class WorkshopController {
     public List<Workshop> getAllWorkshops() {
         return workshopService.getAllWorkshops();
     }
-
     @PostMapping
     public Workshop addWorkshop(@RequestBody WorkshopRequest workshopRequest, Principal principal){
         return workshopService.addWorkshop(principal, workshopRequest);

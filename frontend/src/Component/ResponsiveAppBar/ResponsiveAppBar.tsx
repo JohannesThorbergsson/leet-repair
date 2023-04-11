@@ -23,7 +23,10 @@ export default function ResponsiveAppBar() {
     const handleLogout = () => {
         setAnchorElUser(null);
         axios.post('/api/users/logout')
-            .then(() => window.location.href = '/login')
+            .then(() => {
+                window.sessionStorage.clear();
+                window.location.href = '/login'
+            })
     }
     return (
             <AppBar position="static">

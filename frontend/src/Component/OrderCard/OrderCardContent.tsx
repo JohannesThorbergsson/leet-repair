@@ -35,7 +35,7 @@ export default function OrderCardContent(props: OrderCardContentProps){
                    {moment(props.order.date).format('DD.MM.YYYY')}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   {props.order.workshop}
+                   {props.order.bikeName}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
                    {"Status: " + status}

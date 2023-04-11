@@ -25,10 +25,7 @@ export default function AddComponentInput(props: AddComponentInputProps){
                 label="Component"
                 fullWidth
                 error = {props.components.filter(c =>
-                    c.category === props.newComponentCategory.trim()).length!==0}
-                helperText={props.components.filter(c =>
-                    c.category === props.newComponentCategory.trim()).length!==0
-                    && "Must be unique"}
+                    c.category+c.type === props.newComponentCategory.trim()+props.newComponentModel.trim()).length!==0}
                 value={props.newComponentCategory}
                 sx={{mt: 1, mr: 1}}
                 onChange={props.handleInputComponentCategory}
@@ -38,6 +35,11 @@ export default function AddComponentInput(props: AddComponentInputProps){
                 id="outlined-required"
                 label="Model"
                 fullWidth
+                error = {props.components.filter(c =>
+                    c.category+c.type === props.newComponentCategory.trim()+props.newComponentModel.trim()).length!==0}
+                helperText={props.components.filter(c =>
+                        c.category+c.type === props.newComponentCategory.trim()+props.newComponentModel.trim()).length!==0
+                    && "Already exists"}
                 value={props.newComponentModel}
                 sx={{mt: 1, mr: (props.displayAge ? 1:0)}}
                 onChange={props.handleInputComponentModel}

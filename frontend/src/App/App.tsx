@@ -5,7 +5,6 @@ import Login from "../Page/Login/Login";
 import SignUp from "../Page/SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
-import Dashboard from "../Page/Dashboard/Dashboard";
 import BikeGallery from "../Page/BikeGallery/BikeGallery";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -20,9 +19,9 @@ import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
 import {Toaster} from 'react-hot-toast';
 import useAuth from "../Hooks/useAuth";
-import WorkshopDashboard from "../Page/WorkshopDashboard/WorkshopDashboard";
 import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
 import EditWorkshopPage from "../Page/EditWorkshopPage/EditWorkshopPage";
+import Dashboard from "../Page/Dashboard/Dashboard";
 
 axios.interceptors.request.use(
     function (config) {
@@ -37,7 +36,14 @@ axios.interceptors.request.use(
 )
 
 function App() {
-    const {bikes, orders, workshops, updateBikeList, updateOrderList, updateWorkshopList}
+    const {
+        bikes,
+        orders,
+        workshops,
+        isFetching,
+        updateBikeList,
+        updateOrderList,
+        updateWorkshopList}
         = useFetchData()
     const user = useAuth(false)
   return (
@@ -46,13 +52,13 @@ function App() {
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
-          <Route path={"/"} element={ user?.role==="WORKSHOP"?
-              <WorkshopDashboard workshops={workshops}/>:
-              <Dashboard orders={orders}
-                         workshops={workshops}
+          <Route path={"/"} element={
+              <Dashboard bikes={bikes}
+                         isFetching={isFetching}
+                         orders={orders}
+                         updateBikeList={updateBikeList}
                          updateOrderList={updateOrderList}
-                         bikes={bikes}
-                         updateBikeList={updateBikeList}/>}/>
+                         workshops={workshops}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
@@ -66,7 +72,8 @@ function App() {
           <Route path={"/workshops/setup"} element={
               <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
-              <EditWorkshopPage updateWorkshopList={updateWorkshopList} user={user} workshops={workshops}/>}/>
+              <EditWorkshopPage updateWorkshopList={updateWorkshopList}
+                                user={user} workshops={workshops} isFetching={isFetching}/>}/>
         </Routes>
       </div>
   );
