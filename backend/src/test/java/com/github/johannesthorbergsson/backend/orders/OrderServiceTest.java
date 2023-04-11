@@ -94,6 +94,23 @@ class OrderServiceTest {
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
         verify(workshopRepository).findById(testId);
+        verify(principal).getName();
+        assertEquals(expected, actual);
+    }
+    @Test
+    void updateOrder_whenValidRequestAsWorkshop_thenReturnUpdatedOrder(){
+        //GIVEN
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(orderRepository.save(testOrder)).thenReturn(testOrder);
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(principal.getName()).thenReturn("workshop42");
+        ServiceOrder expected = testOrder;
+        //WHEN
+        ServiceOrder actual = orderService.updateOrder(testId, testOrderRequest, principal);
+        //THEN
+        verify(orderRepository).findById(testId);
+        verify(orderRepository).save(testOrder);
+        verify(workshopRepository).findById(testId);
         verify(principal, times(2)).getName();
         assertEquals(expected, actual);
     }

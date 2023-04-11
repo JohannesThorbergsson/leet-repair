@@ -9,7 +9,7 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {User} from "../Hooks/useAuth";
 import {Component} from "../model/Component";
-import {Box, TextField} from "@mui/material";
+import {Box, TextField, Typography} from "@mui/material";
 import EditComponents from "../Component/EditComponents/EditComponents";
 
 type UpdateOrderStatusDialogProps = {
@@ -81,7 +81,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
 
     return (
         <Dialog
-            sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
+            sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
             maxWidth="xs"
             TransitionProps={{ onEntering: handleEntering }}
             open={props.open}
@@ -106,7 +106,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                         />
                     ))}
                 </RadioGroup>
-                {status === "Ready for Pickup" &&
+                {(status === "Ready for Pickup" && props.user?.role === "WORKSHOP") &&
                     <Box>
                         <TextField
                             required
@@ -116,15 +116,18 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                             id="outlined-required"
                             label="Order Description"
                             fullWidth
-                            sx={{mt: 2}}
+                            sx={{mt: 2, mb: 1}}
                         />
+                        <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{textAlign: 'center'}}>
+                            Installed Components
+                        </Typography>
                         <EditComponents components={components}
                                         handleSetComponents={handleSetComponents}/>
                     </Box>
                 }
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleCancel}>
+                <Button autoFocus onClick={handleCancel} >
                     Cancel
                 </Button>
                 <Button onClick={handleOk}>Ok</Button>

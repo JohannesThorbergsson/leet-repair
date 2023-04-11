@@ -204,6 +204,57 @@ class OrderControllerTest {
     }
     @Test
     @DirtiesContext
+    @WithMockUser(username = "workshop42")
+    void updateOrder_whenValidRequestAsWorkshop_thenReturnUpdatedOrder() throws Exception {
+        //GIVEN
+        orderRepository.save(testOrder);
+        workshopRepository.save(workshop1);
+        //WHEN
+        mockMvc.perform(put("/api/orders/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                          {
+                              "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
+                              "description": "New Tyre",
+                              "workshop": "Workshop42",
+                              "workshopId": "1",
+                              "status": "OPEN",
+                              "date": "2022-02-02",
+                              "componentsToReplace": [
+                                  {
+                                      "category": "Tyre",
+                                      "type": "Pirelli",
+                                      "age": 1337
+                                  }
+                              ]
+                         }
+                    """)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                          {
+                              "id": "1",
+                              "bikeId": "bid",
+                              "bikeName": "Amazing Bike",
+                              "description": "New Tyre",
+                              "workshop": "Workshop42",
+                              "workshopId": "1",
+                              "username": "steven",
+                              "status": "OPEN",
+                              "date": "2022-02-02",
+                              "componentsToReplace": [
+                                  {
+                                      "category": "Tyre",
+                                      "type": "Pirelli",
+                                      "age": 1337
+                                  }
+                              ]
+                         }
+                    """));
+    }
+    @Test
+    @DirtiesContext
     @WithMockUser
     void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException() throws Exception {
         mockMvc.perform(put("/api/orders/1")

@@ -40,15 +40,16 @@ export default function OrderCardContent(props: OrderCardContentProps){
                    {props.order.bikeName} <br/>
                    {props.user?.role==="BASIC" &&  props.order.workshop}
                </Typography>
-               <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   {"Status: " + status}
+               <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{maxWidth: 35/100}}>
+                   {"Status: "} <br/> {status}
                </Typography>
            </Box>
            <Typography variant="h4" fontWeight={"medium"} sx={{mt: 1}}>
                {props.order.description}
            </Typography>
            <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
-               {props.order.status !=="DONE"? "Ordered Components:": "Installed Components:"}
+               {(props.order.status !=="DONE" && props.order.status !=="READY_FOR_PICKUP") ?
+                   "Ordered Components:": "Installed Components:"}
            </Typography>
            <ComponentTable components={props.order.componentsToReplace} showAge={false}/>
        </CardContent>

@@ -56,7 +56,7 @@ public class OrderService {
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
                 serviceOrderRequest.workshopId(),
-                workshop.username().equals(principal.getName()) ? orderToUpdate.username(): workshop.username(),
+                orderToUpdate.username(),
                 serviceOrderRequest.status(),
                 serviceOrderRequest.date(),
                 serviceOrderRequest.componentsToReplace()
