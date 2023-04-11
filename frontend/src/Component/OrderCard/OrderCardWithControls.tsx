@@ -55,7 +55,8 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
                 saveChanges={saveChanges}
                 handleSetStatus={handleSetStatus}
                 handleUpdateStatusDialogSetOpen={handleUpdateStatusDialogSetOpen}
-                handleSave={handleSave}/>
+                handleSave={handleSave}
+                user={props.user}/>
         </React.Fragment>
     );
     return (

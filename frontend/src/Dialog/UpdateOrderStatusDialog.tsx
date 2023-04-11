@@ -7,6 +7,7 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {User} from "../Hooks/useAuth";
 
 type UpdateOrderStatusDialogProps = {
     id: string
@@ -14,6 +15,7 @@ type UpdateOrderStatusDialogProps = {
     status: string
     open: boolean
     saveChanges: boolean
+    user: User | null
     handleSave(): void
     handleSetStatus(newStatus: string): void
     handleUpdateStatusDialogSetOpen(): void
@@ -32,8 +34,8 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
         'Open',
         'In Progress',
         'Ready for Pickup',
-        'Done',
-    ]
+        props.user?.role === "BASIC"? 'Done': undefined,
+    ].filter((option): option is string =>typeof option === 'string')
     const handleEntering = () => {
         if (radioGroupRef.current != null) {
             radioGroupRef.current.focus()
