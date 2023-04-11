@@ -21,7 +21,7 @@
     opacity: 0;
     animation-name: fade-in;
     animation-duration: 0.01s;
-    animation-delay: 0.11s;
+    animation-delay: 0.15s;
     animation-fill-mode: forwards;
 }
 

@@ -7,8 +7,8 @@ import {ServiceOrder} from "../model/ServiceOrder";
 import orderFormReducer from "../Reducer/orderFormReducer";
 
 type OrderFormProps = {
-    workshops: Workshop[]
-    bikes: Bike[]
+    workshops?: Workshop[]
+    bikes?: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
     updateOrderList(orders: ServiceOrder[]): void
@@ -18,12 +18,12 @@ export default function useOrderForm(props: OrderFormProps){
     const {workshopId} = useParams<{workshopId: string}>()
     const initialFormState = {
         orderedComponents: props.orderToEdit?.componentsToReplace ?? [],
-        selectedBike: props.bikes.find(bike=>bike.id === props.orderToEdit?.bikeId) ?? undefined,
+        selectedBike: props.bikes?.find(bike=>bike.id === props.orderToEdit?.bikeId) ?? undefined,
         orderDescription: props.orderToEdit?.description ?? "",
         orderedComponentsText: props.orderToEdit?.componentsToReplace.map(
             component => component.category + " " +component.type),
-        workshopNewOrder: props.workshops.find(workshop => workshop.id === workshopId),
-        workshopEditOrder: props.workshops.find(workshop => workshop.name===props.orderToEdit?.workshop),
+        workshopNewOrder: props.workshops?.find(workshop => workshop.id === workshopId),
+        workshopEditOrder: props.workshops?.find(workshop => workshop.name===props.orderToEdit?.workshop),
         orderToEditStatus: props.orderToEdit?.status,
         openDeleteDialog: false
     }
@@ -38,7 +38,7 @@ export default function useOrderForm(props: OrderFormProps){
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
         const selectedComponentsNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
-        const selectedComponentsEditMode = props.workshops.find(
+        const selectedComponentsEditMode = props.workshops?.find(
             workshop=>workshop.name===props.orderToEdit?.workshop)
             ?.inventory.filter(component=> value.includes(component.category + " " + component.type))
 
@@ -51,7 +51,7 @@ export default function useOrderForm(props: OrderFormProps){
         }
     }
     function handleInputBike(event: SyntheticEvent<Element, Event>, value: string | null){
-        dispatch({type: "SET_SELECTED_BIKE", payload: props.bikes.find(bike => bike.modelName===value)})
+        dispatch({type: "SET_SELECTED_BIKE", payload: props.bikes?.find(bike => bike.modelName===value)})
     }
     function handleInputDescription(event: ChangeEvent<HTMLInputElement>) {
         dispatch({type: "SET_ORDER_DESCRIPTION", payload: event.target.value})

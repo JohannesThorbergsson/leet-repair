@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useRef, useState} from 'react';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,21 +8,30 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {User} from "../Hooks/useAuth";
+import {Component} from "../model/Component";
+import {Box, TextField} from "@mui/material";
+import EditComponents from "../Component/EditComponents/EditComponents";
 
 type UpdateOrderStatusDialogProps = {
     id: string
     keepMounted: boolean
     status: string
+    description: string
+    components: Component[]
     open: boolean
     saveChanges: boolean
     user: User | null
     handleSave(): void
     handleSetStatus(newStatus: string): void
+    handleSetDescription(newDescription: string): void
+    handleSetComponents(components: Component[]): void
     handleUpdateStatusDialogSetOpen(): void
 }
 export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogProps) {
     const radioGroupRef = useRef<HTMLElement>(null)
     const [status, setStatus] = useState(props.status)
+    const [description, setDescription] = useState<string>(props.description)
+    const [components, setComponents] = useState(props.components)
 
     useEffect(() => {
         if (!props.open) {
@@ -46,12 +55,21 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
     }
 
     const handleOk = () => {
+        props.handleUpdateStatusDialogSetOpen()
         props.handleSave()
-        handleClose(status)
+        props.handleSetStatus(status)
+        props.handleSetDescription(description)
+        props.handleSetComponents(components)
     }
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    function handleChangeStatus (event: ChangeEvent<HTMLInputElement>){
         setStatus((event.target as HTMLInputElement).value)
+    }
+    function handleInputDescription(event: ChangeEvent<HTMLInputElement>){
+        setDescription(event.target.value)
+    }
+    function handleSetComponents(components: Component[]){
+        setComponents(components)
     }
 
     const handleClose = (newValue?: string) => {
@@ -77,7 +95,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                     aria-label="Order Status"
                     name="Order Status"
                     value={status}
-                    onChange={handleChange}
+                    onChange={handleChangeStatus}
                 >
                     {options.map((option) => (
                         <FormControlLabel
@@ -88,6 +106,22 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                         />
                     ))}
                 </RadioGroup>
+                {status === "Ready for Pickup" &&
+                    <Box>
+                        <TextField
+                            required
+                            multiline
+                            onChange={handleInputDescription}
+                            value={description}
+                            id="outlined-required"
+                            label="Order Description"
+                            fullWidth
+                            sx={{mt: 2}}
+                        />
+                        <EditComponents components={components}
+                                        handleSetComponents={handleSetComponents}/>
+                    </Box>
+                }
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleCancel}>

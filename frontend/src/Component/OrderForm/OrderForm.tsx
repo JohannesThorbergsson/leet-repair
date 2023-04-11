@@ -28,7 +28,6 @@ export default function OrderForm(props: OrderFormProps) {
 
     return (
         <>
-
             <Box component={"form"} onSubmit={handleSubmitOrder}
                  sx ={{
                      alignItems: 'center',

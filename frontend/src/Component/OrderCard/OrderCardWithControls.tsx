@@ -21,9 +21,13 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
     const navigate = useNavigate()
     const {
         status,
+        description,
+        components,
         openUpdateStatusDialog,
         saveChanges,
         handleSetStatus,
+        handleSetDescription,
+        handleSetComponents,
         handleSave,
         handleUpdateStatusDialogSetOpen}
         = useUpdateOrderStatus(props)
@@ -56,7 +60,11 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
                 handleSetStatus={handleSetStatus}
                 handleUpdateStatusDialogSetOpen={handleUpdateStatusDialogSetOpen}
                 handleSave={handleSave}
-                user={props.user}/>
+                user={props.user}
+                components={components}
+                description={description}
+                handleSetDescription={handleSetDescription}
+                handleSetComponents={handleSetComponents}/>
         </React.Fragment>
     );
     return (

@@ -3,6 +3,7 @@ import axios from "axios";
 import {ServiceOrder} from "../model/ServiceOrder";
 import {LocalDate} from "js-joda";
 import {Bike} from "../model/Bike";
+import {Component} from "../model/Component";
 
 type OrderCardWithControlsProps = {
     order: ServiceOrder
@@ -13,6 +14,8 @@ type OrderCardWithControlsProps = {
 }
 export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
     const [status, setStatus] = useState(getStatusDisplayText())
+    const [description, setDescription] = useState<string>(props.order.description)
+    const [components, setComponents] = useState(props.order.componentsToReplace)
     const [openUpdateStatusDialog, setOpenUpdateStatusDialog] = useState(false)
     const [saveChanges, setSaveChanges] = useState(false)
     const [mounted, setMounted] = useState(false)
@@ -89,11 +92,27 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
     function handleSetStatus(newStatus: string){
         setStatus(newStatus)
     }
+    function handleSetDescription(newDescription: string){
+        setDescription(newDescription)
+    }
+    function handleSetComponents(newComponents: Component[]){
+        setComponents(newComponents)
+    }
     function handleUpdateStatusDialogSetOpen(){
         setOpenUpdateStatusDialog(!openUpdateStatusDialog)
     }
     function handleSave(){
         setSaveChanges(!saveChanges)
     }
-    return {status, openUpdateStatusDialog, saveChanges, handleSetStatus, handleSave, handleUpdateStatusDialogSetOpen}
+    return {
+        status,
+        description,
+        components,
+        openUpdateStatusDialog,
+        saveChanges,
+        handleSetStatus,
+        handleSetDescription,
+        handleSetComponents,
+        handleSave,
+        handleUpdateStatusDialogSetOpen}
 }
