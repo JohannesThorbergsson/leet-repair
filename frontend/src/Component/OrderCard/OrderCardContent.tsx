@@ -26,6 +26,7 @@ export default function OrderCardContent(props: OrderCardContentProps){
                 return props.order.status
         }
     }
+
    return (
        <CardContent>
            <Box sx={{
@@ -38,7 +39,7 @@ export default function OrderCardContent(props: OrderCardContentProps){
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
                    {props.order.bikeName} <br/>
-                   {props.user?.role==="BASIC" &&  props.order.workshop}
+                   {props.user?.role==="BASIC" ?  props.order.workshop : props.order.username}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{maxWidth: 35/100}}>
                    {"Status: "} <br/> {status}
