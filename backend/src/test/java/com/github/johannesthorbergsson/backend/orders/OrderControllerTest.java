@@ -155,7 +155,10 @@ class OrderControllerTest {
     @DirtiesContext
     @WithMockUser(username = "steven")
     void updateOrder_whenValidRequest_thenReturnUpdatedOrder() throws Exception {
+        //GIVEN
         orderRepository.save(testOrder);
+        workshopRepository.save(workshop1);
+        //WHEN
         mockMvc.perform(put("/api/orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""

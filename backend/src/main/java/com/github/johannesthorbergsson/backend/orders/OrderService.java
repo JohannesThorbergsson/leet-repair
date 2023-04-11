@@ -4,6 +4,7 @@ import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
+import com.github.johannesthorbergsson.backend.workshops.Workshop;
 import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,9 +43,10 @@ public class OrderService {
     }
     public ServiceOrder updateOrder (String id, ServiceOrderRequest serviceOrderRequest, Principal principal) {
         ServiceOrder orderToUpdate = orderRepository.findById(id).orElseThrow(NoSuchOrderException::new);
+        Workshop workshop = workshopRepository.findById(serviceOrderRequest.workshopId())
+                .orElseThrow(NoSuchWorkshopException::new);
         if (!orderToUpdate.username().equals(principal.getName())
-                && !workshopRepository.findById(serviceOrderRequest.workshopId())
-                .orElseThrow(NoSuchWorkshopException::new).username().equals(principal.getName())) {
+                && !workshop.username().equals(principal.getName())) {
             throw new UnauthorizedAccessException();
         }
         ServiceOrder editedOrder = new ServiceOrder(
@@ -54,7 +56,7 @@ public class OrderService {
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
                 serviceOrderRequest.workshopId(),
-                principal.getName(),
+                workshop.username().equals(principal.getName()) ? orderToUpdate.username(): workshop.username(),
                 serviceOrderRequest.status(),
                 serviceOrderRequest.date(),
                 serviceOrderRequest.componentsToReplace()

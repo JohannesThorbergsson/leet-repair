@@ -60,7 +60,11 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
 
     function handleUpdateStatus(){
         axios.put("/api/orders/" + props.order.id,
-            {...props.order, date: LocalDate.now(), status: getStatusEnumValue()})
+            {...props.order,
+                date: LocalDate.now(),
+                status: getStatusEnumValue(),
+                description: description,
+                componentsToReplace: components})
             .then(r => r.data)
             .then(updatedOrder => props.updateOrderList([...props.orders.filter(
                 order=>order.id !== props.order.id), updatedOrder]))
@@ -76,7 +80,7 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
                             description: props.order.description,
                             newComponents: props.order.componentsToReplace,
                             workshopName: props.order.workshop,
-                            date: props.order.date
+                            date: LocalDate.now()
                         }],
                     components:
                         [...bikeToUpdate.components

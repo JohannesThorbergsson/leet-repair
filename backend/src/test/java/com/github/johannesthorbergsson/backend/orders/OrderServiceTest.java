@@ -85,6 +85,7 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
         when(principal.getName()).thenReturn("steven");
         ServiceOrder expected = testOrder;
         //WHEN
@@ -92,6 +93,7 @@ class OrderServiceTest {
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
+        verify(workshopRepository).findById(testId);
         verify(principal, times(2)).getName();
         assertEquals(expected, actual);
     }
