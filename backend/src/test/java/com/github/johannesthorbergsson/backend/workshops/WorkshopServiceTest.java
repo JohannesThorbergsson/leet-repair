@@ -22,16 +22,16 @@ class WorkshopServiceTest {
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", testCoordinates,
-            new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", "Kasinostraße, Darmstadt",
+            testCoordinates, new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.coordinates(),
+            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.location(), workshop1.coordinates(),
                     workshop1.services(), workshop1.inventory());
     WorkshopResponse workshop1Response =
-            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.coordinates(),
+            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.location(), workshop1.coordinates(),
                     workshop1.services(), workshop1.inventory());
-    Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337", testCoordinates,
-            new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
+    Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337", "Kasinostraße, Darmstadt",
+            testCoordinates, new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     String testId = "1";
     List<Workshop> expected = new ArrayList<>(List.of(workshop1, workshop2));
 

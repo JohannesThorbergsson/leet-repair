@@ -40,6 +40,14 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     onChange={handleWorkshopNameChange}
                     value={workshopName}
                 />
+                <TextField
+                    required
+                    label={"Address"}
+                    fullWidth
+                    margin={"normal"}
+                    onChange={}
+                    value={}
+                />
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
                     multiple

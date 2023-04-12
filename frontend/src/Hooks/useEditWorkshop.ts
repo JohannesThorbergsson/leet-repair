@@ -19,6 +19,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         = useState<string[]>(props.workshopToEdit?.services ?? ["Repairs"])
     const [workshopName, setWorkshopName]
         = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
+    const [address, setAddress] = useState(props.workshopToEdit?.location ?? "")
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
 
     function handleServicesChange(event: SyntheticEvent, value: string[]) {

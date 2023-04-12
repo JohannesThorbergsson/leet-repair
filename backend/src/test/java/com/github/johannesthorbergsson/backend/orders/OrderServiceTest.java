@@ -29,8 +29,8 @@ class OrderServiceTest {
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", testCoordinates,
-            new ArrayList<>(List.of("tyre", "chain")), componentList);
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", "Kasinostraße, Darmstadt",
+            testCoordinates, new ArrayList<>(List.of("tyre", "chain")), componentList);
 
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike", "New Tyre",
             "Workshop42", "1", "steven",
