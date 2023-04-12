@@ -13,7 +13,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<ServiceOrder> getAllOrders(Principal principal) {
+    public List<ServiceOrder> getOrdersByBikeOwner(Principal principal) {
         return orderService.getAllOrders(principal);
     }
     @GetMapping("{id}")

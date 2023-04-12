@@ -18,7 +18,11 @@ type DashboardProps = {
 export default function Dashboard(props: DashboardProps){
     const user = useAuth(true)
     const dashboard = user?.role ==="WORKSHOP"?
-        <WorkshopDashboard workshops={props.workshops} orders={props.orders}/>:
+        <WorkshopDashboard workshops={props.workshops}
+                           orders={props.orders}
+                           bikes={props.bikes}
+                           updateBikeList={props.updateBikeList}
+                           updateOrderList={props.updateOrderList}/>:
         <BasicDashboard orders={props.orders}
                         workshops={props.workshops}
                         updateOrderList={props.updateOrderList}

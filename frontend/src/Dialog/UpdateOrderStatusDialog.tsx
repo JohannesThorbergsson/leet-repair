@@ -1,4 +1,4 @@
-import {ChangeEvent, useEffect, useRef, useState} from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,61 +7,44 @@ import Dialog from '@mui/material/Dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {User} from "../Hooks/useAuth";
+import {Component} from "../model/Component";
+import {Box, TextField, Typography} from "@mui/material";
+import EditComponents from "../Component/EditComponents/EditComponents";
+import useUpdateOrderStatusDialog from "../Hooks/useUpdateOrderStatusDialog";
 
-type UpdateOrderStatusDialogProps = {
+export type UpdateOrderStatusDialogProps = {
     id: string
     keepMounted: boolean
     status: string
+    description: string
+    components: Component[]
     open: boolean
     saveChanges: boolean
+    user: User | null
     handleSave(): void
     handleSetStatus(newStatus: string): void
+    handleSetDescription(newDescription: string): void
+    handleSetComponents(components: Component[]): void
     handleUpdateStatusDialogSetOpen(): void
 }
 export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogProps) {
-    const radioGroupRef = useRef<HTMLElement>(null)
-    const [status, setStatus] = useState(props.status)
-
-    useEffect(() => {
-        if (!props.open) {
-            setStatus(props.status)
-        }
-    }, [props])
-
-    const options = [
-        'Open',
-        'In Progress',
-        'Ready for Pickup',
-        'Done',
-    ]
-    const handleEntering = () => {
-        if (radioGroupRef.current != null) {
-            radioGroupRef.current.focus()
-        }
-    }
-    const handleCancel = () => {
-        handleClose()
-    }
-
-    const handleOk = () => {
-        props.handleSave()
-        handleClose(status)
-    }
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setStatus((event.target as HTMLInputElement).value)
-    }
-
-    const handleClose = (newValue?: string) => {
-        props.handleUpdateStatusDialogSetOpen()
-        if (newValue) {
-            props.handleSetStatus(newValue)
-        }
-    }
+    const {
+        radioGroupRef,
+        status,
+        description,
+        components,
+        options,
+        handleEntering,
+        handleOk,
+        handleChangeStatus,
+        handleInputDescription,
+        handleSetComponents
+    } = useUpdateOrderStatusDialog(props)
 
     return (
         <Dialog
-            sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
+            sx={{ '& .MuiDialog-paper': { width: '100%', maxHeight: '90%' } }}
             maxWidth="xs"
             TransitionProps={{ onEntering: handleEntering }}
             open={props.open}
@@ -75,7 +58,7 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                     aria-label="Order Status"
                     name="Order Status"
                     value={status}
-                    onChange={handleChange}
+                    onChange={handleChangeStatus}
                 >
                     {options.map((option) => (
                         <FormControlLabel
@@ -86,12 +69,31 @@ export default function UpdateOrderStatusDialog(props: UpdateOrderStatusDialogPr
                         />
                     ))}
                 </RadioGroup>
+                {(status === "Ready for Pickup" && props.user?.role === "WORKSHOP") &&
+                    <Box>
+                        <TextField
+                            required
+                            multiline
+                            onChange={handleInputDescription}
+                            value={description}
+                            id="outlined-required"
+                            label="Order Description"
+                            fullWidth
+                            sx={{mt: 2, mb: 1}}
+                        />
+                        <Typography variant="subtitle1" component="h6" fontWeight={"medium"} sx={{textAlign: 'center'}}>
+                            Installed Components
+                        </Typography>
+                        <EditComponents components={components}
+                                        handleSetComponents={handleSetComponents}/>
+                    </Box>
+                }
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleCancel}>
+                <Button autoFocus onClick={props.handleUpdateStatusDialogSetOpen}>
                     Cancel
                 </Button>
-                <Button onClick={handleOk}>Ok</Button>
+                <Button onClick={handleOk}>Save</Button>
             </DialogActions>
         </Dialog>
     )

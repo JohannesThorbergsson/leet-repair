@@ -4,11 +4,14 @@ import com.github.johannesthorbergsson.backend.bikes.Component;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
+import com.github.johannesthorbergsson.backend.workshops.Workshop;
+import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +22,19 @@ import static org.mockito.Mockito.*;
 class OrderServiceTest {
 
     OrderRepository orderRepository = mock(OrderRepository.class);
+    WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
+            new ArrayList<>(List.of("tyre", "chain")), componentList);
+
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike", "New Tyre",
             "Workshop42", "1", "steven",
             Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "Amazing Bike","New Tyre",
             "Workshop42", "1", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
-    OrderService orderService = new OrderService(orderRepository, idService);
+    OrderService orderService = new OrderService(orderRepository, workshopRepository, idService);
     String testId = "1", invalidID = "Invalid";
 
     @Test
@@ -78,6 +85,7 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
         when(principal.getName()).thenReturn("steven");
         ServiceOrder expected = testOrder;
         //WHEN
@@ -85,6 +93,24 @@ class OrderServiceTest {
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
+        verify(workshopRepository).findById(testId);
+        verify(principal).getName();
+        assertEquals(expected, actual);
+    }
+    @Test
+    void updateOrder_whenValidRequestAsWorkshop_thenReturnUpdatedOrder(){
+        //GIVEN
+        when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(orderRepository.save(testOrder)).thenReturn(testOrder);
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(principal.getName()).thenReturn("workshop42");
+        ServiceOrder expected = testOrder;
+        //WHEN
+        ServiceOrder actual = orderService.updateOrder(testId, testOrderRequest, principal);
+        //THEN
+        verify(orderRepository).findById(testId);
+        verify(orderRepository).save(testOrder);
+        verify(workshopRepository).findById(testId);
         verify(principal, times(2)).getName();
         assertEquals(expected, actual);
     }
@@ -101,12 +127,13 @@ class OrderServiceTest {
     void updateOrder_whenUnauthorizedAccess_thenThrow_UnauthorizedAccessException(){
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //WHEN + THEN
         assertThrows(expected, () -> orderService.updateOrder(testId, testOrderRequest, principal));
         verify(orderRepository).findById(testId);
-        verify(principal).getName();
+        verify(principal, times(2)).getName();
     }
     @Test
     void deleteOrder_whenValidRequest_thenReturnDeletedOrder(){

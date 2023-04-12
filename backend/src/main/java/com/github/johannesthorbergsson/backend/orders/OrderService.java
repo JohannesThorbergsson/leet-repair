@@ -1,8 +1,11 @@
 package com.github.johannesthorbergsson.backend.orders;
 
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
+import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
+import com.github.johannesthorbergsson.backend.workshops.Workshop;
+import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final WorkshopRepository workshopRepository;
     private final IdService idService;
 
     public List<ServiceOrder> getAllOrders(Principal principal){
@@ -38,7 +42,11 @@ public class OrderService {
         return orderRepository.save(newOrder);
     }
     public ServiceOrder updateOrder (String id, ServiceOrderRequest serviceOrderRequest, Principal principal) {
-        if (!orderRepository.findById(id).orElseThrow(NoSuchOrderException::new).username().equals(principal.getName())) {
+        ServiceOrder orderToUpdate = orderRepository.findById(id).orElseThrow(NoSuchOrderException::new);
+        Workshop workshop = workshopRepository.findById(serviceOrderRequest.workshopId())
+                .orElseThrow(NoSuchWorkshopException::new);
+        if (!orderToUpdate.username().equals(principal.getName())
+                && !workshop.username().equals(principal.getName())) {
             throw new UnauthorizedAccessException();
         }
         ServiceOrder editedOrder = new ServiceOrder(
@@ -48,7 +56,7 @@ public class OrderService {
                 serviceOrderRequest.description(),
                 serviceOrderRequest.workshop(),
                 serviceOrderRequest.workshopId(),
-                principal.getName(),
+                orderToUpdate.username(),
                 serviceOrderRequest.status(),
                 serviceOrderRequest.date(),
                 serviceOrderRequest.componentsToReplace()

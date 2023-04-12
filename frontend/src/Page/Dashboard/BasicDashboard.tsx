@@ -4,11 +4,11 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
-import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
 import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
+import OrderGallery from "../../Component/OrderGallery/OrderGallery";
 
 type BasicDashboardProps = {
     orders: ServiceOrder[]
@@ -28,24 +28,7 @@ export default function BasicDashboard(props: BasicDashboardProps) {
         searchTerm,
         navigate,
     } = useWorkshops({workshops: props.workshops})
-    let OrderGallery =
-        (props.orders.length>0 ?
-            <Box>
-                <Typography variant="h4" component="h4" fontWeight={"bold"}>Active Orders:</Typography>
-                {props.orders.filter(order=> order.status !== "DONE").map(order =>
-                    <OrderCardWithControls key={order.id}
-                                           order={order}
-                                           orders={props.orders}
-                                           updateOrderList={props.updateOrderList}
-                                           bikes={props.bikes}
-                                           updateBikeList={props.updateBikeList}/>)}
-            </Box>:
-            <Typography variant="h4" component="h4" fontWeight={"bold"}>No Active Orders</Typography>
-        )
 
-    function handleManageBikesButton(){
-        navigate("/bikes")
-    }
     return (user &&
         <>
             <ResponsiveAppBar/>
@@ -82,13 +65,18 @@ export default function BasicDashboard(props: BasicDashboardProps) {
             </Box>
             {!isSearch?
                 <Box>
-                    <Box>{OrderGallery}</Box>
+                    <OrderGallery bikes={props.bikes}
+                                  orders={props.orders}
+                                  updateBikeList={props.updateBikeList}
+                                  updateOrderList={props.updateOrderList}
+                                  user={user}
+                    />
                     <Box sx={{
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
                             mr: 2, ml: 2, mb: 3}}>
-                        <Button variant="contained" onClick={handleManageBikesButton} sx={{mt: 2, mr: 1, width: 1/2}}>
+                        <Button variant="contained" onClick={()=> navigate("/bikes")} sx={{mt: 2, mr: 1, width: 1/2}}>
                             Manage Bikes
                         </Button>
                         <Button variant={"contained"}

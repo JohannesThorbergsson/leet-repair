@@ -7,6 +7,7 @@ export type ServiceOrder = {
     description: string
     workshop: string
     workshopId: string
+    username: string
     status: string
     date: string
     componentsToReplace: Component[]

@@ -3,9 +3,11 @@ import {Box, CardContent, Typography} from "@mui/material";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import React from "react";
 import moment from "moment";
+import {User} from "../../Hooks/useAuth";
 
 type OrderCardContentProps = {
     order: ServiceOrder
+    user: User | null
 }
 
 export default function OrderCardContent(props: OrderCardContentProps){
@@ -24,6 +26,7 @@ export default function OrderCardContent(props: OrderCardContentProps){
                 return props.order.status
         }
     }
+
    return (
        <CardContent>
            <Box sx={{
@@ -35,17 +38,19 @@ export default function OrderCardContent(props: OrderCardContentProps){
                    {moment(props.order.date).format('DD.MM.YYYY')}
                </Typography>
                <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   {props.order.bikeName}
+                   {props.order.bikeName} <br/>
+                   {props.user?.role==="BASIC" ?  props.order.workshop : props.order.username}
                </Typography>
-               <Typography variant="subtitle2" component="h6" fontWeight={"small"}>
-                   {"Status: " + status}
+               <Typography variant="subtitle2" component="h6" fontWeight={"small"} sx={{maxWidth: 35/100}}>
+                   {"Status: "} <br/> {status}
                </Typography>
            </Box>
            <Typography variant="h4" fontWeight={"medium"} sx={{mt: 1}}>
                {props.order.description}
            </Typography>
            <Typography variant="subtitle1" component="h6" fontWeight={"medium"}>
-               {props.order.status !=="DONE"? "Ordered Components:": "Installed Components:"}
+               {(props.order.status !=="DONE" && props.order.status !=="READY_FOR_PICKUP") ?
+                   "Ordered Components:": "Installed Components:"}
            </Typography>
            <ComponentTable components={props.order.componentsToReplace} showAge={false}/>
        </CardContent>
