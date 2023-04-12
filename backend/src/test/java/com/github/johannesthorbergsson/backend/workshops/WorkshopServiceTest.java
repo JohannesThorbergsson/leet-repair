@@ -6,6 +6,7 @@ import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessExce
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,15 @@ class WorkshopServiceTest {
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
-    Coordinates testCoordinates = new Coordinates(-33.8599358, 151.2090295);
+    Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
     Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", testCoordinates,
             new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
-            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
+            new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.coordinates(),
+                    workshop1.services(), workshop1.inventory());
     WorkshopResponse workshop1Response =
-            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.services(), workshop1.inventory());
+            new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.coordinates(),
+                    workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("1", "workshop1337", "workshop1337", testCoordinates,
             new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
     String testId = "1";

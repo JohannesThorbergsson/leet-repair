@@ -21,6 +21,7 @@ public class WorkshopService {
                 workshopRequest.id(),
                 workshopRequest.name(),
                 principal.getName(),
+                workshopRequest.coordinates(),
                 workshopRequest.services(),
                 workshopRequest.inventory());
         return workshopRepository.save(newWorkshop);
@@ -33,11 +34,13 @@ public class WorkshopService {
                 id,
                 workshopRequest.name(),
                 principal.getName(),
+                workshopRequest.coordinates(),
                 workshopRequest.services(),
                 workshopRequest.inventory()));
         return new WorkshopResponse(
                 updatedWorkshop.id(),
                 updatedWorkshop.name(),
+                updatedWorkshop.coordinates(),
                 updatedWorkshop.services(),
                 updatedWorkshop.inventory());
     }

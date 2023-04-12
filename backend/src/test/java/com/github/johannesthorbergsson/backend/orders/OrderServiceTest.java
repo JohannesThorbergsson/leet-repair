@@ -4,11 +4,13 @@ import com.github.johannesthorbergsson.backend.bikes.Component;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
+import com.github.johannesthorbergsson.backend.workshops.Coordinates;
 import com.github.johannesthorbergsson.backend.workshops.Workshop;
 import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +28,8 @@ class OrderServiceTest {
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42",
+    Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
+    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", testCoordinates,
             new ArrayList<>(List.of("tyre", "chain")), componentList);
 
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike", "New Tyre",

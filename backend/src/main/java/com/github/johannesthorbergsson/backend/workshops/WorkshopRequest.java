@@ -7,6 +7,7 @@ import java.util.List;
 public record WorkshopRequest(
         String id,
         String name,
+        Coordinates coordinates,
         List<String> services,
         List<Component> inventory
 ) {
