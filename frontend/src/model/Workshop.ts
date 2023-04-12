@@ -4,6 +4,7 @@ import {Coordinates} from "./Coordinates";
 export type Workshop = {
     id: string
     name: string
+    username: string
     coordinates: Coordinates
     services: [string]
     inventory: [Component]

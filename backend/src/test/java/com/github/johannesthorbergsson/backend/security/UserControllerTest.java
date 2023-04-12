@@ -91,10 +91,19 @@ class UserControllerTest {
                         .content("""
 									{
 										"username": "Test user",
-										"password": "Test password"
+										"password": "Test password",
+										"role": "WORKSHOP"
 									}
 									""").with(csrf()))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().json("""
+                                    {
+                                        "username": "Test user",
+                                        "role": "WORKSHOP"
+                                    }
+                                    """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+
     }
     @Test
     @DirtiesContext

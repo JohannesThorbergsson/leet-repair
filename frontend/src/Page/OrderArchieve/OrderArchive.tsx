@@ -12,7 +12,7 @@ type OrderArchiveProps = {
 }
 
 export default function OrderArchive(props: OrderArchiveProps){
-    useAuth(true)
+    const user = useAuth(true)
     const navigate = useNavigate()
     return (
         <>
@@ -23,7 +23,7 @@ export default function OrderArchive(props: OrderArchiveProps){
                         Completed Orders:
                     </Typography>
                     {props.orders.filter(order=> order.status==="DONE").map(order=>
-                        <OrderCard key={order.id} order={order}/>)}
+                        <OrderCard key={order.id} order={order} user={user}/>)}
                 </Box>:
                 <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{m:2}}>
                     No Completed Orders

@@ -9,6 +9,7 @@ export default function useFetchData(){
     const [bikes, setBikes] = useState<Bike[]>([])
     const [orders, setOrders] = useState<ServiceOrder[]>([])
     const [workshops, setWorkshops] = useState<Workshop[]>([])
+    const [isFetching, setIsFetching] = useState(false)
 
     const user = useAuth(false)
     const prevUser = useRef(user);
@@ -17,6 +18,7 @@ export default function useFetchData(){
             fetchData()
         }
         prevUser.current = user
+        //eslint-disable-next-line
     }, [user])
     function updateBikeList(bikes: Bike[]){
         setBikes(bikes)
@@ -24,15 +26,27 @@ export default function useFetchData(){
     function updateOrderList(orders: ServiceOrder[]){
         setOrders(orders)
     }
-    function fetchData(){
-        axios.get("/api/bikes/")
+    function updateWorkshopList(workshops: Workshop[]){
+        setWorkshops(workshops)
+    }
+    async function fetchData() {
+        setIsFetching(true)
+        if(user?.role==="BASIC"){
+            await axios.get("/api/orders/")
+                .then(r => setOrders(r.data))
+                .catch((error) => console.error(error))
+        } else {
+            await axios.get("/api/orders/"+ user?.id)
+                .then(r => setOrders(r.data))
+                .catch((error) => console.error(error))
+        }
+        await axios.get("/api/bikes/")
             .then(r => setBikes(r.data))
             .catch((error) => console.error(error))
-        axios.get("api/orders/")
-            .then(r => setOrders(r.data))
-            .catch((error) => console.error(error))
-        axios.get("/api/workshops/")
+        await axios.get("/api/workshops/")
             .then(r => setWorkshops(r.data))
+            .catch((error) => console.error(error))
+        setIsFetching(false)
     }
-    return {bikes, orders, workshops, updateBikeList, updateOrderList}
+    return {bikes, orders, workshops, isFetching, updateBikeList, updateOrderList, updateWorkshopList}
 }

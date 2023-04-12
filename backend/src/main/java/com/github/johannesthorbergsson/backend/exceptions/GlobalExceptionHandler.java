@@ -28,6 +28,13 @@ public class GlobalExceptionHandler {
         responseBody.put(MESSAGE, exception.getMessage());
         return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(NoSuchWorkshopException.class)
+    public ResponseEntity<Map<String, Object>> handleNoSuchWorkshopException(NoSuchWorkshopException exception){
+        Map<String, Object> responseBody = new LinkedHashMap<>();
+        responseBody.put(TIMESTAMP, Instant.now());
+        responseBody.put(MESSAGE, exception.getMessage());
+        return new ResponseEntity<>(responseBody, HttpStatus.NOT_FOUND);
+    }
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedAccessException(UnauthorizedAccessException exception) {
         Map<String, Object> responseBody = new LinkedHashMap<>();

@@ -13,8 +13,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<ServiceOrder> getAllOrders(Principal principal) {
+    public List<ServiceOrder> getOrdersByBikeOwner(Principal principal) {
         return orderService.getAllOrders(principal);
+    }
+    @GetMapping("{id}")
+    public List<ServiceOrder> getOrdersByWorkshop(@PathVariable String id){
+        return orderService.getOrdersByWorkshopId(id);
     }
     @PostMapping
     public ServiceOrder addOrder(Principal principal, @RequestBody ServiceOrderRequest serviceOrderRequest){

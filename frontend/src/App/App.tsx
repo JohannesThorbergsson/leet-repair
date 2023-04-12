@@ -5,7 +5,6 @@ import Login from "../Page/Login/Login";
 import SignUp from "../Page/SignUp/SignUp"
 import axios from "axios";
 import Cookies from 'js-cookie'
-import Dashboard from "../Page/Dashboard/Dashboard";
 import BikeGallery from "../Page/BikeGallery/BikeGallery";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -19,6 +18,11 @@ import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
 import "mapbox-gl/dist/mapbox-gl.css";
+import {Toaster} from 'react-hot-toast';
+import useAuth from "../Hooks/useAuth";
+import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
+import EditWorkshopPage from "../Page/EditWorkshopPage/EditWorkshopPage";
+import Dashboard from "../Page/Dashboard/Dashboard";
 
 axios.interceptors.request.use(
     function (config) {
@@ -33,18 +37,29 @@ axios.interceptors.request.use(
 )
 
 function App() {
-const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData()
+    const {
+        bikes,
+        orders,
+        workshops,
+        isFetching,
+        updateBikeList,
+        updateOrderList,
+        updateWorkshopList}
+        = useFetchData()
+    const user = useAuth(false)
   return (
       <div className="App">
+        <Toaster/>
         <Routes>
           <Route path={"/login"} element={<Login/>}/>
           <Route path={"/signup"} element={<SignUp/>}/>
           <Route path={"/"} element={
-              <Dashboard orders={orders}
-                         workshops={workshops}
+              <Dashboard bikes={bikes}
+                         isFetching={isFetching}
+                         orders={orders}
+                         updateBikeList={updateBikeList}
                          updateOrderList={updateOrderList}
-                         bikes={bikes}
-                         updateBikeList={updateBikeList}/>}/>
+                         workshops={workshops}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
@@ -55,6 +70,11 @@ const {bikes, orders, workshops, updateBikeList, updateOrderList} = useFetchData
           <Route path={"/orders/:orderId"} element={
               <EditOrderPage orders={orders} updateOrderList={updateOrderList} bikes={bikes} workshops={workshops}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
+          <Route path={"/workshops/setup"} element={
+              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
+          <Route path={"/workshops/edit/:workshopId"} element={
+              <EditWorkshopPage updateWorkshopList={updateWorkshopList}
+                                user={user} workshops={workshops} isFetching={isFetching}/>}/>
         </Routes>
       </div>
   );
