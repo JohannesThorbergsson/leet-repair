@@ -18,11 +18,14 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         navigate,
         components,
         services,
+        address,
+        location,
         workshopName,
         addComponentDialogOpen,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
+        handleAddressChange,
         handleWorkshopNameChange,
         handleSetComponents}
         = useEditWorkshop(props)
@@ -45,9 +48,28 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     label={"Address"}
                     fullWidth
                     margin={"normal"}
-                    onChange={}
-                    value={}
+                    onChange={handleAddressChange}
+                    value={address}
                 />
+                {/*<Map*/}
+                {/*    id={"workshop-location"}*/}
+                {/*    initialViewState={{*/}
+                {/*        longitude: 49.40564,*/}
+                {/*        latitude: 8.54353,*/}
+                {/*        zoom: 12.5*/}
+                {/*    }}*/}
+                {/*    maxZoom={15.5}*/}
+                {/*    style={{width: "100%", height: '200px'}}*/}
+                {/*    mapStyle="mapbox://styles/mapbox/streets-v12"*/}
+                {/*    mapboxAccessToken={process.env.REACT_APP_MAP_KEY}*/}
+                {/*>*/}
+                {/*    <Marker*/}
+                {/*        key={address}*/}
+                {/*        longitude={49.40564}*/}
+                {/*        latitude={8.54353}*/}
+                {/*        anchor={"bottom"}*/}
+                {/*    />*/}
+                {/*</Map>*/}
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
                     multiple

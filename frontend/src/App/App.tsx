@@ -17,12 +17,12 @@ import AddBikePage from "../Page/AddBikePage/AddBikePage";
 import BookOrderPage from "../Page/BookOrderPage/BookOrderPage";
 import EditOrderPage from "../Page/EditOrderPage/EditOrderPage";
 import OrderArchive from "../Page/OrderArchieve/OrderArchive";
-import "mapbox-gl/dist/mapbox-gl.css";
 import {Toaster} from 'react-hot-toast';
 import useAuth from "../Hooks/useAuth";
 import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
 import EditWorkshopPage from "../Page/EditWorkshopPage/EditWorkshopPage";
 import Dashboard from "../Page/Dashboard/Dashboard";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 axios.interceptors.request.use(
     function (config) {

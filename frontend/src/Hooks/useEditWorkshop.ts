@@ -4,6 +4,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {User} from "./useAuth";
 import {Workshop} from "../model/Workshop";
+import {OSMSearchResult} from "../model/OSMSearchResult";
+import toast from "react-hot-toast";
 
 type EditWorkshopFormProps = {
     user: User | null
@@ -20,11 +22,12 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     const [workshopName, setWorkshopName]
         = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
     const [address, setAddress] = useState(props.workshopToEdit?.location ?? "")
+    const [location, setLocation]
+        = useState(props.workshopToEdit?.coordinates ?? undefined)
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
 
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
-        console.log(event.target)
     }
     function handleWorkshopNameChange(event: ChangeEvent<HTMLInputElement>) {
         setWorkshopName(event.target.value)
@@ -32,8 +35,24 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     function handleSetComponents(components: Component[]){
         setComponents(components)
     }
+    function handleAddressChange(event: ChangeEvent<HTMLInputElement>){
+        setAddress(event.target.value)
+    }
     function handleSetOpenAddComponentsDialog(){
         setAddComponentDialogOpen(!addComponentDialogOpen)
+    }
+    function getCoordinates(){
+        axios.get(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${address}`)
+            .then(r => r.data as OSMSearchResult[])
+            .then(results => {
+                if(results.length>0){
+                    setLocation({lat: results[0].lat, lng: results[0].lng})
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                toast.error("Location not found")
+            })
     }
     function handleSubmit(event: FormEvent<HTMLFormElement>){
         event.preventDefault()
@@ -60,10 +79,13 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         components,
         services,
         workshopName,
+        address,
+        location,
         addComponentDialogOpen,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
+        handleAddressChange,
         handleWorkshopNameChange,
         handleSetComponents}
 }
