@@ -1,10 +1,13 @@
 import {Workshop} from "../../model/Workshop";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
+import mapboxgl from 'mapbox-gl';
 import Map, {Marker} from 'react-map-gl';
-// import ReactMapGLGeocoder from 'react-map-gl-geocoder'
+
+mapboxgl.accessToken = process.env.REACT_APP_MAP_KEY || "";
+
 
 type WorkshopCardProps = {
     workshop: Workshop
@@ -16,18 +19,25 @@ export default function WorkshopCard(props: WorkshopCardProps) {
     const navigate = useNavigate()
     const [address, setAddress] = useState('');
 
-    useEffect(() => {
-        // Use the Mapbox Geocoding API to reverse geocode the coordinates and save the address in state
-        // const geocoder = new ReactMapGLGeocoder ({
-        //     accessToken: process.env.REACT_APP_MAP_KEY || '',
-        //     mapboxgl: mapboxgl,
-        // });
-        // geocoder.reverseGeocode({ coordinates: props.workshop.coordinates }, (error: any, result: any) => {
-        //     if (error) return;
-        //     const address = result.features[0].place_name;
-        //     setAddress(address);
-        // });
-    }, []);
+    // const Map = () => {
+    //     const mapContainerRef = useRef(null);
+    //
+    //     useEffect(() => {
+    //         if (mapContainerRef.current) {
+    //             const map = new mapboxgl.Map({
+    //                 container: mapContainerRef.current,
+    //                 style: 'mapbox://styles/mapbox/streets-v12',
+    //                 center: [props.workshop.coordinates.lng, props.workshop.coordinates.lat],
+    //                 zoom: 12.5
+    //
+    //             });
+    //             new mapboxgl.Marker().setLngLat(
+    //                 [props.workshop.coordinates.lng, props.workshop.coordinates.lat]).addTo(map);
+    //             return () => map.remove();
+    //         }}, []);
+    //
+    //     return <div ref={mapContainerRef} style={{width: "100%", height: '200px'}} />;
+    // }
     console.log(address)
     const card = (
         <React.Fragment>
@@ -36,6 +46,7 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                     {props.workshop.name}
                 </Typography>
                 <Box>
+                    {/*<Map/>*/}
                     <Map
                         id={"workshop-location"}
                         initialViewState={{
