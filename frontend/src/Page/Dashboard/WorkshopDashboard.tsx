@@ -3,11 +3,11 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Workshop} from "../../model/Workshop";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
-import OrderCardWithControls from "../../Component/OrderCard/OrderCardWithControls";
 import {Bike} from "../../model/Bike";
+import OrderGallery from "../../Component/OrderGallery/OrderGallery";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
@@ -41,22 +41,11 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                 <>
                 <ResponsiveAppBar/>
                     <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2}}>
-                        {props.orders.length>0?
-                            <Box>
-                                <Typography variant={"h4"} fontWeight={"medium"} sx={{}}>Active Orders</Typography>
-                                <Box>
-                                    {props.orders.filter(order=> order.status !== "DONE").map(order =>
-                                        <OrderCardWithControls key={order.id}
-                                                               order={order}
-                                                               user={user}
-                                                               bikes={props.bikes}
-                                                               orders={props.orders}
-                                                               updateBikeList={props.updateBikeList}
-                                                               updateOrderList={props.updateOrderList}/>)}
-                                </Box>
-                            </Box>:
-                            <Typography variant={"h4"} fontWeight={"medium"} sx={{mt: 4}}>No Active Orders</Typography>
-                        }
+                        <OrderGallery bikes={props.bikes}
+                                      orders={props.orders}
+                                      updateBikeList={props.updateBikeList}
+                                      updateOrderList={props.updateOrderList}
+                                      user={user}/>
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'row',
