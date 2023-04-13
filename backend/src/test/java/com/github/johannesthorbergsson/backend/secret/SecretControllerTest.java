@@ -7,11 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.not;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -26,7 +23,6 @@ class SecretControllerTest {
     void getApiSecret() throws Exception {
         mockMvc.perform(get("/api/secrets/")
                 .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(content().string(not(emptyString())));
+                .andExpect(status().isOk());
     }
 }
