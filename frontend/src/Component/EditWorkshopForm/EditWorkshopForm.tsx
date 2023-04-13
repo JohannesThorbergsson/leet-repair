@@ -20,6 +20,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         services,
         address,
         coordinates,
+        invalidAddress,
         workshopName,
         addComponentDialogOpen,
         handleSubmit,
@@ -47,6 +48,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     required
                     label={"Address"}
                     fullWidth
+                    error={invalidAddress}
                     margin={"normal"}
                     onChange={handleAddressChange}
                     value={address}

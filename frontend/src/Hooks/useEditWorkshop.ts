@@ -26,6 +26,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     const [coordinates, setCoordinates]
         = useState<Coordinates>({lat: 0, lng: 0})
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
+    const [invalidAddress, setInvalidAddress] = useState(false)
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         setServices(value)
     }
@@ -41,48 +42,57 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     function handleSetOpenAddComponentsDialog(){
         setAddComponentDialogOpen(!addComponentDialogOpen)
     }
-    async function getCoordinates(){
-        setCoordinates({lat: 45.1, lng: 45.1})
-        console.log(coordinates)
-        console.log(coordinates)
-        await axios.get(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${address}`)
+    function getCoordinates(){
+        return axios.get(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${address}`)
             .then(r => r.data as OSMSearchResult[])
             .then(results => {
-                console.log(results[0])
                 if(results.length>0){
-                    console.log({lat: Number(results[0].lat), lng: Number(results[0].lon)})
+                    setCoordinates({lat: Number(results[0].lat), lng: Number(results[0].lon)})
+                }
+                return results
+            })
+    }
+
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        getCoordinates()
+            .then((results)=> {
+                if(results.length<1){
+                    toast.error("Invalid Address")
+                    setInvalidAddress(true)
+                } else if (!props.workshopToEdit) {
+                    axios.post("/api/workshops/", {
+                        id: props.user?.id,
+                        name: workshopName,
+                        location: address,
+                        coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
+                        services: services,
+                        inventory: components
+                    })
+                        .then(r => r.data)
+                        .then((newWorkshop) => props.updateWorkshopList([...props.workshops, newWorkshop]))
+                        .then(() => navigate("/"))
+                        .catch((error) => console.error(error))
+                } else {
+                    axios.put("/api/workshops/" + props.workshopToEdit.id, {
+                        id: props.user?.id,
+                        name: workshopName,
+                        location: address,
+                        coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
+                        services: services,
+                        inventory: components})
+                        .then(r => r.data)
+                        .then(updatedWorkshop => props.updateWorkshopList(
+                            [...props.workshops.filter(workshop => workshop.id !== updatedWorkshop.id),
+                                updatedWorkshop]))
+                        .then(() => navigate("/"))
+                        .catch((error) => console.error(error))
                 }
             })
             .catch(error => {
                 console.error(error);
                 toast.error("Location not found")
             })
-    }
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        await getCoordinates()
-        if (!props.workshopToEdit) {
-            axios.post("/api/workshops/", {
-                    id: props.user?.id,
-                    name: workshopName,
-                    location: address,
-                    coordinates: coordinates,
-                    services: services,
-                    inventory: components})
-                .then(r => r.data)
-                .then((newWorkshop) => props.updateWorkshopList([...props.workshops, newWorkshop]))
-                .then(() => navigate("/"))
-                .catch((error) => console.error(error))
-        } else {
-            axios.put("/api/workshops/" + props.workshopToEdit.id,
-                {id: props.user?.id, name: workshopName, services: services, inventory: components})
-                .then(r => r.data)
-                .then(updatedWorkshop => props.updateWorkshopList(
-                    [...props.workshops.filter(workshop => workshop.id !== updatedWorkshop.id),
-                        updatedWorkshop]))
-                .then(() => navigate("/"))
-                .catch((error) => console.error(error))
-        }
     }
     return {
         navigate,
@@ -92,6 +102,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         address,
         coordinates,
         addComponentDialogOpen,
+        invalidAddress,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
