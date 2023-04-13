@@ -45,8 +45,8 @@ function App() {
         mapApiKey,
         updateBikeList,
         updateOrderList,
-        updateWorkshopList}
-        = useFetchData()
+        updateWorkshopList
+    } = useFetchData()
     const user = useAuth(false)
   return (
       <div className="App">
@@ -81,10 +81,13 @@ function App() {
                              mapApiKey={mapApiKey}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
           <Route path={"/workshops/setup"} element={
-              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
+              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList} mapApiKey={mapApiKey}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
               <EditWorkshopPage updateWorkshopList={updateWorkshopList}
-                                user={user} workshops={workshops} isFetching={isFetching}/>}/>
+                                user={user}
+                                workshops={workshops}
+                                isFetching={isFetching}
+                                mapApiKey={mapApiKey}/>}/>
         </Routes>
       </div>
   );

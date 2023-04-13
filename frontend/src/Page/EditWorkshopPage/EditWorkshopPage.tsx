@@ -10,6 +10,7 @@ type EditWorkshopPageProps = {
     user: User | null
     workshops: Workshop[]
     isFetching: boolean
+    mapApiKey: string
     updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopPage(props: EditWorkshopPageProps){
@@ -27,7 +28,8 @@ export default function EditWorkshopPage(props: EditWorkshopPageProps){
                         <EditWorkshopForm user={props.user}
                                           workshops={props.workshops}
                                           workshopToEdit={workshop}
-                                          updateWorkshopList={props.updateWorkshopList}/>
+                                          updateWorkshopList={props.updateWorkshopList}
+                                          mapApiKey={props.mapApiKey}/>
                     </Box>
                 </>:
                 <LoadingScreen/>

@@ -14,6 +14,7 @@ type EditWorkshopFormProps = {
     user: User | null
     workshops: Workshop[]
     workshopToEdit?: Workshop
+    mapApiKey: string
     updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
@@ -81,7 +82,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                         maxZoom={15.5}
                         style={{width: "100%", height: '200px'}}
                         mapStyle="mapbox://styles/mapbox/streets-v12"
-                        mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
+                        mapboxAccessToken={props.mapApiKey}
                     >
                         <Marker
                             key={address}
