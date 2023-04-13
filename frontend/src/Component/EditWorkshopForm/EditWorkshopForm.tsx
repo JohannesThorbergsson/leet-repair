@@ -1,4 +1,4 @@
-import {Autocomplete, Box, Button, Paper, TextField, Typography} from "@mui/material";
+import {Autocomplete, Box, Button, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 import React from "react";
 import ComponentFormDialog from "../../Dialog/ComponentFormDialog";
 import ComponentTable from "../ComponentTable/ComponentTable";
@@ -6,6 +6,9 @@ import useEditComponents from "../../Hooks/useEditComponents";
 import useEditWorkshop from "../../Hooks/useEditWorkshop";
 import {User} from "../../Hooks/useAuth";
 import {Workshop} from "../../model/Workshop";
+import {Map, Marker} from "react-map-gl";
+import IconButton from "@mui/material/IconButton";
+import PlaceIcon from "@mui/icons-material/Place";
 
 type EditWorkshopFormProps = {
     user: User | null
@@ -23,6 +26,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         invalidAddress,
         workshopName,
         addComponentDialogOpen,
+        getCoordinates,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,
@@ -32,7 +36,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         = useEditWorkshop(props)
     const {handleDeleteComponent}
         = useEditComponents({components: components, handleSetComponents: handleSetComponents})
-
+    console.log(coordinates)
     return (
         <>
             <Box sx={{mt: 1, mb: 1}} component="form" onSubmit={handleSubmit}>
@@ -52,26 +56,41 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     margin={"normal"}
                     onChange={handleAddressChange}
                     value={address}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                {address !=="" && (
+                                    <IconButton onClick={getCoordinates}>
+                                        <PlaceIcon />
+                                    </IconButton>
+                                )}
+                            </InputAdornment>
+                        ),
+                    }}
                 />
-                {/*<Map*/}
-                {/*    id={"workshop-location"}*/}
-                {/*    initialViewState={{*/}
-                {/*        longitude: 49.40564,*/}
-                {/*        latitude: 8.54353,*/}
-                {/*        zoom: 12.5*/}
-                {/*    }}*/}
-                {/*    maxZoom={15.5}*/}
-                {/*    style={{width: "100%", height: '200px'}}*/}
-                {/*    mapStyle="mapbox://styles/mapbox/streets-v12"*/}
-                {/*    mapboxAccessToken={process.env.REACT_APP_MAP_KEY}*/}
-                {/*>*/}
-                {/*    <Marker*/}
-                {/*        key={address}*/}
-                {/*        longitude={49.40564}*/}
-                {/*        latitude={8.54353}*/}
-                {/*        anchor={"bottom"}*/}
-                {/*    />*/}
-                {/*</Map>*/}
+                {coordinates &&
+                    <Map
+                        id={"workshop-location"}
+                        initialViewState={{
+                            longitude: coordinates.lng,
+                            latitude: coordinates.lat,
+                            zoom: 12.5
+                        }}
+                        latitude={coordinates.lat}
+                        longitude={coordinates.lng}
+                        maxZoom={15.5}
+                        style={{width: "100%", height: '200px'}}
+                        mapStyle="mapbox://styles/mapbox/streets-v12"
+                        mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
+                    >
+                        <Marker
+                            key={address}
+                            longitude={coordinates.lng}
+                            latitude={coordinates.lat}
+                            anchor={"bottom"}
+                        />
+                    </Map>
+                }
                 <Autocomplete
                     sx={{mt: 2, width: 1}}
                     multiple

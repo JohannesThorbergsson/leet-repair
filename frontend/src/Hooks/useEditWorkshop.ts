@@ -24,7 +24,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
     const [address, setAddress] = useState(props.workshopToEdit?.location ?? "")
     const [coordinates, setCoordinates]
-        = useState<Coordinates>({lat: 0, lng: 0})
+        = useState<Coordinates | undefined>(props.workshopToEdit?.coordinates ?? undefined)
     const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
     const [invalidAddress, setInvalidAddress] = useState(false)
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
@@ -38,6 +38,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
     }
     function handleAddressChange(event: ChangeEvent<HTMLInputElement>){
         setAddress(event.target.value)
+        setInvalidAddress(false)
     }
     function handleSetOpenAddComponentsDialog(){
         setAddComponentDialogOpen(!addComponentDialogOpen)
@@ -48,18 +49,20 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
             .then(results => {
                 if(results.length>0){
                     setCoordinates({lat: Number(results[0].lat), lng: Number(results[0].lon)})
+                } else {
+                    toast.error("Invalid Address")
+                    setInvalidAddress(true)
                 }
                 return results
             })
     }
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
         getCoordinates()
             .then((results)=> {
                 if(results.length<1){
-                    toast.error("Invalid Address")
-                    setInvalidAddress(true)
+                    return results
                 } else if (!props.workshopToEdit) {
                     axios.post("/api/workshops/", {
                         id: props.user?.id,
@@ -103,6 +106,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         coordinates,
         addComponentDialogOpen,
         invalidAddress,
+        getCoordinates,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
         handleServicesChange,

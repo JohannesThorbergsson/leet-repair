@@ -1,6 +1,6 @@
 import {Workshop} from "../../model/Workshop";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
-import React, {useState} from "react";
+import React from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
 import Map, {Marker} from 'react-map-gl';
@@ -13,9 +13,7 @@ type WorkshopCardProps = {
 
 export default function WorkshopCard(props: WorkshopCardProps) {
     const navigate = useNavigate()
-    const [address, setAddress] = useState('')
 
-    console.log(address)
     const card = (
         <React.Fragment>
             <CardContent>
