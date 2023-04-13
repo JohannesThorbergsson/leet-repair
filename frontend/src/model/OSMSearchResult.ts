@@ -1,6 +1,6 @@
 export type OSMSearchResult = {
-    placeId: number;
-    lat: number;
-    lng: number;
-    displayName: string;
+    place_id: number;
+    lat: string;
+    lon: string;
+    display_name: string;
 }

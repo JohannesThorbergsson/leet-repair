@@ -19,7 +19,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         components,
         services,
         address,
-        location,
+        coordinates,
         workshopName,
         addComponentDialogOpen,
         handleSubmit,

@@ -13,8 +13,7 @@ type WorkshopCardProps = {
 
 export default function WorkshopCard(props: WorkshopCardProps) {
     const navigate = useNavigate()
-    const [address, setAddress] = useState('');
-
+    const [address, setAddress] = useState('')
 
     console.log(address)
     const card = (
