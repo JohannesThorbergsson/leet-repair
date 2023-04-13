@@ -3,7 +3,7 @@ import {Box, Button, Card, CardContent, Typography} from "@mui/material";
 import React from "react";
 import ComponentTable from "../ComponentTable/ComponentTable";
 import {useNavigate} from "react-router-dom";
-import Map, {Marker} from 'react-map-gl';
+import Map, {Popup} from 'react-map-gl';
 
 type WorkshopCardProps = {
     workshop: Workshop
@@ -33,11 +33,13 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                         mapStyle="mapbox://styles/mapbox/streets-v12"
                         mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
                         >
-                        <Marker
-                            key={props.workshop.id}
-                            longitude={props.workshop.coordinates.lng}
-                            latitude={props.workshop.coordinates.lat}
-                            anchor={"bottom"}
+                        <Popup longitude={props.workshop.coordinates.lng}
+                               latitude={props.workshop.coordinates.lat}
+                               closeButton={false}
+                               children={
+                                    <Typography variant="subtitle2" component="h6" fontWeight={"medium"}>
+                                        {props.workshop.location}
+                                    </Typography>}
                         />
                     </Map>
                 </Box>

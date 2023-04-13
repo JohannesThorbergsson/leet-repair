@@ -36,7 +36,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         = useEditWorkshop(props)
     const {handleDeleteComponent}
         = useEditComponents({components: components, handleSetComponents: handleSetComponents})
-    console.log(coordinates)
+
     return (
         <>
             <Box sx={{mt: 1, mb: 1}} component="form" onSubmit={handleSubmit}>
