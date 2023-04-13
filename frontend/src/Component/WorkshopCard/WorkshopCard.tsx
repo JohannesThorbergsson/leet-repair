@@ -9,6 +9,7 @@ type WorkshopCardProps = {
     workshop: Workshop
     displayMode: boolean
     searchTerm?: string
+    mapApiKey: string
 }
 
 export default function WorkshopCard(props: WorkshopCardProps) {
@@ -31,7 +32,7 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                         maxZoom={15.5}
                         style={{width: "100%", height: '200px'}}
                         mapStyle="mapbox://styles/mapbox/streets-v12"
-                        mapboxAccessToken={process.env.REACT_APP_MAP_KEY}
+                        mapboxAccessToken={props.mapApiKey}
                         >
                         <Popup longitude={props.workshop.coordinates.lng}
                                latitude={props.workshop.coordinates.lat}

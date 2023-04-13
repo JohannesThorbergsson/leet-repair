@@ -14,6 +14,7 @@ type EditOrderPageProps = {
     workshops: Workshop[]
     bikes: Bike[]
     orders: ServiceOrder[]
+    mapApiKey: string
     updateOrderList(orders: ServiceOrder[]):void
 }
 
@@ -33,7 +34,7 @@ export default function EditOrderPage(props: EditOrderPageProps){
                         Edit your Order
                     </Typography>
                     {workshop &&
-                        <WorkshopCard workshop={workshop} displayMode={true}/>
+                        <WorkshopCard workshop={workshop} displayMode={true} mapApiKey={props.mapApiKey}/>
                     }
                     <OrderForm workshops={props.workshops}
                                bikes={props.bikes}

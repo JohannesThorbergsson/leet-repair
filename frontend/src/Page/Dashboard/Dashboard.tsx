@@ -11,6 +11,7 @@ type DashboardProps = {
     orders: ServiceOrder[]
     workshops: Workshop[]
     bikes: Bike[]
+    mapApiKey: string
     isFetching: boolean
     updateOrderList(orders: ServiceOrder[]): void
     updateBikeList(bikes: Bike[]): void
@@ -27,7 +28,8 @@ export default function Dashboard(props: DashboardProps){
                         workshops={props.workshops}
                         updateOrderList={props.updateOrderList}
                         bikes={props.bikes}
-                        updateBikeList={props.updateBikeList}/>
+                        updateBikeList={props.updateBikeList}
+                        mapApiKey={props.mapApiKey}/>
     return (
         <>
             {!props.isFetching && user ?
