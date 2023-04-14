@@ -78,7 +78,8 @@ function App() {
                              updateOrderList={updateOrderList}
                              bikes={bikes}
                              workshops={workshops}
-                             mapApiKey={mapApiKey}/>}/>
+                             mapApiKey={mapApiKey}
+                             isFetching={isFetching}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
           <Route path={"/workshops/setup"} element={
               <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList} mapApiKey={mapApiKey}/>}/>
