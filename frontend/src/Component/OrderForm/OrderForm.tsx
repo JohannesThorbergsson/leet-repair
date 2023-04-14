@@ -7,7 +7,7 @@ import {ServiceOrder} from "../../model/ServiceOrder";
 import {useNavigate} from "react-router-dom";
 import DeleteOrderDialog from "../../Dialog/DeleteOrderDialog";
 import WorkshopCard from "../WorkshopCard/WorkshopCard";
-import EditFormAppBar from "../ResponsiveAppBar/EditFormAppBar";
+import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 
 type OrderFormProps = {
     workshops: Workshop[]
@@ -32,17 +32,18 @@ export default function OrderForm(props: OrderFormProps) {
 
     return (
         <>
-            <EditFormAppBar title={props.orderToEdit ? "Edit your Order" : "Book Services"}
-                            handleCancel={()=>navigate("/")}
-                            editMode={props.orderToEdit !== undefined}
-                            handleSubmit={handleSubmitOrder}
-                            submitDisabled={submitDisabled}/>
+            <FormAppBar title={props.orderToEdit ? "Edit your Order" : "Book Services"}
+                        orderMode
+                        handleCancel={()=>navigate("/")}
+                        editMode={props.orderToEdit !== undefined}
+                        handleSubmit={handleSubmitOrder}
+                        submitDisabled={submitDisabled}/>
             {orderFormState.workshopEditOrder ?
                 <WorkshopCard workshop={orderFormState.workshopEditOrder}
                           displayMode={true}
                           mapApiKey={props.mapApiKey}/>:
                 orderFormState.workshopNewOrder &&
-                    <WorkshopCard workshop={orderFormState.workshopEditOrder ?? orderFormState.workshopNewOrder}
+                    <WorkshopCard workshop={orderFormState.workshopNewOrder}
                                   displayMode={true}
                                   mapApiKey={props.mapApiKey}/>
             }
@@ -88,32 +89,15 @@ export default function OrderForm(props: OrderFormProps) {
                         />
                     )}
                 />
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly'
-                }}>
-                    <Button variant = "contained"
-                            sx={props.orderToEdit? {mt: 2, mr: 1, width: 1/2}: {mt: 2, width: 1}}
-                            type={"submit"}
-                            disabled={orderFormState.orderDescription ==="" || !orderFormState.selectedBike}>
-                        {!props.orderToEdit ? "Submit Order": "Submit Changes"}
-                    </Button>
-                    {props.orderToEdit &&
-                        <Button variant={"contained"}
-                                sx={{mt: 2, ml: 1,
-                                    width: 1/2,
-                                    bgcolor: 'warning.main',
-                                    '&:hover': {bgcolor: 'error.main'}
-                                }}
-                                onClick={handleClickDeleteOrder}>
-                            Cancel Order
-                        </Button>
-                    }
-                </Box>
                 {props.orderToEdit &&
-                    <Button variant="contained" sx={{mt: 2, width: 1}} onClick={()=>navigate("/")}>
-                        Cancel Changes
+                    <Button variant={"contained"}
+                            sx={{mt: 2, ml: 1,
+                                width: 1/2,
+                                bgcolor: 'warning.main',
+                                '&:hover': {bgcolor: 'error.main'}
+                            }}
+                            onClick={handleClickDeleteOrder}>
+                        Cancel Order
                     </Button>
                 }
             </Box>

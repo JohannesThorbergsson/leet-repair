@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AppBar from "@mui/material/AppBar";
 import React from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 
 type EditFormAppBarProps = {
     title: string
@@ -12,20 +13,26 @@ type EditFormAppBarProps = {
     editMode: boolean
     handleSubmit(): void
     submitDisabled: boolean
+    orderMode?: boolean
 }
-export default function EditFormAppBar(props: EditFormAppBarProps){
+export default function FormAppBar(props: EditFormAppBarProps){
+    const location = useLocation()
+    const navigate = useNavigate()
+
     return (
         <AppBar position="sticky">
             <Container maxWidth={false}>
                 <Toolbar disableGutters>
                     <Tooltip title="Cancel">
                         <IconButton
-                                    onClick={props.handleCancel}
-                                    size="large"
-                                    edge="start"
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    sx={{ p: 0, ml: 0.5}}>
+                                onClick={props.orderMode && !props.editMode ?
+                                    ()=>navigate("/", {state: {searchTerm: location.state.searchTerm}}) :
+                                    props.handleCancel}
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                aria-label="open drawer"
+                                sx={{ p: 0, ml: 0.5}}>
                             <ArrowBackIcon/>
                         </IconButton>
                     </Tooltip>

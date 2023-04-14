@@ -15,7 +15,7 @@ import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
 import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
 import ServiceFormDialog from "../../Dialog/ServiceFormDialog";
-import EditFormAppBar from "../ResponsiveAppBar/EditFormAppBar";
+import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AddIcon from '@mui/icons-material/Add';
 import ComponentFormDialog from "../../Dialog/ComponentFormDialog";
@@ -64,11 +64,11 @@ export default function EditBikeForm(props: EditBikeFormProps) {
 
     return(
         <>
-            <EditFormAppBar title={props.bikeToEdit?.modelName ?? "New Bike"}
-                            handleCancel={handleCancel}
-                            handleSubmit={handleSubmitBike}
-                            editMode={props.editMode}
-                            submitDisabled={submitDisabled}/>
+            <FormAppBar title={props.bikeToEdit?.modelName ?? "New Bike"}
+                        handleCancel={handleCancel}
+                        handleSubmit={handleSubmitBike}
+                        editMode={props.editMode}
+                        submitDisabled={submitDisabled}/>
             <Box sx={{pb: '80px'}}>
                 <Box sx={{
                     border: 2,
