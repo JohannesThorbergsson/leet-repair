@@ -14,6 +14,7 @@ type OrderFormProps = {
     workshops: Workshop[]
     bikes: Bike[]
     orders: ServiceOrder[]
+    mapApiKey: string
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function BookOrderPage(props: OrderFormProps){
@@ -36,7 +37,9 @@ export default function BookOrderPage(props: OrderFormProps){
                 </Typography>
             </Box>
             {orderFormState.workshopNewOrder &&
-                <WorkshopCard workshop={orderFormState.workshopNewOrder} displayMode={true}/>
+                <WorkshopCard workshop={orderFormState.workshopNewOrder}
+                              displayMode={true}
+                              mapApiKey={props.mapApiKey}/>
             }
             <Typography variant="h5" component="h6" fontWeight={"medium"} sx={{mt: 1}}>
                 Book Services:

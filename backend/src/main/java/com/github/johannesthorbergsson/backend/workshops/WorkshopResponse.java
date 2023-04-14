@@ -9,6 +9,8 @@ public record WorkshopResponse(
         @Id
         String id,
         String name,
+        String location,
+        Coordinates coordinates,
         List<String> services,
         List<Component> inventory
 ) {

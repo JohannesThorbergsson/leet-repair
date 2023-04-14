@@ -14,6 +14,7 @@ type BasicDashboardProps = {
     orders: ServiceOrder[]
     workshops: Workshop[]
     bikes: Bike[]
+    mapApiKey: string
     updateOrderList(orders: ServiceOrder[]): void
     updateBikeList(bikes: Bike[]): void
 }
@@ -98,7 +99,8 @@ export default function BasicDashboard(props: BasicDashboardProps) {
                                 <WorkshopCard key={workshop.id}
                                               searchTerm={searchTerm}
                                               workshop={workshop}
-                                              displayMode={false}/>)
+                                              displayMode={false}
+                                              mapApiKey={props.mapApiKey}/>)
                     }
                     <Button variant="contained" onClick={closeSearch} sx={{width: 92/100}}>Back</Button>
                 </Box>

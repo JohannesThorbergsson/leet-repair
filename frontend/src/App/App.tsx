@@ -22,6 +22,7 @@ import useAuth from "../Hooks/useAuth";
 import SetUpWorkshop from "../Page/SetUpWorkshop/SetUpWorkshop";
 import EditWorkshopPage from "../Page/EditWorkshopPage/EditWorkshopPage";
 import Dashboard from "../Page/Dashboard/Dashboard";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 axios.interceptors.request.use(
     function (config) {
@@ -41,10 +42,11 @@ function App() {
         orders,
         workshops,
         isFetching,
+        mapApiKey,
         updateBikeList,
         updateOrderList,
-        updateWorkshopList}
-        = useFetchData()
+        updateWorkshopList
+    } = useFetchData()
     const user = useAuth(false)
   return (
       <div className="App">
@@ -58,22 +60,34 @@ function App() {
                          orders={orders}
                          updateBikeList={updateBikeList}
                          updateOrderList={updateOrderList}
-                         workshops={workshops}/>}/>
+                         workshops={workshops}
+                         mapApiKey={mapApiKey}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
           <Route path={"/bikes/edit-bike/:bikeId"} element={
               <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/workshops/orders/:workshopId"} element={
-              <BookOrderPage workshops={workshops} bikes={bikes} orders={orders} updateOrderList={updateOrderList}/>}/>
+              <BookOrderPage workshops={workshops}
+                             bikes={bikes}
+                             orders={orders}
+                             updateOrderList={updateOrderList}
+                             mapApiKey={mapApiKey}/>}/>
           <Route path={"/orders/:orderId"} element={
-              <EditOrderPage orders={orders} updateOrderList={updateOrderList} bikes={bikes} workshops={workshops}/>}/>
+              <EditOrderPage orders={orders}
+                             updateOrderList={updateOrderList}
+                             bikes={bikes}
+                             workshops={workshops}
+                             mapApiKey={mapApiKey}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
           <Route path={"/workshops/setup"} element={
-              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList}/>}/>
+              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList} mapApiKey={mapApiKey}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
               <EditWorkshopPage updateWorkshopList={updateWorkshopList}
-                                user={user} workshops={workshops} isFetching={isFetching}/>}/>
+                                user={user}
+                                workshops={workshops}
+                                isFetching={isFetching}
+                                mapApiKey={mapApiKey}/>}/>
         </Routes>
       </div>
   );

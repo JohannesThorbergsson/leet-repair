@@ -4,6 +4,7 @@ import {Link as RouterLink, useNavigate} from "react-router-dom";
 import Link from '@mui/material/Link';
 import {Box, Button, Container, TextField, Typography} from "@mui/material";
 import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar";
+import toast from "react-hot-toast";
 
 export default function Login() {
     const [username, setUsername] = useState("")
@@ -25,7 +26,12 @@ export default function Login() {
             .then(() => {
                 navigate(window.sessionStorage.getItem('signInRedirect') || '/')
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                if(error.response.status === 401) {
+                    toast.error("Invalid Password or Username")
+                }
+                console.log(error)
+            })
     }
 
     return (

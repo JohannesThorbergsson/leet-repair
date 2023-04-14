@@ -9,6 +9,7 @@ export default function useFetchData(){
     const [bikes, setBikes] = useState<Bike[]>([])
     const [orders, setOrders] = useState<ServiceOrder[]>([])
     const [workshops, setWorkshops] = useState<Workshop[]>([])
+    const [mapApiKey, setMapApiKey] = useState<string>("")
     const [isFetching, setIsFetching] = useState(false)
 
     const user = useAuth(false)
@@ -46,7 +47,10 @@ export default function useFetchData(){
         await axios.get("/api/workshops/")
             .then(r => setWorkshops(r.data))
             .catch((error) => console.error(error))
+        await axios.get("/api/secrets/")
+            .then(r=> setMapApiKey(r.data))
+            .catch((error) => console.error(error))
         setIsFetching(false)
     }
-    return {bikes, orders, workshops, isFetching, updateBikeList, updateOrderList, updateWorkshopList}
+    return {bikes, orders, workshops, isFetching, mapApiKey, updateBikeList, updateOrderList, updateWorkshopList}
 }

@@ -8,6 +8,7 @@ import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 
 type SetUpWorkshopsProps = {
     workshops: Workshop[]
+    mapApiKey: string
     updateWorkshopList(workshops: Workshop[]): void
 
 }
@@ -21,8 +22,10 @@ export default function SetUpWorkshop(props: SetUpWorkshopsProps){
                     <ResponsiveAppBar/>
                     <Box sx={{m: 2, p: 1}}>
                         <Typography variant={"h6"}>Welcome to LeetRepair! <br/> Tell us more about your Business</Typography>
-                        <EditWorkshopForm  workshops={props.workshops} updateWorkshopList={props.updateWorkshopList}
-                                           user={user}/>
+                        <EditWorkshopForm  workshops={props.workshops}
+                                           updateWorkshopList={props.updateWorkshopList}
+                                           user={user}
+                                           mapApiKey={props.mapApiKey}/>
                     </Box>
                 </>:
                 <LoadingScreen/>
