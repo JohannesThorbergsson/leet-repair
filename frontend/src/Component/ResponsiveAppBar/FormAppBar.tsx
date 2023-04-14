@@ -16,6 +16,8 @@ type EditFormAppBarProps = {
     orderMode?: boolean
 }
 export default function FormAppBar(props: EditFormAppBarProps){
+    const submitBikeButtonCaption = props.editMode? "Save Changes" : "Save"
+    const submitOrderButtonCaption = props.editMode? "Submit Changes" : "Submit"
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -70,11 +72,11 @@ export default function FormAppBar(props: EditFormAppBarProps){
                     >
                         {props.title}
                     </Typography>
-                        <Button onClick={props.handleSubmit}
-                                color="inherit" sx={{fontSize: 15}}
-                                disabled = {props.submitDisabled}>
-                            {props.editMode? "Save Changes" : "Save"}
-                        </Button>
+                    <Button onClick={props.handleSubmit}
+                            color="inherit" sx={{fontSize: 15, p: 0}}
+                            disabled = {props.submitDisabled}>
+                        {props.orderMode? submitOrderButtonCaption : submitBikeButtonCaption}
+                    </Button>
                 </Toolbar>
             </Container>
         </AppBar>
