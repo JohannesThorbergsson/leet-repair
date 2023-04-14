@@ -14,10 +14,11 @@ type OrderArchiveProps = {
 export default function OrderArchive(props: OrderArchiveProps){
     const user = useAuth(true)
     const navigate = useNavigate()
+
     return (
         <>
             <ResponsiveAppBar/>
-            {props.orders.length>0?
+            {props.orders.filter(order=> order.status==="DONE").length>0?
                 <Box>
                     <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{m:2}}>
                         Completed Orders:
@@ -25,9 +26,11 @@ export default function OrderArchive(props: OrderArchiveProps){
                     {props.orders.filter(order=> order.status==="DONE").map(order=>
                         <OrderCard key={order.id} order={order} user={user}/>)}
                 </Box>:
-                <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{m:2}}>
-                    No Completed Orders
-                </Typography>
+                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '70vh'}}>
+                    <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{}}>
+                        No Completed Orders
+                    </Typography>
+                </Box>
                 }
             <Button variant={"contained"} sx={{width: 9/10, mb: 3}} onClick={()=> navigate("/")}>
                 Back to Dashboard
