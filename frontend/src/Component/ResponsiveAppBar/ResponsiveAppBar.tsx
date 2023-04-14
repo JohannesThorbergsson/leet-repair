@@ -29,8 +29,8 @@ export default function ResponsiveAppBar() {
             })
     }
     return (
-            <AppBar position="static">
-                <Container maxWidth="xl">
+            <AppBar position="sticky">
+                <Container maxWidth={false}>
                     <Toolbar disableGutters>
                         <BuildCircleIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                         <Typography
@@ -41,6 +41,7 @@ export default function ResponsiveAppBar() {
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
+                                flexGrow: 1,
                                 fontFamily: 'monospace',
                                 fontWeight: 700,
                                 letterSpacing: '.1rem',
@@ -69,7 +70,7 @@ export default function ResponsiveAppBar() {
                         >
                             LeetRepair
                         </Typography>
-                        <Box sx={{ flexGrow: 0 }}>
+                        <Box >
                             {user? <Tooltip title="Open Menu">
                                 <IconButton onClick={handleOpenUserMenu}
                                             size="large"
