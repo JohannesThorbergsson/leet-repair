@@ -33,6 +33,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
     const bottomRef = useRef() as React.MutableRefObject<HTMLDivElement>
     const {
         editBikeFormState,
+        submitDisabled,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
@@ -65,9 +66,9 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         <>
             <EditFormAppBar title={props.bikeToEdit?.modelName ?? "New Bike"}
                             handleCancel={handleCancel}
-                            handleSubmitBike={handleSubmitBike}
-                            editBikeFormState={editBikeFormState}
-                            editMode={props.editMode}/>
+                            handleSubmit={handleSubmitBike}
+                            editMode={props.editMode}
+                            submitDisabled={submitDisabled}/>
             <Box sx={{pb: '80px'}}>
                 <Box sx={{
                     border: 2,

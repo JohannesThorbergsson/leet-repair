@@ -6,19 +6,9 @@ import {Box, Typography} from "@mui/material";
 import React from "react";
 import InvalidId from "../../Component/InvalidId/InvalidId";
 import OrderForm from "../../Component/OrderForm/OrderForm";
-import {Workshop} from "../../model/Workshop";
-import {Bike} from "../../model/Bike";
-import WorkshopCard from "../../Component/WorkshopCard/WorkshopCard";
+import {OrderFormProps} from "../BookOrderPage/BookOrderPage";
 
-type EditOrderPageProps = {
-    workshops: Workshop[]
-    bikes: Bike[]
-    orders: ServiceOrder[]
-    mapApiKey: string
-    updateOrderList(orders: ServiceOrder[]):void
-}
-
-export default function EditOrderPage(props: EditOrderPageProps){
+export default function EditOrderPage(props: OrderFormProps){
     useAuth(true)
     const {orderId} = useParams<{orderId: string}>()
     const order: ServiceOrder | undefined = props.orders.find(order => order.id === orderId)
@@ -33,14 +23,12 @@ export default function EditOrderPage(props: EditOrderPageProps){
                     <Typography variant="h4" component="h4" fontWeight={"bold"} sx={{mt: 1}}>
                         Edit your Order
                     </Typography>
-                    {workshop &&
-                        <WorkshopCard workshop={workshop} displayMode={true} mapApiKey={props.mapApiKey}/>
-                    }
                     <OrderForm workshops={props.workshops}
                                bikes={props.bikes}
                                orders={props.orders}
                                orderToEdit={order}
-                               updateOrderList={props.updateOrderList}/>
+                               updateOrderList={props.updateOrderList}
+                               mapApiKey={props.mapApiKey}/>
                 </Box>:
                 <InvalidId/>
             }

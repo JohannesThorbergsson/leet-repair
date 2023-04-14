@@ -6,18 +6,22 @@ import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import {useNavigate} from "react-router-dom";
 import DeleteOrderDialog from "../../Dialog/DeleteOrderDialog";
+import WorkshopCard from "../WorkshopCard/WorkshopCard";
+import EditFormAppBar from "../ResponsiveAppBar/EditFormAppBar";
 
 type OrderFormProps = {
     workshops: Workshop[]
     bikes: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
+    mapApiKey: string
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function OrderForm(props: OrderFormProps) {
     const navigate = useNavigate()
     const {
         orderFormState,
+        submitDisabled,
         componentsInStock,
         handleClickDeleteOrder,
         handleInputComponents,
@@ -28,8 +32,21 @@ export default function OrderForm(props: OrderFormProps) {
 
     return (
         <>
-            <Box component={"form"} onSubmit={handleSubmitOrder}
-                 sx ={{
+            <EditFormAppBar title={props.orderToEdit ? "Edit your Order" : "Book Services"}
+                            handleCancel={()=>navigate("/")}
+                            editMode={props.orderToEdit !== undefined}
+                            handleSubmit={handleSubmitOrder}
+                            submitDisabled={submitDisabled}/>
+            {orderFormState.workshopEditOrder ?
+                <WorkshopCard workshop={orderFormState.workshopEditOrder}
+                          displayMode={true}
+                          mapApiKey={props.mapApiKey}/>:
+                orderFormState.workshopNewOrder &&
+                    <WorkshopCard workshop={orderFormState.workshopEditOrder ?? orderFormState.workshopNewOrder}
+                                  displayMode={true}
+                                  mapApiKey={props.mapApiKey}/>
+            }
+            <Box sx ={{
                      alignItems: 'center',
                      marginInline: 2,
                      p: 1,

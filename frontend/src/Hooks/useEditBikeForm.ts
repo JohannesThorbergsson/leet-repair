@@ -25,6 +25,9 @@ export default function useEditBikeForm(props: UseEditBikeProps){
     }
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
+    const submitDisabled = editBikeFormState.modelName===""
+            || (!/^\d+$/.test(editBikeFormState.mileageFieldValue.trim())
+            && editBikeFormState.mileageFieldValue!=="")
 
     function handleInputModelName(event: ChangeEvent<HTMLInputElement>){
         dispatch({type: "SET_MODEL_NAME", payload: event.target.value})
@@ -85,6 +88,7 @@ export default function useEditBikeForm(props: UseEditBikeProps){
     }
     return {
         editBikeFormState,
+        submitDisabled,
         handleDeleteComponent,
         handleInputMileage,
         handleInputModelName,

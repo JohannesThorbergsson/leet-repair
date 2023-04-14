@@ -5,14 +5,13 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AppBar from "@mui/material/AppBar";
 import React from "react";
-import {EditBikeFormState} from "../../Reducer/editBikeFormReducer";
 
 type EditFormAppBarProps = {
     title: string
     handleCancel(): void
     editMode: boolean
-    handleSubmitBike(): void
-    editBikeFormState: EditBikeFormState
+    handleSubmit(): void
+    submitDisabled: boolean
 }
 export default function EditFormAppBar(props: EditFormAppBarProps){
     return (
@@ -64,11 +63,9 @@ export default function EditFormAppBar(props: EditFormAppBarProps){
                     >
                         {props.title}
                     </Typography>
-                        <Button onClick={props.handleSubmitBike}
+                        <Button onClick={props.handleSubmit}
                                 color="inherit" sx={{fontSize: 15}}
-                                disabled = {props.editBikeFormState.modelName===""
-                                || (!/^\d+$/.test(props.editBikeFormState.mileageFieldValue.trim())
-                                    && props.editBikeFormState.mileageFieldValue!=="")}>
+                                disabled = {props.submitDisabled}>
                             {props.editMode? "Save Changes" : "Save"}
                         </Button>
                 </Toolbar>
