@@ -33,12 +33,13 @@ export default function useSignUp(){
                     if(error.response.status===409){
                         toast.error("Username already exists!")
                     }
-
+                    console.log(error)
                 })
         }else{
             toast.error("Passwords don't match")
         }
     }
+
     return {
         username,
         password,
