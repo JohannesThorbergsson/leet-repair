@@ -62,7 +62,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         getCoordinates()
             .then((results)=> {
                 if(results.length<1){
-                    return results
+                    return
                 } else if (!props.workshopToEdit) {
                     axios.post("/api/workshops/", {
                         id: props.user?.id,
@@ -94,7 +94,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
             })
             .catch(error => {
                 console.error(error);
-                toast.error("Location not found")
+                toast.error("Could not access location service")
             })
     }
     return {
