@@ -3,11 +3,12 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Workshop} from "../../model/Workshop";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Box, Button} from "@mui/material";
+import {Box} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 import {Bike} from "../../model/Bike";
 import OrderGallery from "../../Component/OrderGallery/OrderGallery";
+import DashboardBottomNav from "../../Component/BottomNavBar/DashboardBottomNav";
 
 type WorkshopDashboardProps = {
     workshops: Workshop[]
@@ -40,29 +41,14 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
             {workshop ?
                 <>
                 <ResponsiveAppBar/>
-                    <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2}}>
+                    <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2, pb: '80px'}}>
                         <OrderGallery bikes={props.bikes}
                                       orders={props.orders}
                                       updateBikeList={props.updateBikeList}
                                       updateOrderList={props.updateOrderList}
                                       user={user}/>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            mr: 2, ml: 2, mb: 3}}>
-                            <Button variant={"contained"}
-                                    onClick={()=> navigate("/workshops/edit/"+workshop?.id)}
-                                    sx={{mt: 2}}>
-                                Manage Workshop
-                            </Button>
-                            <Button variant={"contained"}
-                                    sx={{mt: 2, ml: 2, width: 1/2}}
-                                    onClick={()=>navigate("/orders/archive")}>
-                                Archived Orders
-                            </Button>
-                        </Box>
                     </Box>
+                <DashboardBottomNav user={user} workshop={workshop}/>
                 </>:
                 <LoadingScreen/>
             }

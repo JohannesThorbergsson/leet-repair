@@ -30,7 +30,9 @@ export default function OrderGallery(props: OrderGalleryProps){
                                                    updateOrderList={props.updateOrderList}/>)}
                     </Box>
                 </Box>:
-                <Typography variant={"h4"} fontWeight={"medium"} sx={{mt: 4}}>No Active Orders</Typography>
+                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '75vh'}}>
+                    <Typography variant={"h4"} fontWeight={"medium"} sx={{mt: 4}}>No Active Orders</Typography>
+                </Box>
             }
         </>
     )
