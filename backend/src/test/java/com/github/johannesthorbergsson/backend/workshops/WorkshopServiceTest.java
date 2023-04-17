@@ -138,7 +138,7 @@ class WorkshopServiceTest {
         verify(workshopRepository).findAll();
     }
     @ParameterizedTest
-    @ValueSource(strings = {"Tyre", "pirelli", "work", "Darmstadt"})
+    @ValueSource(strings = {"Tyre", "pirelli", "tyre", "work", "Darmstadt"})
     void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
         //GIVEN
         when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
