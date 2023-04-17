@@ -24,16 +24,16 @@ export default function SetUpWorkshop(props: SetUpWorkshopsProps){
     return (
         <>
             {user && user?.role === "WORKSHOP" ?
-                <>
+                <Box>
                     <ResponsiveAppBar/>
-                    <Box sx={{m: 2, p: 1}}>
-                        <Typography variant={"h6"}>Welcome to LeetRepair! <br/> Tell us more about your Business</Typography>
-                        <EditWorkshopForm  workshops={props.workshops}
-                                           updateWorkshopList={props.updateWorkshopList}
-                                           user={user}
-                                           mapApiKey={props.mapApiKey}/>
-                    </Box>
-                </>:
+                    <Typography variant={"h6"} sx={{mt: 1}}>
+                        Welcome to LeetRepair! <br/> Tell us more about your Business
+                    </Typography>
+                    <EditWorkshopForm  workshops={props.workshops}
+                                       updateWorkshopList={props.updateWorkshopList}
+                                       user={user}
+                                       mapApiKey={props.mapApiKey}/>
+                </Box>:
                 <LoadingScreen/>
             }
         </>

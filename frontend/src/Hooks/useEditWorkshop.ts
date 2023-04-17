@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
+import {ChangeEvent, SyntheticEvent, useState} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -57,8 +57,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
             })
     }
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
+    function handleSubmit() {
         getCoordinates()
             .then((results)=> {
                 if(results.length<1){
