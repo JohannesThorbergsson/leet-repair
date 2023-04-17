@@ -150,6 +150,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             </Button>
                         }
                         <ComponentFormDialog
+                            displayAge={true}
                             components={editBikeFormState.components}
                             handleSetComponents={handleSetInstalledComponents}
                             handleSetOpenAddComponentsDialog={handleOpenComponentFormDialog}

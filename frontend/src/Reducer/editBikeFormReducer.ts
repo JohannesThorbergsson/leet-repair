@@ -4,8 +4,10 @@ import {Component} from "../model/Component";
 export type EditBikeFormState = {
     modelName: string
     mileage: number | undefined
+    initialMileage: number | undefined
     mileageFieldValue: string
     components: Component[]
+    initialComponents: Component[]
     services: ServiceEvent[]
     openDeleteDialog: boolean
     scrollToBottom: boolean
