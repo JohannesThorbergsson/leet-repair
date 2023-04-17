@@ -18,6 +18,16 @@ public class WorkshopService {
     public List<Workshop> getAllWorkshops() {
         return workshopRepository.findAll();
     }
+
+    public List<Workshop> workshopSearch(String searchTerm){
+        String optimizedSearchTerm = searchTerm.toLowerCase().trim();
+        return workshopRepository.findAll().stream().filter(workshop ->
+               workshop.location().contains(optimizedSearchTerm)
+            || workshop.services().stream().anyMatch(service -> service.contains(optimizedSearchTerm))
+            || workshop.inventory().stream().anyMatch(component -> component.category().contains(optimizedSearchTerm))
+            || workshop.inventory().stream().anyMatch(component -> component.type().contains(optimizedSearchTerm))
+            || workshop.name().contains(optimizedSearchTerm)).toList();
+    }
     public Workshop addWorkshop(Principal principal, WorkshopRequest workshopRequest){
         if(!userService.getCurrentUser(principal).role().equals("WORKSHOP")) {
            throw new UnauthorizedAccessException();
