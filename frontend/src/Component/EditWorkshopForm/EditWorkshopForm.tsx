@@ -9,6 +9,7 @@ import {Workshop} from "../../model/Workshop";
 import {Map, Marker} from "react-map-gl";
 import IconButton from "@mui/material/IconButton";
 import PlaceIcon from "@mui/icons-material/Place";
+import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 
 type EditWorkshopFormProps = {
     user: User | null
@@ -40,7 +41,14 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
 
     return (
         <>
-            <Box sx={{mt: 1, mb: 1}} component="form" onSubmit={handleSubmit}>
+            {props.workshopToEdit &&
+                <FormAppBar title={"Your Workshop"}
+                            handleCancel={()=>navigate("/")}
+                            editMode={true}
+                            handleSubmit={handleSubmit}
+                            submitDisabled={workshopName==="" || services.length<1}/>
+            }
+            <Box sx={{m: 2, mt: 1, p: 1}}>
                 <TextField
                     required
                     label={"Workshop Name"}
@@ -126,17 +134,13 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                                          handleSetOpenAddComponentsDialog={handleSetOpenAddComponentsDialog}
                                          keepMounted />
                 </Box>
-                <Button type="submit"
-                        variant={"contained"}
-                        sx={{mt:2, width: 1}}
-                        disabled={workshopName==="" || services.length<1}>
-                    {!props.workshopToEdit? "Register your Workshop": "Update Profile"}
-                </Button>
-                {props.workshopToEdit &&
-                    <Button variant={"contained"} sx={{mt: 1, width: 1}} onClick={()=>navigate("/")}>
-                        Cancel
+                {!props.workshopToEdit &&
+                    <Button onClick={handleSubmit}
+                            variant={"contained"}
+                            sx={{mt:2, width: 1}}
+                            disabled={workshopName==="" || services.length<1}>
+                        Register your Workshop
                     </Button>
-
                 }
             </Box>
         </>

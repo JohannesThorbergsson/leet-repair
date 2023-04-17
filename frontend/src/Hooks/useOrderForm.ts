@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, SyntheticEvent, useReducer} from "react";
+import {ChangeEvent, SyntheticEvent, useReducer} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
 import {Workshop} from "../model/Workshop";
@@ -28,7 +28,7 @@ export default function useOrderForm(props: OrderFormProps){
         openDeleteDialog: false
     }
     const [orderFormState, dispatch] = useReducer(orderFormReducer, initialFormState)
-
+    const submitDisabled = orderFormState.orderDescription ==="" || !orderFormState.selectedBike
     const componentsInStock = !props.orderToEdit?
         (orderFormState.workshopNewOrder?.inventory.map(
             component => component.category + " " +component.type) || []):
@@ -56,8 +56,7 @@ export default function useOrderForm(props: OrderFormProps){
     function handleInputDescription(event: ChangeEvent<HTMLInputElement>) {
         dispatch({type: "SET_ORDER_DESCRIPTION", payload: event.target.value})
     }
-    function handleSubmitOrder(event: FormEvent<HTMLFormElement>){
-        event.preventDefault()
+    function handleSubmitOrder(){
         if(!props.orderToEdit) {
             axios.post("/api/orders/",
                 {
@@ -94,6 +93,7 @@ export default function useOrderForm(props: OrderFormProps){
     return {
         orderFormState,
         componentsInStock,
+        submitDisabled,
         handleClickDeleteOrder,
         handleInputComponents,
         handleInputBike,

@@ -2,6 +2,8 @@ package com.github.johannesthorbergsson.backend.workshops;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.johannesthorbergsson.backend.bikes.Component;
+import com.github.johannesthorbergsson.backend.security.MongoUser;
+import com.github.johannesthorbergsson.backend.security.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,6 +31,8 @@ class WorkshopControllerTest {
     MockMvc mockMvc;
     @Autowired
     WorkshopRepository workshopRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ObjectMapper mapper = new ObjectMapper();
     Component tyre = new Component("tyre", "Pirelli", 1337);
@@ -101,6 +105,7 @@ class WorkshopControllerTest {
     void addWorkshop_whenWorkshopRequest_thenReturnWorkshop() throws Exception {
         //GIVEN
         String requestJSON = mapper.writeValueAsString(workshop1Request);
+        userRepository.save(new MongoUser("1", "workshop42", "1", "WORKSHOP"));
         //WHEN
         mockMvc.perform(post("/api/workshops/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,6 +134,20 @@ class WorkshopControllerTest {
                             ]
                         }
                         """));
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "steven")
+    void addWorkshop_whenBasicUser_thenStatus403() throws Exception {
+        //GIVEN
+        String requestJSON = mapper.writeValueAsString(workshop1Request);
+        userRepository.save(new MongoUser("1", "steven", "1", "BASIC"));
+        //WHEN
+        mockMvc.perform(post("/api/workshops/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJSON)
+                        .with(csrf()))
+                .andExpect(status().isForbidden());
     }
     @Test
     @DirtiesContext
