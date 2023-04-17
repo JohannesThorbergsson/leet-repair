@@ -4,6 +4,8 @@ import com.github.johannesthorbergsson.backend.bikes.Component;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
+import com.github.johannesthorbergsson.backend.security.UserResponse;
+import com.github.johannesthorbergsson.backend.security.UserService;
 import com.github.johannesthorbergsson.backend.workshops.Coordinates;
 import com.github.johannesthorbergsson.backend.workshops.Workshop;
 import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
@@ -27,9 +29,12 @@ class OrderServiceTest {
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
+    UserService userService = mock(UserService.class);
+    UserResponse userResponseBasic = new UserResponse("2", "steven", "BASIC");
+    UserResponse userResponseWorkshop = new UserResponse("1", "steven", "WORKSHOP");
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", "Kasinostraße, Darmstadt",
+    Workshop workshop1 = new Workshop("1", "workshop42", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "chain")), componentList);
 
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike", "New Tyre",
@@ -37,7 +42,7 @@ class OrderServiceTest {
             Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "Amazing Bike","New Tyre",
             "Workshop42", "1", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
-    OrderService orderService = new OrderService(orderRepository, workshopRepository, idService);
+    OrderService orderService = new OrderService(orderRepository, workshopRepository, idService, userService);
     String testId = "1", invalidID = "Invalid";
 
     @Test
@@ -106,6 +111,7 @@ class OrderServiceTest {
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
         when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(userService.getCurrentUser(principal)).thenReturn(userResponseWorkshop);
         when(principal.getName()).thenReturn("workshop42");
         ServiceOrder expected = testOrder;
         //WHEN
@@ -114,7 +120,8 @@ class OrderServiceTest {
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
         verify(workshopRepository).findById(testId);
-        verify(principal, times(2)).getName();
+        verify(userService).getCurrentUser(principal);
+        verify(principal).getName();
         assertEquals(expected, actual);
     }
     @Test
@@ -131,12 +138,15 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(userService.getCurrentUser(principal)).thenReturn(userResponseBasic);
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //WHEN + THEN
         assertThrows(expected, () -> orderService.updateOrder(testId, testOrderRequest, principal));
         verify(orderRepository).findById(testId);
-        verify(principal, times(2)).getName();
+        verify(workshopRepository).findById(testId);
+        verify(userService).getCurrentUser(principal);
+        verify(principal).getName();
     }
     @Test
     void deleteOrder_whenValidRequest_thenReturnDeletedOrder(){

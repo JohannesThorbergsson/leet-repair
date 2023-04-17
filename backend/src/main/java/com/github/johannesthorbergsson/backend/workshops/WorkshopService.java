@@ -2,6 +2,7 @@ package com.github.johannesthorbergsson.backend.workshops;
 
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
+import com.github.johannesthorbergsson.backend.security.UserResponse;
 import com.github.johannesthorbergsson.backend.security.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,6 @@ public class WorkshopService {
         Workshop newWorkshop = new Workshop(
                 workshopRequest.id(),
                 workshopRequest.name(),
-                principal.getName(),
                 workshopRequest.location(),
                 workshopRequest.coordinates(),
                 workshopRequest.services(),
@@ -48,13 +48,13 @@ public class WorkshopService {
         return workshopRepository.save(newWorkshop);
     }
     public WorkshopResponse updateWorkshop(String id, WorkshopRequest workshopRequest, Principal principal){
-        if(!workshopRepository.findById(id).orElseThrow(NoSuchWorkshopException::new).username().equals(principal.getName())){
+        UserResponse user = userService.getCurrentUser(principal);
+        if(!workshopRepository.findById(id).orElseThrow(NoSuchWorkshopException::new).id().equals(user.id())){
             throw new UnauthorizedAccessException();
         }
         Workshop updatedWorkshop = workshopRepository.save(new Workshop(
                 id,
                 workshopRequest.name(),
-                principal.getName(),
                 workshopRequest.location(),
                 workshopRequest.coordinates(),
                 workshopRequest.services(),

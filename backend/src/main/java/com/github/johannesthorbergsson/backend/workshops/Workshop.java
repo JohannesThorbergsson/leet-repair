@@ -11,7 +11,6 @@ public record Workshop(
         @Id
         String id,
         String name,
-        String username,
         String location,
         Coordinates coordinates,
         List<String> services,

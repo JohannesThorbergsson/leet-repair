@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.johannesthorbergsson.backend.bikes.Component;
+import com.github.johannesthorbergsson.backend.security.MongoUser;
+import com.github.johannesthorbergsson.backend.security.UserRepository;
 import com.github.johannesthorbergsson.backend.workshops.Coordinates;
 import com.github.johannesthorbergsson.backend.workshops.Workshop;
 import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
@@ -35,9 +37,14 @@ class OrderControllerTest {
     OrderRepository orderRepository;
     @Autowired
     WorkshopRepository workshopRepository;
+    @Autowired
+    UserRepository userRepository;
+    MongoUser basicUser = new MongoUser("2", "steven", "1", "BASIC");
+    MongoUser h4xx0r = new MongoUser("2", "h4xx()r", "1", "BASIC");
+    MongoUser workshopUser = new MongoUser("1", "workshop42", "1", "WORKSHOP");
     List<Component> componentList = List.of(new Component("Tyre", "Pirelli", 1337));
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", "Kasinostraße, Darmstadt",
+    Workshop workshop1 = new Workshop("1", "workshop42", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "chain")), componentList);
     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule()).setDateFormat(new StdDateFormat());
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike","New Tyre", "Workshop42",
@@ -161,6 +168,7 @@ class OrderControllerTest {
         //GIVEN
         orderRepository.save(testOrder);
         workshopRepository.save(workshop1);
+        userRepository.save(basicUser);
         //WHEN
         mockMvc.perform(put("/api/orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -212,6 +220,7 @@ class OrderControllerTest {
         //GIVEN
         orderRepository.save(testOrder);
         workshopRepository.save(workshop1);
+        userRepository.save(workshopUser);
         //WHEN
         mockMvc.perform(put("/api/orders/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -258,8 +267,11 @@ class OrderControllerTest {
     }
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(username = "steven")
     void updateOrder_whenOrderNotFound_thenThrowNoSuchOrderException() throws Exception {
+        //GIVEN
+        userRepository.save(basicUser);
+        //WHEN
         mockMvc.perform(put("/api/orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -291,6 +303,7 @@ class OrderControllerTest {
         //GIVEN
         orderRepository.save(testOrder);
         workshopRepository.save(workshop1);
+        userRepository.save(h4xx0r);
         //WHEN
         mockMvc.perform(put("/api/orders/1")
                 .contentType(MediaType.APPLICATION_JSON)
