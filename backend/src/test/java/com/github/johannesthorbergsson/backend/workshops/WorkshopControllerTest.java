@@ -101,6 +101,21 @@ class WorkshopControllerTest {
     }
     @Test
     @DirtiesContext
+    @WithMockUser
+    void workshopSearch_whenSearchTerm_thenReturnListOfResults() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        workshopRepository.save(workshop2);
+        String responseJSON = mapper.writeValueAsString(List.of(workshop1, workshop2));
+        String searchTerm = "Ty";
+        //WHEN
+        mockMvc.perform(get("/api/workshops/" + searchTerm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON));
+    }
+    @Test
+    @DirtiesContext
     @WithMockUser(username = "workshop42")
     void addWorkshop_whenWorkshopRequest_thenReturnWorkshop() throws Exception {
         //GIVEN
