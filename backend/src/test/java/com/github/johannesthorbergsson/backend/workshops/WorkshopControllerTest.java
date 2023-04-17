@@ -105,6 +105,7 @@ class WorkshopControllerTest {
     void addWorkshop_whenWorkshopRequest_thenReturnWorkshop() throws Exception {
         //GIVEN
         String requestJSON = mapper.writeValueAsString(workshop1Request);
+        userRepository.save(new MongoUser("1", "workshop42", "1", "WORKSHOP"));
         //WHEN
         mockMvc.perform(post("/api/workshops/")
                         .contentType(MediaType.APPLICATION_JSON)
