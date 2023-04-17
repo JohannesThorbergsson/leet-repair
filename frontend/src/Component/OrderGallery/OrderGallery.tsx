@@ -4,6 +4,7 @@ import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import {Bike} from "../../model/Bike";
 import {User} from "../../Hooks/useAuth";
+import moment from "moment/moment";
 
 type OrderGalleryProps = {
     orders: ServiceOrder[]
@@ -20,7 +21,10 @@ export default function OrderGallery(props: OrderGalleryProps){
                 <Box>
                     <Typography variant={"h4"} fontWeight={"medium"} sx={{}}>Active Orders:</Typography>
                     <Box>
-                        {props.orders.filter(order=> order.status !== "DONE").map(order =>
+                        {props.orders.filter(order=> order.status !== "DONE")
+                            .sort((orderA, orderB) =>
+                                moment(orderB.date).diff(moment(orderA.date)))
+                            .map(order =>
                             <OrderCardWithControls key={order.id}
                                                    order={order}
                                                    user={props.user}
