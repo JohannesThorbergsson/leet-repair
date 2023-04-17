@@ -104,8 +104,19 @@ class WorkshopServiceTest {
         assertThrows(expected, ()-> workshopService.addWorkshop(principal, workshop1Request));
         verify(userService).getCurrentUser(principal);
     }
+    @ParameterizedTest
+    @ValueSource(strings = {"Tyre", "pirelli", "work", "Darmstadt"})
+    void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
+        //GIVEN
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
+        //WHEN
+        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
+        //THEN
+        assertEquals(expected, actual);
+        verify(workshopRepository).findAll();
+    }
     @Test
-    void workshopSearch_whenSearchTermMatchesWorkshopName_thenReturnListOfResults() {
+    void workshopSearch_whenSearchTermMatchesComponentCategory_thenReturnListOfResults() {
         //GIVEN
         String searchTerm = "chain42";
         when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2, workshop3)));
@@ -117,22 +128,11 @@ class WorkshopServiceTest {
         verify(workshopRepository).findAll();
     }
     @Test
-    void workshopSearch_whenSearchNoMatch_thenReturnListOfResults() {
+    void workshopSearch_whenSearchNoMatch_thenReturnEmptyListOfResults() {
         //GIVEN
         String searchTerm = "something";
         when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
         List<Workshop> expected = new ArrayList<>();
-        //WHEN
-        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
-        //THEN
-        assertEquals(expected, actual);
-        verify(workshopRepository).findAll();
-    }
-    @ParameterizedTest
-    @ValueSource(strings = {"Tyre", "pirelli", "tyre", "work", "Darmstadt"})
-    void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
-        //GIVEN
-        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
         //THEN
