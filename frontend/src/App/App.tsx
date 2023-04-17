@@ -67,12 +67,13 @@ function App() {
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
           <Route path={"/bikes/edit-bike/:bikeId"} element={
               <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
-          <Route path={"/workshops/orders/:workshopId"} element={
+          <Route path={"/workshops/orders/"} element={
               <BookOrderPage workshops={workshops}
                              bikes={bikes}
                              orders={orders}
                              updateOrderList={updateOrderList}
-                             mapApiKey={mapApiKey}/>}/>
+                             mapApiKey={mapApiKey}
+                             isFetching={isFetching}/>}/>
           <Route path={"/orders/:orderId"} element={
               <EditOrderPage orders={orders}
                              updateOrderList={updateOrderList}

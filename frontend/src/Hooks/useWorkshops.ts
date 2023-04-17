@@ -2,11 +2,9 @@ import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {Workshop} from "../model/Workshop";
 import {useLocation, useNavigate} from "react-router-dom";
 import useAuth from "./useAuth";
+import axios from "axios";
 
-type UseWorkshopsProps = {
-    workshops: Workshop[]
-}
-export default function useWorkshops(props: UseWorkshopsProps) {
+export default function useWorkshops() {
     const user = useAuth(true)
     const navigate = useNavigate()
     const location = useLocation()
@@ -23,12 +21,10 @@ export default function useWorkshops(props: UseWorkshopsProps) {
     function search(){
         if(searchTerm !== "") {
             setIsSearch(true)
-            setSearchResults(props.workshops
-                .filter(workshop =>
-                    (workshop.services.filter(service =>
-                        service.toLowerCase().includes(searchTerm.toLowerCase())).length>0) ||
-                    (workshop.inventory.filter(component =>
-                        component.category.toLowerCase().includes(searchTerm.toLowerCase())).length>0))) 
+            axios.get("api/workshops/" + searchTerm)
+                .then(r => r.data)
+                .then(results => setSearchResults(results))
+                .catch((error) => console.error(error))
         }
     }
     function handleSearchTerm(event: ChangeEvent<HTMLInputElement>) {

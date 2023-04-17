@@ -43,7 +43,8 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
                 {(props.order.status==="OPEN" && props.user?.role === "BASIC") &&
                     <Button variant={"contained"}
                             sx={{width: 1/2, mr: 1 , ml: 2}}
-                            onClick={()=> navigate("/orders/" + props.order.id)}>
+                            onClick={()=> navigate("/orders/" + props.order.id,
+                                {state: {workshop: props.order.workshopId}})}>
                         Edit Order
                     </Button>
                 }

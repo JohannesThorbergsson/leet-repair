@@ -4,7 +4,6 @@ import ResponsiveAppBar from "../../Component/ResponsiveAppBar/ResponsiveAppBar"
 import {Box, Button, InputAdornment, TextField, Typography} from "@mui/material";
 import React from "react";
 import {ServiceOrder} from "../../model/ServiceOrder";
-import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from '@mui/icons-material/Clear';
@@ -13,7 +12,6 @@ import DashboardBottomNav from "../../Component/BottomNavBar/DashboardBottomNav"
 
 type BasicDashboardProps = {
     orders: ServiceOrder[]
-    workshops: Workshop[]
     bikes: Bike[]
     mapApiKey: string
     updateOrderList(orders: ServiceOrder[]): void
@@ -28,7 +26,7 @@ export default function BasicDashboard(props: BasicDashboardProps) {
         searchResults,
         isSearch,
         searchTerm,
-    } = useWorkshops({workshops: props.workshops})
+    } = useWorkshops()
 
     return (user &&
         <>

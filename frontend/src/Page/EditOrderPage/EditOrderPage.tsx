@@ -31,7 +31,8 @@ export default function EditOrderPage(props: EditOrderPageProps){
                                    orders={props.orders}
                                    orderToEdit={order}
                                    updateOrderList={props.updateOrderList}
-                                   mapApiKey={props.mapApiKey}/>
+                                   mapApiKey={props.mapApiKey}
+                                   isFetching={props.isFetching}/>
                     </Box>:
                     <InvalidId/>
                 }

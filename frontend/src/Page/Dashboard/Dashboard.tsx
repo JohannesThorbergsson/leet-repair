@@ -25,7 +25,6 @@ export default function Dashboard(props: DashboardProps){
                            updateBikeList={props.updateBikeList}
                            updateOrderList={props.updateOrderList}/>:
         <BasicDashboard orders={props.orders}
-                        workshops={props.workshops}
                         updateOrderList={props.updateOrderList}
                         bikes={props.bikes}
                         updateBikeList={props.updateBikeList}

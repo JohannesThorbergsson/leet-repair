@@ -2,12 +2,12 @@ import {ChangeEvent, SyntheticEvent, useReducer} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
 import {Workshop} from "../model/Workshop";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {ServiceOrder} from "../model/ServiceOrder";
 import orderFormReducer from "../Reducer/orderFormReducer";
 
 type OrderFormProps = {
-    workshops?: Workshop[]
+    workshops: Workshop[]
     bikes?: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
@@ -15,14 +15,14 @@ type OrderFormProps = {
 }
 export default function useOrderForm(props: OrderFormProps){
     const navigate = useNavigate()
-    const {workshopId} = useParams<{workshopId: string}>()
+    const location = useLocation()
     const initialFormState = {
         orderedComponents: props.orderToEdit?.componentsToReplace ?? [],
         selectedBike: props.bikes?.find(bike=>bike.id === props.orderToEdit?.bikeId) ?? undefined,
         orderDescription: props.orderToEdit?.description ?? "",
         orderedComponentsText: props.orderToEdit?.componentsToReplace.map(
             component => component.category + " " +component.type),
-        workshopNewOrder: props.workshops?.find(workshop => workshop.id === workshopId),
+        workshopNewOrder: location.state?.workshop,
         workshopEditOrder: props.workshops?.find(workshop => workshop.name===props.orderToEdit?.workshop),
         orderToEditStatus: props.orderToEdit?.status,
         openDeleteDialog: false
@@ -38,9 +38,8 @@ export default function useOrderForm(props: OrderFormProps){
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
         const selectedComponentsNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
-        const selectedComponentsEditMode = props.workshops?.find(
-            workshop=>workshop.name===props.orderToEdit?.workshop)
-            ?.inventory.filter(component=> value.includes(component.category + " " + component.type))
+        const selectedComponentsEditMode = orderFormState.workshopEditOrder?.inventory.filter(
+            component=> value.includes(component.category + " " + component.type))
 
         if(orderFormState.workshopNewOrder && selectedComponentsNewOrder) {
             dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentsNewOrder})

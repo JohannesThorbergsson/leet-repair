@@ -15,6 +15,7 @@ type OrderFormProps = {
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
     mapApiKey: string
+    isFetching: boolean
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function OrderForm(props: OrderFormProps) {
