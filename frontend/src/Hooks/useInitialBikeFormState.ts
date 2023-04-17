@@ -1,7 +1,8 @@
 import {UseEditBikeProps} from "./useEditBikeForm";
+import {EditBikeFormState} from "../Reducer/editBikeFormReducer";
 
 export default function useInitialBikeFormState(props: UseEditBikeProps){
-    const initialFormState = {
+    const initialFormState: EditBikeFormState = {
         modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
         mileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
         initialMileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
