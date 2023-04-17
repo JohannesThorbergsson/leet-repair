@@ -35,7 +35,7 @@ export default function BasicDashboard(props: BasicDashboardProps) {
             <ResponsiveAppBar/>
             <Box sx={{pb: '80px'}}>
                 <Box sx={{m: 2}}>
-                    <Typography variant={"body1"}>
+                    <Typography variant={"subtitle2"} fontSize={17}>
                         Need services or parts for your bike? <br/> Our workshops got you covered!
                     </Typography>
                 </Box>
@@ -50,6 +50,7 @@ export default function BasicDashboard(props: BasicDashboardProps) {
                     },
                 }}>
                     <TextField placeholder="Search for workshops"
+                               sx={{width: 8/10, mr: 1, ml: 1}}
                                value={searchTerm}
                                onChange={handleSearchTerm}
                                InputProps={{
