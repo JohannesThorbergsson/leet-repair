@@ -104,8 +104,9 @@ class WorkshopServiceTest {
     @Test
     void workshopSearch_whenSearchTermMatchesLocation_thenReturnListOfResults() {
         //GIVEN
-        String searchTerm = "Darmstadt";
-        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
+        String searchTerm = "workshop42";
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1)));
+        List<Workshop> expected = List.of(workshop1);
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
         //THEN
@@ -116,7 +117,8 @@ class WorkshopServiceTest {
     @CsvSource({
             "Ty",
             "pirelli",
-            "work"
+            "work",
+            "Darmstadt"
     })
     void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
         //GIVEN
