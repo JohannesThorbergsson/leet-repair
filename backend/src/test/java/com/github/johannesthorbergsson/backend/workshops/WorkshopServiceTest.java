@@ -7,6 +7,8 @@ import com.github.johannesthorbergsson.backend.security.UserResponse;
 import com.github.johannesthorbergsson.backend.security.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -100,9 +102,9 @@ class WorkshopServiceTest {
         verify(userService).getCurrentUser(principal);
     }
     @Test
-    void workshopSearch_whenSearchTerm_thenReturnListOfResults() {
+    void workshopSearch_whenSearchTermMatchesLocation_thenReturnListOfResults() {
         //GIVEN
-        String searchTerm = "Ty";
+        String searchTerm = "Darmstadt";
         when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
@@ -110,10 +112,14 @@ class WorkshopServiceTest {
         assertEquals(expected, actual);
         verify(workshopRepository).findAll();
     }
-    @Test
-    void workshopSearch_whenSearchTermMatchesWorkshopName_thenReturnListOfResults() {
+    @ParameterizedTest
+    @CsvSource({
+            "Ty",
+            "pirelli",
+            "work"
+    })
+    void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
         //GIVEN
-        String searchTerm = "work";
         when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
