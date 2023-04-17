@@ -3,6 +3,8 @@ package com.github.johannesthorbergsson.backend.workshops;
 import com.github.johannesthorbergsson.backend.bikes.Component;
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
+import com.github.johannesthorbergsson.backend.security.UserResponse;
+import com.github.johannesthorbergsson.backend.security.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,9 @@ import static org.mockito.Mockito.*;
 class WorkshopServiceTest {
     WorkshopService workshopService;
     WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
+    UserService userService = mock(UserService.class);
+    UserResponse userResponseWorkshop = new UserResponse("1", "steven", "WORKSHOP");
+    UserResponse userResponseBasic = new UserResponse("1", "steven", "BASIC");
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
@@ -37,7 +42,7 @@ class WorkshopServiceTest {
 
     @BeforeEach
     void setUp (){
-        workshopService = new WorkshopService(workshopRepository);
+        workshopService = new WorkshopService(workshopRepository, userService);
     }
 
     @Test
@@ -53,6 +58,7 @@ class WorkshopServiceTest {
     void addWorkshop_whenValidWorkshop_thenReturnSavedWorkshop(){
         //GIVEN
         when(principal.getName()).thenReturn("workshop42");
+        when(userService.getCurrentUser(principal)).thenReturn(userResponseWorkshop);
         when(workshopRepository.save(workshop1)).thenReturn(workshop1);
         Workshop expected = workshop1;
         //WHEN
@@ -60,7 +66,17 @@ class WorkshopServiceTest {
         //THEN
         assertEquals(expected, actual);
         verify(principal).getName();
+        verify(userService).getCurrentUser(principal);
         verify(workshopRepository).save(workshop1);
+    }
+    @Test
+    void addWorkshop_whenBasicUser_thenThrowUnauthorizedAccessException(){
+        //GIVEN
+        when(userService.getCurrentUser(principal)).thenReturn(userResponseBasic);
+        Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
+        //WHEN
+        assertThrows(expected, ()-> workshopService.addWorkshop(principal, workshop1Request));
+        verify(userService).getCurrentUser(principal);
     }
     @Test
     void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse(){

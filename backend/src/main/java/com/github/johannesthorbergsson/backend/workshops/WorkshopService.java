@@ -2,6 +2,7 @@ package com.github.johannesthorbergsson.backend.workshops;
 
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
+import com.github.johannesthorbergsson.backend.security.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkshopService {
     private final WorkshopRepository workshopRepository;
+    private final UserService userService;
 
     public List<Workshop> getAllWorkshops() {
         return workshopRepository.findAll();
     }
     public Workshop addWorkshop(Principal principal, WorkshopRequest workshopRequest){
+        if(!userService.getCurrentUser(principal).role().equals("WORKSHOP")) {
+           throw new UnauthorizedAccessException();
+        }
         Workshop newWorkshop = new Workshop(
                 workshopRequest.id(),
                 workshopRequest.name(),
