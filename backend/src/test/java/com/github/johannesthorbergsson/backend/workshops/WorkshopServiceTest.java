@@ -29,6 +29,7 @@ class WorkshopServiceTest {
     UserResponse userResponseBasic = new UserResponse("1", "steven", "BASIC");
     Principal principal = mock(Principal.class);
     Component tyre = new Component("tyre", "Pirelli", 1337);
+    Component chain = new Component("Chain42", "Pirelli", 1337);
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
     Workshop workshop1 = new Workshop("1", "workshop42", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
@@ -40,6 +41,8 @@ class WorkshopServiceTest {
                     workshop1.services(), workshop1.inventory());
     Workshop workshop2 = new Workshop("1", "workshop1337", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
+    Workshop workshop3 = new Workshop("1", "workshop1337", "Kasinostraße, Darmstadt",
+            testCoordinates, new ArrayList<>(List.of( "brakes")), List.of(chain));
     String testId = "1";
     List<Workshop> expected = new ArrayList<>(List.of(workshop1, workshop2));
 
@@ -104,9 +107,9 @@ class WorkshopServiceTest {
     @Test
     void workshopSearch_whenSearchTermMatchesWorkshopName_thenReturnListOfResults() {
         //GIVEN
-        String searchTerm = "workshop42";
-        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
-        List<Workshop> expected = List.of(workshop1);
+        String searchTerm = "chain42";
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2, workshop3)));
+        List<Workshop> expected = List.of(workshop3);
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
         //THEN
