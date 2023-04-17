@@ -102,11 +102,23 @@ class WorkshopServiceTest {
         verify(userService).getCurrentUser(principal);
     }
     @Test
-    void workshopSearch_whenSearchTermMatchesLocation_thenReturnListOfResults() {
+    void workshopSearch_whenSearchTermMatchesWorkshopName_thenReturnListOfResults() {
         //GIVEN
         String searchTerm = "workshop42";
-        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1)));
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
         List<Workshop> expected = List.of(workshop1);
+        //WHEN
+        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
+        //THEN
+        assertEquals(expected, actual);
+        verify(workshopRepository).findAll();
+    }
+    @Test
+    void workshopSearch_whenSearchNoMatch_thenReturnListOfResults() {
+        //GIVEN
+        String searchTerm = "something";
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
+        List<Workshop> expected = new ArrayList<>();
         //WHEN
         List<Workshop> actual = workshopService.workshopSearch(searchTerm);
         //THEN
