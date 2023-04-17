@@ -16,6 +16,10 @@ public class WorkshopController {
     public List<Workshop> getAllWorkshops() {
         return workshopService.getAllWorkshops();
     }
+    @GetMapping("{searchTerm}")
+    public List<Workshop> workshopSearch(@PathVariable String searchTerm){
+        return workshopService.workshopSearch(searchTerm);
+    }
     @PostMapping
     public Workshop addWorkshop(@RequestBody WorkshopRequest workshopRequest, Principal principal){
         return workshopService.addWorkshop(principal, workshopRequest);
