@@ -79,6 +79,17 @@ class WorkshopServiceTest {
         verify(userService).getCurrentUser(principal);
     }
     @Test
+    void workshopSearch_whenSearchTerm_thenReturnListOfResults() {
+        //GIVEN
+        String searchTerm = "Ty";
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
+        //WHEN
+        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
+        //THEN
+        assertEquals(expected, actual);
+
+    }
+    @Test
     void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse(){
         //GIVEN
         when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
@@ -113,4 +124,5 @@ class WorkshopServiceTest {
         assertThrows(expected, ()-> workshopService.updateWorkshop(testId, workshop1Request, principal));
         verify(workshopRepository).findById(testId);
     }
+
 }
