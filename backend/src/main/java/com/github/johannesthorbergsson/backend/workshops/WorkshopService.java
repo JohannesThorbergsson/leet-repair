@@ -18,6 +18,9 @@ public class WorkshopService {
     public List<Workshop> getAllWorkshops() {
         return workshopRepository.findAll();
     }
+    public Workshop getWorkshopById(String id){
+        return workshopRepository.findById(id).orElseThrow(NoSuchWorkshopException::new);
+    }
 
     public List<Workshop> workshopSearch(String searchTerm){
         String optimizedSearchTerm = searchTerm.toLowerCase().trim();

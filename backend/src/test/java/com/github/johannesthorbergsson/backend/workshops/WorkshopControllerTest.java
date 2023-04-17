@@ -102,6 +102,19 @@ class WorkshopControllerTest {
     @Test
     @DirtiesContext
     @WithMockUser
+    void getWorkshopById_whenWorkshopWithGivenId_thenReturnWorkshop() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        String responseJSON = mapper.writeValueAsString(workshop1);
+        //WHEN + THEN
+        mockMvc.perform(get("/api/workshops/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON));
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
     void workshopSearch_whenSearchTerm_thenReturnListOfResults() throws Exception {
         //GIVEN
         workshopRepository.save(workshop1);
@@ -109,7 +122,7 @@ class WorkshopControllerTest {
         String responseJSON = mapper.writeValueAsString(List.of(workshop1, workshop2));
         String searchTerm = "Ty";
         //WHEN
-        mockMvc.perform(get("/api/workshops/" + searchTerm)
+        mockMvc.perform(get("/api/workshops/search/" + searchTerm)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(responseJSON));

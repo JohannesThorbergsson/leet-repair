@@ -10,7 +10,7 @@ import WorkshopCard from "../WorkshopCard/WorkshopCard";
 import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 
 type OrderFormProps = {
-    workshops: Workshop[]
+    workshop: Workshop
     bikes: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder

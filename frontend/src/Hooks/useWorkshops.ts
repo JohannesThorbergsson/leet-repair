@@ -20,10 +20,10 @@ export default function useWorkshops() {
     }
     function search(){
         if(searchTerm !== "") {
-            setIsSearch(true)
-            axios.get("api/workshops/" + searchTerm)
+            axios.get("api/workshops/search/" + searchTerm)
                 .then(r => r.data)
                 .then(results => setSearchResults(results))
+                .then(() => setIsSearch(true))
                 .catch((error) => console.error(error))
         }
     }

@@ -68,8 +68,7 @@ function App() {
           <Route path={"/bikes/edit-bike/:bikeId"} element={
               <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/workshops/orders/"} element={
-              <BookOrderPage workshops={workshops}
-                             bikes={bikes}
+              <BookOrderPage bikes={bikes}
                              orders={orders}
                              updateOrderList={updateOrderList}
                              mapApiKey={mapApiKey}
@@ -78,7 +77,6 @@ function App() {
               <EditOrderPage orders={orders}
                              updateOrderList={updateOrderList}
                              bikes={bikes}
-                             workshops={workshops}
                              mapApiKey={mapApiKey}
                              isFetching={isFetching}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>

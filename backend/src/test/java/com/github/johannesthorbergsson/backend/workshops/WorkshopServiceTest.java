@@ -55,6 +55,26 @@ class WorkshopServiceTest {
         assertEquals(expected, actual);
     }
     @Test
+    void getWorkshopById_whenWorkshopWithGivenId_thenReturnWorkshop(){
+        //GIVEN
+        when(workshopRepository.findById(testId)).thenReturn(Optional.ofNullable(workshop1));
+        Workshop expected = workshop1;
+        //WHEN
+        Workshop actual = workshopService.getWorkshopById(testId);
+        //THEN
+        assertEquals(expected, actual);
+        verify(workshopRepository).findById(testId);
+    }
+    @Test
+    void getWorkshopById_whenInvalidId_ThenThrowNoSuchWorkshopException(){
+        //GIVEN
+        when(workshopRepository.findById(testId)).thenReturn(Optional.empty());
+        Class<NoSuchWorkshopException> expected = NoSuchWorkshopException.class;
+        //WHEN + THEN
+        assertThrows(expected, ()-> workshopService.getWorkshopById(testId));
+        verify(workshopRepository).findById(testId);
+    }
+    @Test
     void addWorkshop_whenValidWorkshop_thenReturnSavedWorkshop(){
         //GIVEN
         when(principal.getName()).thenReturn("workshop42");

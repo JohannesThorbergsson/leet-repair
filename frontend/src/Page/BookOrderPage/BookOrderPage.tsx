@@ -1,4 +1,3 @@
-import {Workshop} from "../../model/Workshop";
 import React from "react";
 import {Bike} from "../../model/Bike";
 import {ServiceOrder} from "../../model/ServiceOrder";
@@ -8,7 +7,6 @@ import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 import {useLocation, useNavigate} from "react-router-dom";
 
 export type OrderFormProps = {
-    workshops: Workshop[]
     bikes: Bike[]
     orders: ServiceOrder[]
     mapApiKey: string
@@ -26,7 +24,7 @@ export default function BookOrderPage(props: OrderFormProps){
     return (
         <>
             {!props.isFetching && location.state ?
-                <OrderForm workshops={props.workshops}
+                <OrderForm workshop={location.state.workshop}
                            bikes={props.bikes}
                            orders={props.orders}
                            updateOrderList={props.updateOrderList}

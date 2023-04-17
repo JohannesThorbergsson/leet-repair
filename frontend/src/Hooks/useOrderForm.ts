@@ -2,12 +2,12 @@ import {ChangeEvent, SyntheticEvent, useReducer} from "react";
 import {Bike} from "../model/Bike";
 import axios from "axios";
 import {Workshop} from "../model/Workshop";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {ServiceOrder} from "../model/ServiceOrder";
 import orderFormReducer from "../Reducer/orderFormReducer";
 
 type OrderFormProps = {
-    workshops: Workshop[]
+    workshop: Workshop
     bikes?: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
@@ -15,15 +15,14 @@ type OrderFormProps = {
 }
 export default function useOrderForm(props: OrderFormProps){
     const navigate = useNavigate()
-    const location = useLocation()
     const initialFormState = {
         orderedComponents: props.orderToEdit?.componentsToReplace ?? [],
         selectedBike: props.bikes?.find(bike=>bike.id === props.orderToEdit?.bikeId) ?? undefined,
         orderDescription: props.orderToEdit?.description ?? "",
         orderedComponentsText: props.orderToEdit?.componentsToReplace.map(
             component => component.category + " " +component.type),
-        workshopNewOrder: location.state?.workshop,
-        workshopEditOrder: props.workshops?.find(workshop => workshop.name===props.orderToEdit?.workshop),
+        workshopNewOrder: props.workshop,
+        workshopEditOrder: props.workshop,
         orderToEditStatus: props.orderToEdit?.status,
         openDeleteDialog: false
     }
