@@ -28,7 +28,7 @@ export default function useWorkshops(props: UseWorkshopsProps) {
                     (workshop.services.filter(service =>
                         service.toLowerCase().includes(searchTerm.toLowerCase())).length>0) ||
                     (workshop.inventory.filter(component =>
-                        component.category.toLowerCase().includes(searchTerm.toLowerCase())).length>0)))
+                        component.category.toLowerCase().includes(searchTerm.toLowerCase())).length>0))) 
         }
     }
     function handleSearchTerm(event: ChangeEvent<HTMLInputElement>) {

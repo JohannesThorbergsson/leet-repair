@@ -6,25 +6,17 @@ import {LocalDate} from 'js-joda';
 import {ServiceEvent} from "../model/ServiceEvent";
 import {Bike} from "../model/Bike";
 import editBikeFormReducer from "../Reducer/editBikeFormReducer";
+import useInitialBikeFormState from "./useInitialBikeFormState";
 
-type UseEditBikeProps = {
+export type UseEditBikeProps = {
     editMode: boolean
     bikes: Bike[]
     bikeToEdit?: Bike
     updateBikeList(bikes: Bike[]): void
 }
 export default function useEditBikeForm(props: UseEditBikeProps){
-    const initialFormState = {
-        modelName: props.bikeToEdit? props.bikeToEdit.modelName : "",
-        mileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
-        initialMileage: props.bikeToEdit? props.bikeToEdit.mileage : 0,
-        mileageFieldValue: props.bikeToEdit? props.bikeToEdit.mileage.toString() : "",
-        components: props.bikeToEdit? props.bikeToEdit.components : [],
-        initialComponents: props.bikeToEdit? props.bikeToEdit.components : [],
-        services: props.bikeToEdit? props.bikeToEdit.services : [],
-        openDeleteDialog: false,
-        scrollToBottom : false
-    }
+
+    const {initialFormState} = useInitialBikeFormState(props)
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
     const submitDisabled = editBikeFormState.modelName===""
