@@ -111,6 +111,17 @@ class WorkshopServiceTest {
         verify(workshopRepository).findAll();
     }
     @Test
+    void workshopSearch_whenSearchTermMatchesWorkshopName_thenReturnListOfResults() {
+        //GIVEN
+        String searchTerm = "work";
+        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
+        //WHEN
+        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
+        //THEN
+        assertEquals(expected, actual);
+        verify(workshopRepository).findAll();
+    }
+    @Test
     void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse(){
         //GIVEN
         when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
