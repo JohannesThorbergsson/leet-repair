@@ -51,6 +51,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' })
             scroll()
         }
+        // eslint-disable-next-line
     }, [editBikeFormState.scrollToBottom])
 
     const [serviceFormOpen, setServiceFormOpen] = useState(false)
