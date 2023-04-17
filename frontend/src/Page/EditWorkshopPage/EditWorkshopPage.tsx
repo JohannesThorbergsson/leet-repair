@@ -1,36 +1,34 @@
 import EditWorkshopForm from "../../Component/EditWorkshopForm/EditWorkshopForm";
 import useAuth, {User} from "../../Hooks/useAuth";
-import {Workshop} from "../../model/Workshop";
 import {useNavigate, useParams} from "react-router-dom";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 type EditWorkshopPageProps = {
     user: User | null
-    workshops: Workshop[]
     isFetching: boolean
     mapApiKey: string
-    updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopPage(props: EditWorkshopPageProps){
     const user = useAuth(true)
     const {workshopId} = useParams<{workshopId: string}>()
-    const workshop = props.workshops.find(workshop=> workshop.id===workshopId)
+    const [workshop, setWorkshop] = useState()
     const navigate = useNavigate()
 
     useEffect(()=> {
         if(user && user?.role !== "WORKSHOP") {
             navigate("/")
-        }},[user, navigate])
+        } else if (user) {
+            axios.get("/api/workshops/" + workshopId)
+                .then(r => setWorkshop(r.data))
+                .catch((error) => console.error(error))
+        }},[user, navigate, workshopId])
 
     return (
         <>
             {!props.isFetching && workshop && user && user?.role === "WORKSHOP" ?
-                <EditWorkshopForm user={props.user}
-                                  workshops={props.workshops}
-                                  workshopToEdit={workshop}
-                                  updateWorkshopList={props.updateWorkshopList}
-                                  mapApiKey={props.mapApiKey}/>
+                <EditWorkshopForm user={props.user} workshopToEdit={workshop} mapApiKey={props.mapApiKey}/>
                 :
                 <LoadingScreen/>
             }

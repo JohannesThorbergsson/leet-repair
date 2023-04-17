@@ -40,12 +40,10 @@ function App() {
     const {
         bikes,
         orders,
-        workshops,
         isFetching,
         mapApiKey,
         updateBikeList,
-        updateOrderList,
-        updateWorkshopList
+        updateOrderList
     } = useFetchData()
     const user = useAuth(false)
   return (
@@ -60,7 +58,6 @@ function App() {
                          orders={orders}
                          updateBikeList={updateBikeList}
                          updateOrderList={updateOrderList}
-                         workshops={workshops}
                          mapApiKey={mapApiKey}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
@@ -80,14 +77,9 @@ function App() {
                              mapApiKey={mapApiKey}
                              isFetching={isFetching}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
-          <Route path={"/workshops/setup"} element={
-              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList} mapApiKey={mapApiKey}/>}/>
+          <Route path={"/workshops/setup"} element={<SetUpWorkshop mapApiKey={mapApiKey}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
-              <EditWorkshopPage updateWorkshopList={updateWorkshopList}
-                                user={user}
-                                workshops={workshops}
-                                isFetching={isFetching}
-                                mapApiKey={mapApiKey}/>}/>
+              <EditWorkshopPage user={user} isFetching={isFetching} mapApiKey={mapApiKey}/>}/>
         </Routes>
       </div>
   );

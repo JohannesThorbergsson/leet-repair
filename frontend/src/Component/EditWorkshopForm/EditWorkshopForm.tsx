@@ -13,10 +13,8 @@ import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 
 type EditWorkshopFormProps = {
     user: User | null
-    workshops: Workshop[]
     workshopToEdit?: Workshop
     mapApiKey: string
-    updateWorkshopList(workshops: Workshop[]): void
 }
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
     const {

@@ -1,5 +1,4 @@
 import {ServiceOrder} from "../../model/ServiceOrder";
-import {Workshop} from "../../model/Workshop";
 import {Bike} from "../../model/Bike";
 import WorkshopDashboard from "./WorkshopDashboard";
 import BasicDashboard from "./BasicDashboard";
@@ -9,7 +8,6 @@ import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
 
 type DashboardProps = {
     orders: ServiceOrder[]
-    workshops: Workshop[]
     bikes: Bike[]
     mapApiKey: string
     isFetching: boolean
