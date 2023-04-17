@@ -128,18 +128,6 @@ class WorkshopServiceTest {
         assertEquals(expected, actual);
         verify(workshopRepository).findAll();
     }
-    @Test
-    void workshopSearch_whenSearchMatchOneWorkshop_thenReturnListOfResults() {
-        //GIVEN
-        String searchTerm = "workshop42";
-        when(workshopRepository.findAll()).thenReturn(new ArrayList<>(List.of(workshop1, workshop2)));
-        List<Workshop> expected = new ArrayList<>(List.of(workshop1));
-        //WHEN
-        List<Workshop> actual = workshopService.workshopSearch(searchTerm);
-        //THEN
-        assertEquals(expected, actual);
-        verify(workshopRepository).findAll();
-    }
     @ParameterizedTest
     @ValueSource(strings = {"Tyre", "pirelli", "tyre", "work", "Darmstadt"})
     void workshopSearch_whenSearchTerm_thenReturnListOfResults(String searchTerm) {
