@@ -64,7 +64,7 @@ class WorkshopServiceTest {
     @Test
     void getWorkshopById_whenWorkshopWithGivenId_thenReturnWorkshop(){
         //GIVEN
-        when(workshopRepository.findById(testId)).thenReturn(Optional.ofNullable(workshop1));
+        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
         Workshop expected = workshop1;
         //WHEN
         Workshop actual = workshopService.getWorkshopById(testId);

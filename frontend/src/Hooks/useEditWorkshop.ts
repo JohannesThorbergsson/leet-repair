@@ -69,7 +69,6 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                         services: services,
                         inventory: components
                     })
-                        .then(r => r.data)
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 } else {
@@ -80,7 +79,6 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                         coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
                         services: services,
                         inventory: components})
-                        .then(r => r.data)
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 }
