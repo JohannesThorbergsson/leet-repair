@@ -49,7 +49,8 @@ public class WorkshopService {
     }
     public WorkshopResponse updateWorkshop(String id, WorkshopRequest workshopRequest, Principal principal){
         UserResponse user = userService.getCurrentUser(principal);
-        if(!workshopRepository.findById(id).orElseThrow(NoSuchWorkshopException::new).id().equals(user.id())){
+        getWorkshopById(id);
+        if(!id.equals(user.id())){
             throw new UnauthorizedAccessException();
         }
         Workshop updatedWorkshop = workshopRepository.save(new Workshop(
