@@ -11,10 +11,10 @@ import {User} from "../../Hooks/useAuth";
 type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
-    bikes: Bike[]
+    bikes?: Bike[]
     user: User | null
     updateOrderList(orders: ServiceOrder[]): void
-    updateBikeList(bikes: Bike[]): void
+    updateBikeList? (bikes: Bike[]): void
 }
 
 export default function OrderCardWithControls(props: OrderCardWithControlsProps){

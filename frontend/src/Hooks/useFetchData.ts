@@ -20,12 +20,11 @@ export default function useFetchData(){
                     setOrders(ordersResponse.data)
                     setBikes(bikesResponse.data)
                     setMapApiKey(secretsResponse.data)
-                    setIsFetching(false)
                 })
                 .catch((error) => {
                     console.error(error)
-                    setIsFetching(false)
                 })
+                .finally(() => setIsFetching(false))
         }
         prevUser.current = user
         //eslint-disable-next-line
@@ -36,13 +35,15 @@ export default function useFetchData(){
     function updateOrderList(orders: ServiceOrder[]){
         setOrders(orders)
     }
-    async function fetchData() {
-        const ordersPromise = user?.role === "BASIC"
-            ? await axios.get("/api/orders/")
-            : await axios.get("/api/orders/" + user?.id);
-        const bikesPromise = await axios.get("/api/bikes/");
-        const secretsPromise = await axios.get("/api/secrets/");
-        return [ordersPromise, bikesPromise, secretsPromise]
+    function fetchData() {
+        const ordersResponse = user?.role === "BASIC"
+            ?  axios.get("/api/orders/")
+            :  axios.get("/api/orders/" + user?.id);
+        const bikesResponse = user?.role === "BASIC"
+            ? axios.get("/api/bikes/")
+            : Promise.resolve({data: []})
+        const secretsResponse =  axios.get("/api/secrets/")
+        return Promise.all([ordersResponse, bikesResponse, secretsResponse])
     }
     return {bikes, orders, isFetching, mapApiKey, updateBikeList, updateOrderList}
 }

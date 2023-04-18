@@ -5,16 +5,13 @@ import React, {useEffect, useState} from "react";
 import {Box} from "@mui/material";
 import {ServiceOrder} from "../../model/ServiceOrder";
 import LoadingScreen from "../../Component/LoadingScreen/LoadingScreen";
-import {Bike} from "../../model/Bike";
 import OrderGallery from "../../Component/OrderGallery/OrderGallery";
 import DashboardBottomNav from "../../Component/BottomNavBar/DashboardBottomNav";
 import axios from "axios";
 
 type WorkshopDashboardProps = {
     orders: ServiceOrder[]
-    bikes: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
-    updateBikeList(bikes: Bike[]): void
 }
 export default function WorkshopDashboard(props: WorkshopDashboardProps){
     const user = useAuth(true)
@@ -42,11 +39,7 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
                 <>
                 <ResponsiveAppBar/>
                     <Box sx={{display:'flex', flexDirection: 'column', alignContent: 'center', m:2, pb: '80px'}}>
-                        <OrderGallery bikes={props.bikes}
-                                      orders={props.orders}
-                                      updateBikeList={props.updateBikeList}
-                                      updateOrderList={props.updateOrderList}
-                                      user={user}/>
+                        <OrderGallery orders={props.orders} updateOrderList={props.updateOrderList} user={user}/>
                     </Box>
                 <DashboardBottomNav user={user} workshop={workshop}/>
                 </>:
