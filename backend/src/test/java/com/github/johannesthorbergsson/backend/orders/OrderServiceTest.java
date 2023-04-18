@@ -8,7 +8,7 @@ import com.github.johannesthorbergsson.backend.security.UserResponse;
 import com.github.johannesthorbergsson.backend.security.UserService;
 import com.github.johannesthorbergsson.backend.workshops.Coordinates;
 import com.github.johannesthorbergsson.backend.workshops.Workshop;
-import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
+import com.github.johannesthorbergsson.backend.workshops.WorkshopService;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 class OrderServiceTest {
 
     OrderRepository orderRepository = mock(OrderRepository.class);
-    WorkshopRepository workshopRepository = mock(WorkshopRepository.class);
+    WorkshopService workshopService = mock(WorkshopService.class);
     IdService idService = mock(IdService.class);
     Principal principal = mock(Principal.class);
     UserService userService = mock(UserService.class);
@@ -42,7 +42,7 @@ class OrderServiceTest {
             Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
     ServiceOrderRequest testOrderRequest = new ServiceOrderRequest("bid", "Amazing Bike","New Tyre",
             "Workshop42", "1", Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
-    OrderService orderService = new OrderService(orderRepository, workshopRepository, idService, userService);
+    OrderService orderService = new OrderService(orderRepository, workshopService, idService, userService);
     String testId = "1", invalidID = "Invalid";
 
     @Test
@@ -93,7 +93,7 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
-        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(workshopService.getWorkshopById(testId)).thenReturn(workshop1);
         when(principal.getName()).thenReturn("steven");
         ServiceOrder expected = testOrder;
         //WHEN
@@ -101,7 +101,7 @@ class OrderServiceTest {
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
-        verify(workshopRepository).findById(testId);
+        verify(workshopService).getWorkshopById(testId);
         verify(principal).getName();
         assertEquals(expected, actual);
     }
@@ -110,7 +110,7 @@ class OrderServiceTest {
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
         when(orderRepository.save(testOrder)).thenReturn(testOrder);
-        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(workshopService.getWorkshopById(testId)).thenReturn(workshop1);
         when(userService.getCurrentUser(principal)).thenReturn(userResponseWorkshop);
         when(principal.getName()).thenReturn("workshop42");
         ServiceOrder expected = testOrder;
@@ -119,7 +119,7 @@ class OrderServiceTest {
         //THEN
         verify(orderRepository).findById(testId);
         verify(orderRepository).save(testOrder);
-        verify(workshopRepository).findById(testId);
+        verify(workshopService).getWorkshopById(testId);
         verify(userService).getCurrentUser(principal);
         verify(principal).getName();
         assertEquals(expected, actual);
@@ -137,14 +137,14 @@ class OrderServiceTest {
     void updateOrder_whenUnauthorizedAccess_thenThrow_UnauthorizedAccessException(){
         //GIVEN
         when(orderRepository.findById(testId)).thenReturn(Optional.of(testOrder));
-        when(workshopRepository.findById(testId)).thenReturn(Optional.of(workshop1));
+        when(workshopService.getWorkshopById(testId)).thenReturn(workshop1);
         when(userService.getCurrentUser(principal)).thenReturn(userResponseBasic);
         when(principal.getName()).thenReturn("h4xx()r");
         Class<UnauthorizedAccessException> expected = UnauthorizedAccessException.class;
         //WHEN + THEN
         assertThrows(expected, () -> orderService.updateOrder(testId, testOrderRequest, principal));
         verify(orderRepository).findById(testId);
-        verify(workshopRepository).findById(testId);
+        verify(workshopService).getWorkshopById(testId);
         verify(userService).getCurrentUser(principal);
         verify(principal).getName();
     }

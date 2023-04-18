@@ -1,13 +1,12 @@
 package com.github.johannesthorbergsson.backend.orders;
 
 import com.github.johannesthorbergsson.backend.exceptions.NoSuchOrderException;
-import com.github.johannesthorbergsson.backend.exceptions.NoSuchWorkshopException;
 import com.github.johannesthorbergsson.backend.exceptions.UnauthorizedAccessException;
 import com.github.johannesthorbergsson.backend.id.IdService;
 import com.github.johannesthorbergsson.backend.security.UserResponse;
 import com.github.johannesthorbergsson.backend.security.UserService;
 import com.github.johannesthorbergsson.backend.workshops.Workshop;
-import com.github.johannesthorbergsson.backend.workshops.WorkshopRepository;
+import com.github.johannesthorbergsson.backend.workshops.WorkshopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final WorkshopRepository workshopRepository;
+    private final WorkshopService workshopService;
     private final IdService idService;
     private final UserService userService;
 
@@ -47,8 +46,7 @@ public class OrderService {
     public ServiceOrder updateOrder (String id, ServiceOrderRequest serviceOrderRequest, Principal principal) {
         UserResponse user = userService.getCurrentUser(principal);
         ServiceOrder orderToUpdate = orderRepository.findById(id).orElseThrow(NoSuchOrderException::new);
-        Workshop workshop = workshopRepository.findById(serviceOrderRequest.workshopId())
-                .orElseThrow(NoSuchWorkshopException::new);
+        Workshop workshop = workshopService.getWorkshopById(serviceOrderRequest.workshopId());
         if (!orderToUpdate.username().equals(principal.getName()) && !workshop.id().equals(user.id())) {
             throw new UnauthorizedAccessException();
         }
