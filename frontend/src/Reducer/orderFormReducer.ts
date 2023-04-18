@@ -7,8 +7,7 @@ type State = {
     selectedBike: Bike | undefined
     orderDescription: string
     orderedComponentsText: string[] | undefined
-    workshopNewOrder: Workshop | undefined
-    workshopEditOrder: Workshop | undefined
+    workshop: Workshop | undefined
     orderToEditStatus: string | undefined
     openDeleteDialog: boolean
 }

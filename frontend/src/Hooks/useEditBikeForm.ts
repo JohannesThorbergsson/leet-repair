@@ -15,7 +15,6 @@ export type UseEditBikeProps = {
     updateBikeList(bikes: Bike[]): void
 }
 export default function useEditBikeForm(props: UseEditBikeProps){
-
     const {initialFormState} = useInitialBikeFormState(props)
     const [editBikeFormState, dispatch] = useReducer(editBikeFormReducer, initialFormState)
     const navigate = useNavigate()
@@ -39,6 +38,12 @@ export default function useEditBikeForm(props: UseEditBikeProps){
             dispatch({type: "SET_COMPONENTS", payload: editBikeFormState.initialComponents})
         }
     }
+    function handleOpenServiceFormDialog(){
+        dispatch({type: "SET_SERVICE_FORM_OPEN", payload: !editBikeFormState.serviceFormOpen})
+    }
+    function handleOpenComponentFormDialog(){
+        dispatch({type: "SET_COMPONENT_FORM_OPEN", payload: !editBikeFormState.componentFormOpen})
+    }
     function handleSetInstalledComponents(components: Component[]){
         dispatch({type: "SET_COMPONENTS", payload: components})
     }
@@ -47,7 +52,8 @@ export default function useEditBikeForm(props: UseEditBikeProps){
     }
     function handleDeleteComponent(component: Component) {
         dispatch({type: "SET_COMPONENTS",
-            payload: editBikeFormState.components.filter((c => c.type !== component.type))})
+            payload: editBikeFormState.components.filter((c =>
+                c.type+c.category !== component.type+component.category))})
     }
     function deleteService(id: string){
         dispatch({type: "SET_SERVICES",
@@ -92,6 +98,8 @@ export default function useEditBikeForm(props: UseEditBikeProps){
     return {
         editBikeFormState,
         submitDisabled,
+        handleOpenComponentFormDialog,
+        handleOpenServiceFormDialog,
         handleDeleteComponent,
         handleInputMileage,
         handleInputModelName,

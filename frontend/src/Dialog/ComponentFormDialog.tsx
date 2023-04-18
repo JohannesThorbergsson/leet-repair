@@ -13,6 +13,7 @@ type ComponentFormDialogProps = {
     handleSetComponents(components: Component[]): void
     handleSetOpenAddComponentsDialog(): void
     open: boolean
+    title: string
     keepMounted: boolean
     displayAge?: boolean
 }
@@ -37,7 +38,7 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
             open={props.open}
             keepMounted={props.keepMounted}
         >
-            <DialogTitle>Add an Item to your Inventory</DialogTitle>
+            <DialogTitle>{props.title}</DialogTitle>
             <DialogContent dividers>
                 <AddComponentInput dialogMode
                                    displayAge={props.displayAge}

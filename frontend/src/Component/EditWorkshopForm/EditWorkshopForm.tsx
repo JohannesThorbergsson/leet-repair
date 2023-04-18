@@ -130,7 +130,8 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                                          handleSetComponents={handleSetComponents}
                                          open={addComponentDialogOpen}
                                          handleSetOpenAddComponentsDialog={handleSetOpenAddComponentsDialog}
-                                         keepMounted />
+                                         keepMounted
+                                         title={"Add an Item to your Inventory"}/>
                 </Box>
                 {!props.workshopToEdit &&
                     <Button onClick={handleSubmit}

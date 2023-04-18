@@ -39,14 +39,8 @@ export default function OrderForm(props: OrderFormProps) {
                         editMode={props.orderToEdit !== undefined}
                         handleSubmit={handleSubmitOrder}
                         submitDisabled={submitDisabled}/>
-            {orderFormState.workshopEditOrder ?
-                <WorkshopCard workshop={orderFormState.workshopEditOrder}
-                          displayMode={true}
-                          mapApiKey={props.mapApiKey}/>:
-                orderFormState.workshopNewOrder &&
-                    <WorkshopCard workshop={orderFormState.workshopNewOrder}
-                                  displayMode={true}
-                                  mapApiKey={props.mapApiKey}/>
+            {orderFormState.workshop &&
+                <WorkshopCard workshop={orderFormState.workshop} displayMode={true} mapApiKey={props.mapApiKey}/>
             }
             <Box sx ={{
                      alignItems: 'center',

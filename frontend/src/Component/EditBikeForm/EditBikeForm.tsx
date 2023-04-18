@@ -8,10 +8,9 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import React, {useLayoutEffect, useRef, useState} from "react";
+import React, {useLayoutEffect, useRef} from "react";
 import useEditBikeForm from "../../Hooks/useEditBikeForm";
 import ServiceCard from "../ServiceCard/ServiceCard";
-import useAuth from "../../Hooks/useAuth";
 import {Bike} from "../../model/Bike";
 import DeleteBikeDialog from "../../Dialog/DeleteBikeDialog";
 import ServiceFormDialog from "../../Dialog/ServiceFormDialog";
@@ -19,7 +18,6 @@ import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AddIcon from '@mui/icons-material/Add';
 import ComponentFormDialog from "../../Dialog/ComponentFormDialog";
-import useEditComponents from "../../Hooks/useEditComponents";
 import ComponentTable from "../ComponentTable/ComponentTable";
 
 type EditBikeFormProps = {
@@ -29,11 +27,13 @@ type EditBikeFormProps = {
     updateBikeList(bikes: Bike[]): void
 }
 export default function EditBikeForm(props: EditBikeFormProps) {
-    useAuth(true)
     const bottomRef = useRef() as React.MutableRefObject<HTMLDivElement>
     const {
         editBikeFormState,
         submitDisabled,
+        handleDeleteComponent,
+        handleOpenComponentFormDialog,
+        handleOpenServiceFormDialog,
         handleInputMileage,
         handleInputModelName,
         handleSetServices,
@@ -44,8 +44,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         handleClickDeleteBike,
         scroll
     } = useEditBikeForm(props)
-    const {handleDeleteComponent}
-        = useEditComponents({components: editBikeFormState.components, handleSetComponents: handleSetInstalledComponents})
+
     useLayoutEffect(() => {
         if (editBikeFormState.scrollToBottom && bottomRef) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -53,15 +52,6 @@ export default function EditBikeForm(props: EditBikeFormProps) {
         }
         // eslint-disable-next-line
     }, [editBikeFormState.scrollToBottom])
-
-    const [serviceFormOpen, setServiceFormOpen] = useState(false)
-    const [componentFormOpen, setComponentFormOpen] = useState(false)
-    function handleOpenServiceFormDialog(){
-        setServiceFormOpen(!serviceFormOpen)
-    }
-    function handleOpenComponentFormDialog(){
-        setComponentFormOpen(!componentFormOpen)
-    }
 
     return(
         <>
@@ -155,8 +145,9 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             components={editBikeFormState.components}
                             handleSetComponents={handleSetInstalledComponents}
                             handleSetOpenAddComponentsDialog={handleOpenComponentFormDialog}
-                            open={componentFormOpen}
-                            keepMounted/>
+                            open={editBikeFormState.componentFormOpen}
+                            keepMounted
+                            title={"Add Component"}/>
                         <ServiceFormDialog
                             handleSetServices={handleSetServices}
                             handleSetInstalledComponents={handleSetInstalledComponents}
@@ -165,7 +156,7 @@ export default function EditBikeForm(props: EditBikeFormProps) {
                             scrollToBottom={scroll}
                             id={"service-form-dialog"}
                             keepMounted
-                            open={serviceFormOpen}
+                            open={editBikeFormState.serviceFormOpen}
                             handleOpenServiceFormDialog={handleOpenServiceFormDialog}/>
                         <DeleteBikeDialog
                             openDeleteDialog={editBikeFormState.openDeleteDialog}
