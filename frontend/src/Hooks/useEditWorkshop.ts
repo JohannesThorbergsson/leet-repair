@@ -13,7 +13,7 @@ type EditWorkshopFormProps = {
     workshopToEdit?: Workshop
 }
 export default function useEditWorkshop(props: EditWorkshopFormProps){
-    const initalFormState: WorkshopFormState = {
+    const initialFormState: WorkshopFormState = {
         components: props.workshopToEdit?.inventory ?? [],
         services: props.workshopToEdit?.services ?? ["Repairs"],
         workshopName: props.workshopToEdit?.name ?? (props.user?.username || ""),
@@ -22,19 +22,9 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
         addComponentDialogOpen: false,
         invalidAddress: false
     }
+    const [workshopFormState, dispatch] = useReducer(workshopFormReducer, initialFormState)
     const navigate = useNavigate()
-    const [workshopFormState, dispatch] = useReducer(workshopFormReducer, initalFormState)
-    // const [components, setComponents]
-    //     = useState<Component[]>(props.workshopToEdit?.inventory ?? [])
-    // const [services, setServices]
-    //     = useState<string[]>(props.workshopToEdit?.services ?? ["Repairs"])
-    // const [workshopName, setWorkshopName]
-    //     = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
-    // const [address, setAddress] = useState(props.workshopToEdit?.location ?? "")
-    // const [coordinates, setCoordinates]
-    //     = useState<Coordinates | undefined>(props.workshopToEdit?.coordinates ?? undefined)
-    // const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
-    // const [invalidAddress, setInvalidAddress] = useState(false)
+
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
         dispatch({type: "SET_SERVICES", payload: value})
     }
