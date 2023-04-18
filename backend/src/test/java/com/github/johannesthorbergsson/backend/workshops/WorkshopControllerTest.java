@@ -115,6 +115,14 @@ class WorkshopControllerTest {
     @Test
     @DirtiesContext
     @WithMockUser
+    void getWorkshopById_whenNoWorkshopWithGivenId_thenStatus404() throws Exception {
+        mockMvc.perform(get("/api/workshops/1")
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
     void workshopSearch_whenSearchTerm_thenReturnListOfResults() throws Exception {
         //GIVEN
         workshopRepository.save(workshop1);
