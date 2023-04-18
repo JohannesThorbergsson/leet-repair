@@ -19,7 +19,7 @@ type Action =
     | {type: "SET_MILEAGE", payload: number}
     | {type: "SET_MILEAGE_FIELD_VALUE", payload: string}
     | {type: "SET_COMPONENTS", payload: Component[]}
-    | {type: "SET_SERVICES", payload: ServiceEvent[] }
+    | {type: "SET_SERVICES", payload: ServiceEvent[]}
     | {type: "SET_OPEN_DELETE_DIALOG", payload: boolean}
     | {type: "SET_SCROLL_TO_BOTTOM", payload: boolean}
     | {type: "SET_SERVICE_FORM_OPEN", payload: boolean}

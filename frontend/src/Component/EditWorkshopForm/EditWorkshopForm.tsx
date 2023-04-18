@@ -19,13 +19,7 @@ type EditWorkshopFormProps = {
 export default function EditWorkshopForm(props: EditWorkshopFormProps){
     const {
         navigate,
-        components,
-        services,
-        address,
-        coordinates,
-        invalidAddress,
-        workshopName,
-        addComponentDialogOpen,
+        workshopFormState,
         getCoordinates,
         handleSubmit,
         handleSetOpenAddComponentsDialog,
@@ -35,7 +29,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
         handleSetComponents}
         = useEditWorkshop(props)
     const {handleDeleteComponent}
-        = useEditComponents({components: components, handleSetComponents: handleSetComponents})
+        = useEditComponents({components: workshopFormState.components, handleSetComponents: handleSetComponents})
 
     return (
         <>
@@ -44,7 +38,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                             handleCancel={()=>navigate("/")}
                             editMode={true}
                             handleSubmit={handleSubmit}
-                            submitDisabled={workshopName==="" || services.length<1}/>
+                            submitDisabled={workshopFormState.workshopName==="" || workshopFormState.services.length<1}/>
             }
             <Box sx={{m: 2, mt: 1, p: 1}}>
                 <TextField
@@ -53,20 +47,20 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     fullWidth
                     margin={"normal"}
                     onChange={handleWorkshopNameChange}
-                    value={workshopName}
+                    value={workshopFormState.workshopName}
                 />
                 <TextField
                     required
                     label={"Address"}
                     fullWidth
-                    error={invalidAddress}
+                    error={workshopFormState.invalidAddress}
                     margin={"normal"}
                     onChange={handleAddressChange}
-                    value={address}
+                    value={workshopFormState.address}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
-                                {address !=="" && (
+                                {workshopFormState.address !=="" && (
                                     <IconButton onClick={getCoordinates}>
                                         <PlaceIcon />
                                     </IconButton>
@@ -75,25 +69,25 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                         ),
                     }}
                 />
-                {coordinates &&
+                {workshopFormState.coordinates &&
                     <Map
                         id={"workshop-location"}
                         initialViewState={{
-                            longitude: coordinates.lng,
-                            latitude: coordinates.lat,
+                            longitude: workshopFormState.coordinates.lng,
+                            latitude: workshopFormState.coordinates.lat,
                             zoom: 12.5
                         }}
-                        latitude={coordinates.lat}
-                        longitude={coordinates.lng}
+                        latitude={workshopFormState.coordinates.lat}
+                        longitude={workshopFormState.coordinates.lng}
                         maxZoom={15.5}
                         style={{width: "100%", height: '200px'}}
                         mapStyle="mapbox://styles/mapbox/streets-v12"
                         mapboxAccessToken={props.mapApiKey}
                     >
                         <Marker
-                            key={address}
-                            longitude={coordinates.lng}
-                            latitude={coordinates.lat}
+                            key={workshopFormState.address}
+                            longitude={workshopFormState.coordinates.lng}
+                            latitude={workshopFormState.coordinates.lat}
                             anchor={"bottom"}
                         />
                     </Map>
@@ -105,7 +99,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     autoSelect
                     aria-required={true}
                     options={[]}
-                    value={services}
+                    value={workshopFormState.services}
                     onChange={handleServicesChange}
                     id="select-components"
                     renderInput={(params) => (
@@ -120,15 +114,15 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mb: 1}}>
                         Components on Offer
                     </Typography>
-                    <ComponentTable components={components}
+                    <ComponentTable components={workshopFormState.components}
                                     handleDeleteComponent={handleDeleteComponent}
                                     showAge={false}/>
                     <Button variant={"contained"} sx={{mt: 2}} onClick={()=>handleSetOpenAddComponentsDialog()}>
                         Add Item to Inventory
                     </Button>
-                    <ComponentFormDialog components={components}
+                    <ComponentFormDialog components={workshopFormState.components}
                                          handleSetComponents={handleSetComponents}
-                                         open={addComponentDialogOpen}
+                                         open={workshopFormState.addComponentDialogOpen}
                                          handleSetOpenAddComponentsDialog={handleSetOpenAddComponentsDialog}
                                          keepMounted
                                          title={"Add an Item to your Inventory"}/>
@@ -137,7 +131,7 @@ export default function EditWorkshopForm(props: EditWorkshopFormProps){
                     <Button onClick={handleSubmit}
                             variant={"contained"}
                             sx={{mt:2, width: 1}}
-                            disabled={workshopName==="" || services.length<1}>
+                            disabled={workshopFormState.workshopName==="" || workshopFormState.services.length<1}>
                         Register your Workshop
                     </Button>
                 }
