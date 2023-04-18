@@ -8,9 +8,9 @@ import {Component} from "../model/Component";
 type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
-    bikes: Bike[]
+    bikes?: Bike[]
     updateOrderList(orders: ServiceOrder[]): void
-    updateBikeList(bikes: Bike[]): void
+    updateBikeList? (bikes: Bike[]): void
 }
 export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
     const [status, setStatus] = useState(getStatusDisplayText())
@@ -69,7 +69,7 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
             .then(updatedOrder => props.updateOrderList([...props.orders.filter(
                 order=>order.id !== props.order.id), updatedOrder]))
             .catch((error) => console.error(error))
-        const bikeToUpdate = props.bikes.find(bike=> bike.id === props.order.bikeId)
+        const bikeToUpdate = props.bikes?.find(bike=> bike.id === props.order.bikeId)
         if(status==="Done" && bikeToUpdate){
             axios.put("/api/bikes/" + props.order.bikeId,
                 {
@@ -88,8 +88,12 @@ export default function useUpdateOrderStatus(props: OrderCardWithControlsProps){
                                 .map(comp=> comp.category.toLowerCase())
                                 .includes(component.category.toLowerCase()))), ...props.order.componentsToReplace]})
                 .then(r => r.data)
-                .then(updatedBike => props.updateBikeList(
-                    [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike]))
+                .then(updatedBike => {
+                    if(props.bikes && props.updateBikeList) {
+                        props.updateBikeList(
+                            [...props.bikes.filter(bike => bike.id !== updatedBike.id), updatedBike])
+                    }
+                })
                 .catch((error) => console.error(error))
         }
     }

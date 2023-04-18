@@ -10,9 +10,7 @@ import {Coordinates} from "../model/Coordinates";
 
 type EditWorkshopFormProps = {
     user: User | null
-    workshops: Workshop[]
     workshopToEdit?: Workshop
-    updateWorkshopList(workshops: Workshop[]): void
 }
 export default function useEditWorkshop(props: EditWorkshopFormProps){
     const navigate = useNavigate()
@@ -71,8 +69,6 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                         services: services,
                         inventory: components
                     })
-                        .then(r => r.data)
-                        .then((newWorkshop) => props.updateWorkshopList([...props.workshops, newWorkshop]))
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 } else {
@@ -83,10 +79,6 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                         coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
                         services: services,
                         inventory: components})
-                        .then(r => r.data)
-                        .then(updatedWorkshop => props.updateWorkshopList(
-                            [...props.workshops.filter(workshop => workshop.id !== updatedWorkshop.id),
-                                updatedWorkshop]))
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 }
@@ -96,6 +88,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                 toast.error("Could not access location service")
             })
     }
+
     return {
         navigate,
         components,

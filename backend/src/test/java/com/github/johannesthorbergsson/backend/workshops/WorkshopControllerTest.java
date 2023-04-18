@@ -37,7 +37,7 @@ class WorkshopControllerTest {
     ObjectMapper mapper = new ObjectMapper();
     Component tyre = new Component("tyre", "Pirelli", 1337);
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
-    Workshop workshop1 = new Workshop("1", "workshop42", "workshop42", "Kasinostraße, Darmstadt",
+    Workshop workshop1 = new Workshop("1", "workshop42", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "chain")), List.of(tyre));
     WorkshopRequest workshop1Request =
             new WorkshopRequest(workshop1.id(), workshop1.name(), workshop1.location(), workshop1.coordinates(),
@@ -45,8 +45,10 @@ class WorkshopControllerTest {
     WorkshopResponse workshop1Response =
             new WorkshopResponse(workshop1.id(), workshop1.name(), workshop1.location(), workshop1.coordinates(),
                     workshop1.services(), workshop1.inventory());
-    Workshop workshop2 = new Workshop("2", "workshop1337", "workshop1337", "Kasinostraße, Darmstadt",
+    Workshop workshop2 = new Workshop("2", "workshop1337", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "brakes")), List.of(tyre));
+    MongoUser workshopUser = new MongoUser("1", "workshop42", "1", "WORKSHOP");
+    MongoUser basicUser = new MongoUser("2", "steven", "1", "BASIC");
     @Test
     @DirtiesContext
     @WithMockUser
@@ -63,7 +65,6 @@ class WorkshopControllerTest {
                         {
                             "id": "1",
                             "name": "workshop42",
-                            "username": "workshop42",
                             "location": "Kasinostraße, Darmstadt",
                             "coordinates": {
                                 "lat": -33.8599358,
@@ -80,7 +81,6 @@ class WorkshopControllerTest {
                         }, {
                             "id": "2",
                             "name": "workshop1337",
-                            "username": "workshop1337",
                             "location": "Kasinostraße, Darmstadt",
                             "coordinates": {
                                 "lat": -33.8599358,
@@ -101,11 +101,47 @@ class WorkshopControllerTest {
     }
     @Test
     @DirtiesContext
+    @WithMockUser
+    void getWorkshopById_whenWorkshopWithGivenId_thenReturnWorkshop() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        String responseJSON = mapper.writeValueAsString(workshop1);
+        //WHEN + THEN
+        mockMvc.perform(get("/api/workshops/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON));
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void getWorkshopById_whenNoWorkshopWithGivenId_thenStatus404() throws Exception {
+        mockMvc.perform(get("/api/workshops/1")
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void workshopSearch_whenSearchTerm_thenReturnListOfResults() throws Exception {
+        //GIVEN
+        workshopRepository.save(workshop1);
+        workshopRepository.save(workshop2);
+        String responseJSON = mapper.writeValueAsString(List.of(workshop1, workshop2));
+        String searchTerm = "Ty";
+        //WHEN
+        mockMvc.perform(get("/api/workshops/search/" + searchTerm)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON));
+    }
+    @Test
+    @DirtiesContext
     @WithMockUser(username = "workshop42")
     void addWorkshop_whenWorkshopRequest_thenReturnWorkshop() throws Exception {
         //GIVEN
         String requestJSON = mapper.writeValueAsString(workshop1Request);
-        userRepository.save(new MongoUser("1", "workshop42", "1", "WORKSHOP"));
+        userRepository.save(workshopUser);
         //WHEN
         mockMvc.perform(post("/api/workshops/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,7 +153,6 @@ class WorkshopControllerTest {
                         {
                             "id": "1",
                             "name": "workshop42",
-                            "username": "workshop42",
                             "location": "Kasinostraße, Darmstadt",
                             "coordinates": {
                                 "lat": -33.8599358,
@@ -141,7 +176,7 @@ class WorkshopControllerTest {
     void addWorkshop_whenBasicUser_thenStatus403() throws Exception {
         //GIVEN
         String requestJSON = mapper.writeValueAsString(workshop1Request);
-        userRepository.save(new MongoUser("1", "steven", "1", "BASIC"));
+        userRepository.save(basicUser);
         //WHEN
         mockMvc.perform(post("/api/workshops/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -155,6 +190,7 @@ class WorkshopControllerTest {
     void updateWorkshop_whenValidRequest_thenReturnWorkshopResponse() throws Exception {
         //GIVEN
         workshopRepository.save(workshop1);
+        userRepository.save(workshopUser);
         String requestJSON = mapper.writeValueAsString(workshop1Request);
         String responseJSON = mapper.writeValueAsString(workshop1Response);
         //WHEN
@@ -167,10 +203,11 @@ class WorkshopControllerTest {
     }
     @Test
     @DirtiesContext
-    @WithMockUser(username = "h4xx()r")
+    @WithMockUser(username = "steven")
     void updateWorkshop_whenUnauthorizedAccess_thenThrowUnauthorizedAccessException() throws Exception {
         //GIVEN
         workshopRepository.save(workshop1);
+        userRepository.save(basicUser);
         String requestJSON = mapper.writeValueAsString(workshop1Request);
         //WHEN
         mockMvc.perform(put("/api/workshops/1")
@@ -183,6 +220,7 @@ class WorkshopControllerTest {
     @DirtiesContext
     @WithMockUser(username = "workshop42")
     void updateWorkshop_whenWorkshopNotFound_thenThrowNoSuchWorkshopException() throws Exception {
+        userRepository.save(workshopUser);
         String requestJSON = mapper.writeValueAsString(workshop1Request);
         //WHEN
         mockMvc.perform(put("/api/workshops/1")

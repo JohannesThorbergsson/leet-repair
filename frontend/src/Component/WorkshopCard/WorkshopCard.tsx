@@ -71,8 +71,8 @@ export default function WorkshopCard(props: WorkshopCardProps) {
                 <ComponentTable components={props.workshop.inventory} showAge={false}/>
                 {!props.displayMode &&
                     <Button variant={"contained"} sx={{mt: 1}}
-                            onClick={() => navigate("/workshops/orders/"+props.workshop.id,
-                                {state: {searchTerm: props.searchTerm}})}>
+                            onClick={() => navigate("/workshops/orders/",
+                                {state: {searchTerm: props.searchTerm, workshop: props.workshop}})}>
                         Book Services
                     </Button>
                 }

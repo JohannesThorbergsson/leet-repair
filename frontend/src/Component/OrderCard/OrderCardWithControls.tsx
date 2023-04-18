@@ -11,10 +11,10 @@ import {User} from "../../Hooks/useAuth";
 type OrderCardWithControlsProps = {
     order: ServiceOrder
     orders: ServiceOrder[]
-    bikes: Bike[]
+    bikes?: Bike[]
     user: User | null
     updateOrderList(orders: ServiceOrder[]): void
-    updateBikeList(bikes: Bike[]): void
+    updateBikeList? (bikes: Bike[]): void
 }
 
 export default function OrderCardWithControls(props: OrderCardWithControlsProps){
@@ -43,7 +43,8 @@ export default function OrderCardWithControls(props: OrderCardWithControlsProps)
                 {(props.order.status==="OPEN" && props.user?.role === "BASIC") &&
                     <Button variant={"contained"}
                             sx={{width: 1/2, mr: 1 , ml: 2}}
-                            onClick={()=> navigate("/orders/" + props.order.id)}>
+                            onClick={()=> navigate("/orders/" + props.order.id,
+                                {state: {workshop: props.order.workshopId}})}>
                         Edit Order
                     </Button>
                 }

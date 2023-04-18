@@ -40,12 +40,10 @@ function App() {
     const {
         bikes,
         orders,
-        workshops,
         isFetching,
         mapApiKey,
         updateBikeList,
-        updateOrderList,
-        updateWorkshopList
+        updateOrderList
     } = useFetchData()
     const user = useAuth(false)
   return (
@@ -60,35 +58,28 @@ function App() {
                          orders={orders}
                          updateBikeList={updateBikeList}
                          updateOrderList={updateOrderList}
-                         workshops={workshops}
                          mapApiKey={mapApiKey}/>}/>
           <Route path={"/bikes"} element={<BikeGallery bikes={bikes}/>}/>
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
           <Route path={"/bikes/edit-bike/:bikeId"} element={
               <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
-          <Route path={"/workshops/orders/:workshopId"} element={
-              <BookOrderPage workshops={workshops}
-                             bikes={bikes}
+          <Route path={"/workshops/orders/"} element={
+              <BookOrderPage bikes={bikes}
                              orders={orders}
                              updateOrderList={updateOrderList}
-                             mapApiKey={mapApiKey}/>}/>
+                             mapApiKey={mapApiKey}
+                             isFetching={isFetching}/>}/>
           <Route path={"/orders/:orderId"} element={
               <EditOrderPage orders={orders}
                              updateOrderList={updateOrderList}
                              bikes={bikes}
-                             workshops={workshops}
                              mapApiKey={mapApiKey}
                              isFetching={isFetching}/>}/>
           <Route path={"/orders/archive"} element={<OrderArchive orders={orders}/>}/>
-          <Route path={"/workshops/setup"} element={
-              <SetUpWorkshop workshops={workshops} updateWorkshopList={updateWorkshopList} mapApiKey={mapApiKey}/>}/>
+          <Route path={"/workshops/setup"} element={<SetUpWorkshop mapApiKey={mapApiKey}/>}/>
           <Route path={"/workshops/edit/:workshopId"} element={
-              <EditWorkshopPage updateWorkshopList={updateWorkshopList}
-                                user={user}
-                                workshops={workshops}
-                                isFetching={isFetching}
-                                mapApiKey={mapApiKey}/>}/>
+              <EditWorkshopPage user={user} isFetching={isFetching} mapApiKey={mapApiKey}/>}/>
         </Routes>
       </div>
   );

@@ -8,10 +8,10 @@ import moment from "moment/moment";
 
 type OrderGalleryProps = {
     orders: ServiceOrder[]
-    bikes: Bike[]
+    bikes?: Bike[]
     user: User | null
     updateOrderList(orders: ServiceOrder[]): void
-    updateBikeList(bikes: Bike[]): void
+    updateBikeList? (bikes: Bike[]): void
 }
 
 export default function OrderGallery(props: OrderGalleryProps){

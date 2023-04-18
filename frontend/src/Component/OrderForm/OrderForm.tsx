@@ -10,11 +10,12 @@ import WorkshopCard from "../WorkshopCard/WorkshopCard";
 import FormAppBar from "../ResponsiveAppBar/FormAppBar";
 
 type OrderFormProps = {
-    workshops: Workshop[]
+    workshop: Workshop
     bikes: Bike[]
     orders: ServiceOrder[]
     orderToEdit?: ServiceOrder
     mapApiKey: string
+    isFetching: boolean
     updateOrderList(orders: ServiceOrder[]): void
 }
 export default function OrderForm(props: OrderFormProps) {
