@@ -23,8 +23,8 @@ export default function WorkshopDashboard(props: WorkshopDashboardProps){
         if(user!==null) {
             axios.get("/api/workshops/" + user.id)
                 .then(r => setWorkshop(r.data))
-                .then(()=> setWorkshopLoaded(true))
                 .catch((error) => console.error(error))
+                .finally(()=> setWorkshopLoaded(true))
         }
     }, [user])
     useEffect(()=>{

@@ -47,7 +47,7 @@ export default function BikeDetailPage(props: Props) {
                             <ComponentTable components={bike?.components} showAge={true}/>
                         </Box>
                         <Box>
-                            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 1}}>Service history</Typography>
+                            <Typography variant={"subtitle1"} fontWeight={"medium"} sx={{mt: 2}}>Service history</Typography>
                             {(bike?.services.length === undefined || bike?.services.length<1)?
                                 <Typography variant={"h6"}>No services recorded</Typography>:
                             bike.services.map(service =>
