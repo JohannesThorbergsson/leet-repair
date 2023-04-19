@@ -36,7 +36,6 @@ class OrderServiceTest {
     Coordinates testCoordinates = new Coordinates(new BigDecimal("-33.8599358"), new BigDecimal("151.2090295"));
     Workshop workshop1 = new Workshop("1", "workshop42", "Kasinostraße, Darmstadt",
             testCoordinates, new ArrayList<>(List.of("tyre", "chain")), componentList);
-
     ServiceOrder testOrder = new ServiceOrder("1", "bid", "Amazing Bike", "New Tyre",
             "Workshop42", "1", "steven",
             Status.OPEN, LocalDate.of(2022, 2, 1), componentList);
@@ -85,6 +84,7 @@ class OrderServiceTest {
             verify(orderRepository).save(testOrder);
             verify(idService).generateId();
             verify(principal).getName();
+            mockedStatic.verify(LocalDate::now);
             assertEquals(expected, actual);
         }
     }
