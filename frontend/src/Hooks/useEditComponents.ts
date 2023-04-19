@@ -28,7 +28,7 @@ export default function useEditComponents(props: useEditComponentsProps){
     }
     function handleSubmitNewComponent(){
         props.handleSetComponents([...props.components,
-            {category: newComponentCategory, type: newComponentModel, age: newComponentAge}])
+            {category: newComponentCategory.trim(), type: newComponentModel.trim(), age: newComponentAge}])
         setNewComponentAge(0)
         setNewComponentModel("")
         setNewComponentCategory("")

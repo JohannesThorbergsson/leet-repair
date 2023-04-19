@@ -61,7 +61,7 @@ export default function ServiceFormDialog(props: ServiceFormDialogProps){
                 </Button>
                 <Button onClick={handleSubmitService}
                         disabled={description==="" || workshopName==="" || date ===""}>
-                            Save
+                            Add
                 </Button>
             </DialogActions>
         </Dialog>

@@ -56,7 +56,7 @@ export default function ComponentFormDialog(props: ComponentFormDialogProps){
                 </Button>
                 <Button onClick={submit}
                         disabled={submitDisabled}>
-                    Save
+                    Add
                 </Button>
             </DialogActions>
         </Dialog>
