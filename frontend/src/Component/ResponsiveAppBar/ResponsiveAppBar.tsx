@@ -25,8 +25,8 @@ export default function ResponsiveAppBar() {
         axios.post('/api/users/logout')
             .then(() => {
                 window.sessionStorage.clear();
-                window.location.href = '/login'
             })
+            .finally(()=>window.location.href = '/login')
     }
     return (
             <AppBar position="sticky">
