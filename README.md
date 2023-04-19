@@ -5,3 +5,6 @@ and search for repair workshops that offer the services they need.
 ## Set up
 After cloning the project, load the maven project and run npm install.
 This project uses a MongoDB to store data. Set up a local MongoDB as specified in the application.properties file. Set the MONGODB_URI connection string as an environment variable.
+
+## Perform a search
+In order to search for services, you need to register at least one workshop and type a substring of its name, location, services or inventory items.
