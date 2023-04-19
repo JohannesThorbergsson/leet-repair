@@ -44,7 +44,7 @@ export default function FormAppBar(props: EditFormAppBarProps){
                         component="a"
                         href="/"
                         sx={{
-                            mr: 2, ml: 1,
+                            mr: 0, ml: 1, p: 0,
                             display: { xs: 'none', md: 'flex' },
                             flexGrow: 1,
                             fontFamily: 'fantasy',
@@ -61,7 +61,7 @@ export default function FormAppBar(props: EditFormAppBarProps){
                         component="a"
                         href=""
                         sx={{
-                            mr: 2, ml: 1,
+                            mr: 0, ml: 1, p: 0,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
                             fontFamily: 'monospace',
@@ -73,7 +73,7 @@ export default function FormAppBar(props: EditFormAppBarProps){
                         {props.title}
                     </Typography>
                     <Button onClick={props.handleSubmit}
-                            color="inherit" sx={{fontSize: 15, p: 0}}
+                            color="inherit" sx={{fontSize: 15, p: 0, mr: 0, maxWidth: 3/10}}
                             disabled = {props.submitDisabled}>
                         {props.orderMode? submitOrderButtonCaption : submitBikeButtonCaption}
                     </Button>

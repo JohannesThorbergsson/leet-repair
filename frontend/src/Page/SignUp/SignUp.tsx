@@ -8,7 +8,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import useSignUp from "../../Hooks/useSignUp";
 
-
 export default function Login() {
     const {
         username,
@@ -54,12 +53,12 @@ export default function Login() {
                                label="Confirm Password" type= {"password"} value={passwordConfirm}
                                margin ="normal" fullWidth onChange={handlePasswordConfirmChange} />
                     <FormControl sx={{mt: 1}}>
-                        <FormLabel id="demo-row-radio-buttons-group-label">How will you be using this App?</FormLabel>
+                        <FormLabel id="user-role">How will you be using this App?</FormLabel>
                         <RadioGroup
                             sx={{ml: 3}}
                             onChange={handleRoleChange}
                             row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            aria-labelledby="user-role"
                             name="row-radio-buttons-group"
                         >
                             <FormControlLabel value="BASIC" control={<Radio />} label="Bike Owner" />

@@ -11,7 +11,9 @@ export default function useInitialBikeFormState(props: UseEditBikeProps){
         initialComponents: props.bikeToEdit? props.bikeToEdit.components : [],
         services: props.bikeToEdit? props.bikeToEdit.services : [],
         openDeleteDialog: false,
-        scrollToBottom : false
+        scrollToBottom : false,
+        serviceFormOpen: false,
+        componentFormOpen: false
     }
     return {initialFormState}
 }

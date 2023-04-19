@@ -1,4 +1,4 @@
-import {ChangeEvent, SyntheticEvent, useState} from "react";
+import {ChangeEvent, SyntheticEvent, useReducer} from "react";
 import {Component} from "../model/Component";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -6,50 +6,50 @@ import {User} from "./useAuth";
 import {Workshop} from "../model/Workshop";
 import {OSMSearchResult} from "../model/OSMSearchResult";
 import toast from "react-hot-toast";
-import {Coordinates} from "../model/Coordinates";
+import workshopFormReducer, {WorkshopFormState} from "../Reducer/workshopFormReducer";
 
 type EditWorkshopFormProps = {
     user: User | null
     workshopToEdit?: Workshop
 }
 export default function useEditWorkshop(props: EditWorkshopFormProps){
+    const initialFormState: WorkshopFormState = {
+        components: props.workshopToEdit?.inventory ?? [],
+        services: props.workshopToEdit?.services ?? ["Repairs"],
+        workshopName: props.workshopToEdit?.name ?? (props.user?.username || ""),
+        address: props.workshopToEdit?.location ?? "",
+        coordinates: props.workshopToEdit?.coordinates ?? undefined,
+        addComponentDialogOpen: false,
+        invalidAddress: false
+    }
+    const [workshopFormState, dispatch] = useReducer(workshopFormReducer, initialFormState)
     const navigate = useNavigate()
-    const [components, setComponents]
-        = useState<Component[]>(props.workshopToEdit?.inventory ?? [])
-    const [services, setServices]
-        = useState<string[]>(props.workshopToEdit?.services ?? ["Repairs"])
-    const [workshopName, setWorkshopName]
-        = useState<string>(props.workshopToEdit?.name ?? (props.user?.username || ""))
-    const [address, setAddress] = useState(props.workshopToEdit?.location ?? "")
-    const [coordinates, setCoordinates]
-        = useState<Coordinates | undefined>(props.workshopToEdit?.coordinates ?? undefined)
-    const [addComponentDialogOpen, setAddComponentDialogOpen] = useState(false)
-    const [invalidAddress, setInvalidAddress] = useState(false)
+
     function handleServicesChange(event: SyntheticEvent, value: string[]) {
-        setServices(value)
+        dispatch({type: "SET_SERVICES", payload: value})
     }
     function handleWorkshopNameChange(event: ChangeEvent<HTMLInputElement>) {
-        setWorkshopName(event.target.value)
+        dispatch({type: "SET_WORKSHOP_NAME", payload: event.target.value})
     }
     function handleSetComponents(components: Component[]){
-        setComponents(components)
+        dispatch({type: "SET_COMPONENTS", payload: components})
     }
     function handleAddressChange(event: ChangeEvent<HTMLInputElement>){
-        setAddress(event.target.value)
-        setInvalidAddress(false)
+        dispatch({type: "SET_ADDRESS", payload: event.target.value})
+        dispatch({type: "SET_INVALID_ADDRESS", payload: false})
     }
     function handleSetOpenAddComponentsDialog(){
-        setAddComponentDialogOpen(!addComponentDialogOpen)
+        dispatch({type: "SET_ADD_COMPONENT_DIALOG_OPEN", payload: !workshopFormState.addComponentDialogOpen})
     }
     function getCoordinates(){
-        return axios.get(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${address}`)
+        return axios.get(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${workshopFormState.address}`)
             .then(r => r.data as OSMSearchResult[])
             .then(results => {
                 if(results.length>0){
-                    setCoordinates({lat: Number(results[0].lat), lng: Number(results[0].lon)})
+                    dispatch({type: "SET_COORDINATES", payload: {lat: Number(results[0].lat), lng: Number(results[0].lon)}})
                 } else {
                     toast.error("Invalid Address")
-                    setInvalidAddress(true)
+                    dispatch({type: "SET_INVALID_ADDRESS", payload: true})
                 }
                 return results
             })
@@ -63,22 +63,22 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
                 } else if (!props.workshopToEdit) {
                     axios.post("/api/workshops/", {
                         id: props.user?.id,
-                        name: workshopName,
-                        location: address,
+                        name: workshopFormState.workshopName,
+                        location: workshopFormState.address,
                         coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
-                        services: services,
-                        inventory: components
+                        services: workshopFormState.services,
+                        inventory: workshopFormState.components
                     })
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 } else {
                     axios.put("/api/workshops/" + props.workshopToEdit.id, {
                         id: props.user?.id,
-                        name: workshopName,
-                        location: address,
+                        name: workshopFormState.workshopName,
+                        location: workshopFormState.address,
                         coordinates: {lat: Number(results[0].lat), lng: Number(results[0].lon)},
-                        services: services,
-                        inventory: components})
+                        services: workshopFormState.services,
+                        inventory: workshopFormState.components})
                         .then(() => navigate("/"))
                         .catch((error) => console.error(error))
                 }
@@ -91,13 +91,7 @@ export default function useEditWorkshop(props: EditWorkshopFormProps){
 
     return {
         navigate,
-        components,
-        services,
-        workshopName,
-        address,
-        coordinates,
-        addComponentDialogOpen,
-        invalidAddress,
+        workshopFormState,
         getCoordinates,
         handleSubmit,
         handleSetOpenAddComponentsDialog,

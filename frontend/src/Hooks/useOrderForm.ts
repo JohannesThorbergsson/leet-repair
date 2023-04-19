@@ -21,31 +21,25 @@ export default function useOrderForm(props: OrderFormProps){
         orderDescription: props.orderToEdit?.description ?? "",
         orderedComponentsText: props.orderToEdit?.componentsToReplace.map(
             component => component.category + " " +component.type),
-        workshopNewOrder: props.workshop,
-        workshopEditOrder: props.workshop,
+        workshop: props.workshop,
         orderToEditStatus: props.orderToEdit?.status,
         openDeleteDialog: false
     }
     const [orderFormState, dispatch] = useReducer(orderFormReducer, initialFormState)
     const submitDisabled = orderFormState.orderDescription ==="" || !orderFormState.selectedBike
-    const componentsInStock = !props.orderToEdit?
-        (orderFormState.workshopNewOrder?.inventory.map(
-            component => component.category + " " +component.type) || []):
-        (orderFormState.workshopEditOrder?.inventory.map(
-            component => component.category + " " +component.type) || [])
+    const componentsInStock = (orderFormState.workshop?.inventory.map(component =>
+        component.category + " " + component.type) || [])
 
     function handleInputComponents(event: SyntheticEvent, value: string[]) {
-        const selectedComponentsNewOrder = orderFormState.workshopNewOrder?.inventory.filter(
+        const selectedComponents = orderFormState.workshop?.inventory.filter(
             component => value.includes(component.category + " " + component.type))
-        const selectedComponentsEditMode = orderFormState.workshopEditOrder?.inventory.filter(
-            component=> value.includes(component.category + " " + component.type))
 
-        if(orderFormState.workshopNewOrder && selectedComponentsNewOrder) {
-            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentsNewOrder})
+        if(orderFormState.workshop && selectedComponents) {
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponents})
             dispatch({type: "SET_ORDERED_COMPONENTS_TEXT", payload: orderFormState.orderedComponents.map(
                 component => component.category + " " +component.type)})
-        } else if (props.orderToEdit && selectedComponentsEditMode) {
-            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponentsEditMode})
+        } else if (props.orderToEdit && selectedComponents) {
+            dispatch({type: "SET_ORDERED_COMPONENTS", payload: selectedComponents})
         }
     }
     function handleInputBike(event: SyntheticEvent<Element, Event>, value: string | null){
@@ -61,8 +55,8 @@ export default function useOrderForm(props: OrderFormProps){
                     bikeId: orderFormState.selectedBike?.id,
                     bikeName: orderFormState.selectedBike?.modelName,
                     description: orderFormState.orderDescription,
-                    workshop: orderFormState.workshopNewOrder?.name,
-                    workshopId: orderFormState.workshopNewOrder?.id,
+                    workshop: orderFormState.workshop?.name,
+                    workshopId: orderFormState.workshop?.id,
                     status: "OPEN",
                     componentsToReplace: orderFormState.orderedComponents})
                 .then(r => props.updateOrderList([...props.orders, r.data]))

@@ -63,7 +63,7 @@ function App() {
           <Route path={"/bikes/add-bike"} element={<AddBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
           <Route path={"/bikes/details/:bikeId"} element={<BikeDetailPage bikes={bikes}/>}/>
           <Route path={"/bikes/edit-bike/:bikeId"} element={
-              <EditBikePage bikes={bikes} updateBikeList={updateBikeList}/>}/>
+              <EditBikePage bikes={bikes} updateBikeList={updateBikeList} isFetching={isFetching}/>}/>
           <Route path={"/workshops/orders/"} element={
               <BookOrderPage bikes={bikes}
                              orders={orders}
